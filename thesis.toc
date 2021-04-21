@@ -1,0 +1,13 @@
+\boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
+\selectlanguage *{english}
+\bgroup 
+\selectlanguage *{english}
+\egroup 
+\selectlanguage *{english}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Theoretische Grundlagen}{2}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Siliziumdetektoren}{2}{section.2.1}%
+\contentsline {chapter}{\numberline {3}Entwicklung des Programmes zur Berechnung von Annealingeffekten}{3}{chapter.3}%
+\contentsline {chapter}{\numberline {4}Zusammenfassung}{4}{chapter.4}%
+\contentsline {chapter}{\numberline {5}Ein Anhangskapitel}{5}{chapter.5}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
