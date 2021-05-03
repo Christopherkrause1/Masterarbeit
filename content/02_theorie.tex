@@ -150,8 +150,16 @@ specified to ensure proper track reconstruction.
 General parameters and parameters in individual reconstruction steps are specified in the configuration file. This includes the import of the raw data and the
 geometry file, the applied reconstruction steps and the definition of the cuts. \\
 The steering files define the processors used in each reconstruction step and in which order they are executed.
-
 A complete track reconstruction with EUTelescope contains the converter, the clustering, the hitmaker, the alignment and the track fitting in this respective order.
+The overall track reconstruction of EUTelescope is shown in figure \ref{fig:track_reco} with the most important steps explained in the following.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.6\textwidth]{images/track_reco.png}
+  \caption{The overall track reconstruction of EUTelescope including the MARLIN processors and files. \cite{track_reco}.}
+  \label{fig:track_reco}
+\end{figure}
+
 First, the raw data has to be converted to the lcio format for subsequent MARLIN processors. In addition, the module detects noisy pixels by analysing the
 hit rate of the pixels and dividing them by the sum of measured events. The resulting firing frequency can be limited by user defined cuts, thus removing entries
 from noise considered pixels from the lcio file.
@@ -164,4 +172,38 @@ The hitmaker step determines the particles hit position, the cluster center, of 
 te pixel. Cluster centers of clusters with more than one pixel are calculated with a charge weighted center of gravity algorithm. This means, that
 the deposited charge of each pixel is taken into account to derive the particles position. The cluster centers are transformed to the global coordinate
 system of the telescope to function as the hit position for the track reconstruction. Global hit information on the sensors of particle tracks is assumed to be correlated with only
-a small spread of the beam angle, which makes an initial guess of the telescope alignment, the prealignment, possible. 
+a small spread of the beam angle, which makes an initial guess of the telescope alignment, the prealignment, possible. With the prealignment it is possible
+to correct larger misplacements of the sensors.
+
+To compensate possible misaligment of sensors in the telescope, the alignment processor tries to optimise the setup. Cluster information from the hitmaker
+are used to fit tracks through the planes and correct deviations by rotating and shifting the sensors. After the alignment process is finished a new gear file is produced, which
+is then used for further reconstruction steps. Usually, several iterations of the alignment process occur to determine the optimal positions of the sensor planes
+in the telescope.
+There are two major processors for the alignment step, which implement different track fitting algorithms.
+The DAF processor is based on a Kalman filter and was specifically designed for high noise environments. It uses the inbuild combinatorics filter, which fits
+straight line tracks through all combinations of clusters allowed by the specified cuts and only keeps the ones with a minimum $\chi^2$. Here, the $\chi^2$ parameter
+describes the goodness of the fit and is defined as:
+\begin{align}
+  \chi^2 = \sum_i (r_x/\sigma_x)^2 + (r_y/\sigma_y)^2
+\end{align}
+
+The parameters $r_x$ and $r_y$ refer to the residuals on each sensor in X and Y direction, which describe the distance of the cluster center used for the track fit and the
+position of the track on a plane. All residuals are weighted with their spatial resolution $\sigma_x$ and $\sigma_y$ for each sensor. \\
+The second fitter uses the General Broken Line (GBL) algorithm with a separate patter recognition processor for track fitting. Kinematics of
+beam particles are used to predict hits belonging to a track. In the track finding process, two straight lines are fitted through the upstream and
+downstream sensors, whenever the user defined cuts on the slope allow it. The two straight lines are extrapolated to the centre of the telescope, where
+they form the overall track depending on their distance to each other and the corresponding user defined cut.\\
+Fitted tracks used for the alignment are handled by the Millipede II processor. It performs least squares minimisation for a particular set of problems, which
+have an interest of global parameters over local parameters in common. Thus, Millepede II is able to align the planes with any applied track model.
+
+After the alignment is finished the tracks are fully reconstructed with either the DAF or the GBL fitter. Optionally, DUT's can be included in the fitting
+process, however it is usually avoided to keep the residuals of the DUT unbiased. In the scope of this thesis, the GBL processor is used for the
+alignment and fitting step. To reconstruct a track, the fitGBL processor uses GBL points, which carry a series of attributes. These points can either be a
+hit or an other point of interest on the trajectory. Figure \ref{fig:gbl} depicts a reconstructed track with the fitGBL processor.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.5\textwidth]{images/gbl.png}
+  \caption{Track reconstruction with the fitGBL processor. Scatterering points are connected with a straight line. \cite{gbl}.}
+  \label{fig:gbl}
+\end{figure}
