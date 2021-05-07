@@ -136,8 +136,13 @@ More information in \cite{eudaq}.
   \label{fig:eudaq_bild}
 \end{figure}
 
-\chapter{The track reconstruction framework EUTelescope}
-The hit information of the sensor planes can be used to reconstruct the initial particles track. In order to do that the sotware EUTelescope was developed and
+\chapter{Track reconstruction}
+The hit information of the sensor planes can be used to reconstruct the initial particles track. To properly reconstruct the tracks, multiple steps have to
+be performed. For that reason entire frameworks were created to allow for a versatile and accurate track reconstruction to be possible. Two of the most
+developed reconstruction softwares were used in this thesis and are explained in the following.
+
+\section{The track reconstruction framework EUTelescope}
+In order to do that the sotware EUTelescope was developed and
 primarily used since 2007. It uses the Modular Analysis and Reconstruction for the Linear Collider (MARLIN) framework, which is part of the
 International Collider Software package (ILCSoft). Each step in the reconstruction depends on MARLIN processors, which read in data, modifies and outputs new data to be
 taken by the next processors. The individual steps in the reconstruction will call on certain processors specified for its task resulting in a
@@ -210,7 +215,7 @@ hit or an other point of interest on the trajectory. Figure \ref{fig:gbl} depict
 
 
 
-\chapter{The track reconstruction framework Corryvreckan}
+\section{The track reconstruction framework Corryvreckan}
 Corryvreckan is a fast and lightweight track reconstruction framework released in 2017 and is the most developed alternative to the EUTelescope software.
 Since the development and support of the EUTelescope discontinued, Corryvreckan is planned to supersede the former as the primarily used track
 reconstruction software. Its main advantage is the minimal amount of external dependencies connected to the software and the more user friendly usage of
@@ -240,13 +245,18 @@ from the clipboard to plot their location against the ones of the reference sens
 rotational misalignments of sensors.  Either an abolute or relative time cut can be specified for clusters on a sensor to be considered in respect to
 the reference sensor.
 
-The Prealignment module accounts for major tranlational misplacements of sensors and performs translational shifts along the X and Y axis of up to several millimeter to ensure a proper alignment later on, as higher misaligmnents might cause the main alignment process to not converge correctly. To calculate the applied shifts, the mean of the 1D correlation
+The Prealignment module accounts for major tranlational misplacements of sensors and performs translational shifts along the X and Y axis of up to several millimeter to ensure a proper alignment later on, as higher misaligmnents might cause the main alignment process to not converge correctly.
+To calculate the applied shifts, the mean of the 1D correlation
 histograms of each detector is used. A  relative or absolute time cut can be specified.
 
 Reconstructing tracks from cluster centres can then be accomplished with the Tracking4D or Trackingspatial module. Similar to the clustering modules, only the former
 takes timestamp information into account and is therfore the standard track reconstruction module. For the track finding process, clusters on the first plane are
-related to clusters close in time on subsequent planes using straight lines. Absolute and relative spatial and time cuts can be specified, as well as the minimum number
+related to clusters close in time on subsequent planes using straight lines.
+The Tracking4D module has two possible track models, straight lines as default setting and general
+broken lines, for fitting. General broken lines account for multiple coulomb scattering and considers scattering at every sensor plane as well as the surrounding air.
+Absolute and relative spatial and time cuts can be specified, as well as the minimum number
 of clusters necessary to fit a track. The DUT can be included reconstruction process, though this is avoided in this thesis to keep the residuals of DUT's unbiased.
+
 
 To align the telescope, the AlignmentTrackChi2 module is used. It performs rotational and translational telescope
 alignment according to minimise the $\chi^2$ value by iterating through all planes and refitting the tracks after alignment. Cuts on the $\chi^2$ value can be
@@ -254,12 +264,13 @@ applied to only keep high quality tracks. Furthermore, the number of iterations 
 
 After successful alignment, the DUTAssociation module uses the cluster information of the DUT to establish an association with reconstructed tracks. Again, absolute
 and relative spatial and time cuts can be specified. It can also be chosen wether the nearest pixel of the cluster or the cluster centre is compared with the track.
+With the associated tracks the DUT's are aligned in the AlignmentDUTResidual module with the same adjustable parameters as the AlignmentTrackChi2 module.
 The AnalysisDUT module then creates the residual plots of the dut with an optinal cut on the $\chi^2$ value. Sensor efficiencies of the DUT's are determined with the
 AnalysisEfficiency module by comparing cluster positions with the interpolated tracks.
 
 
 Figure \ref{fig:corry_track_reco} depicts
-the different modules used for a genral track reconstruction. The entire Corryvreckan framework is documented in detail for further information \cite{corry_manual}.
+the different modules used for a general track reconstruction. The entire Corryvreckan framework is documented in detail for further information \cite{corry_manual}.
 
 \begin{figure}
   \centering
@@ -267,3 +278,38 @@ the different modules used for a genral track reconstruction. The entire Corryvr
   \caption{Overall track reconstruction chain with the standard clustering and tracking module. \cite{corry_track_reco}.}
   \label{fig:corry_track_reco}
 \end{figure}
+
+
+\chapter{The simulation software Allpix$^2$}
+Allpix$^2$ is a generic simulation framework developed at CERN to simulate the performance of silicon detectors and was released in 2017. It builds upon the
+Geant4 \cite{geant4} package to perform tasks in the simulation chain. The main tasks of Allpix$^2$ is the simulation of energy depostions of particles
+in the sensors, the propagation of charge carriers in the sensor material and the digitization of the signal. It has a modular
+structure to ensure an easy handling, while still allowing for complex detector simulations. Instantiation and processing of the modules is done by the core of the framework,
+which contains five subsystems. This includes the configuration containing the configuration manager, which grants access to the configuration file, the
+module subsystem, which loads and executes the modules and the geometry subsystem, which provides the information of the telescope setup. Objects are transferred
+from one module to another with the messenger subsystem.
+Figure \ref{fig:allpix} depicts the overall structure of Allpix$^2$.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.5\textwidth]{images/allpix.png}
+  \caption{Schematic representation of the overall Allpix$^2$ structure. \cite{fig_allpix}.}
+  \label{fig:allpix}
+\end{figure}
+
+The telescope geometry has to be specified in a geometry file, which includes all sensors and their pixel matrix as well as their spatial and time resolution. Additionally,
+the position and orientation have to be stated. In the configuration file, the geometry is imported as well as the modules for the simulation in order of execution, which
+will be explained in the following.
+
+The world frame of the simulation is created with the GeometryBuilderGeant4 module. The world material can be either air or vacuum with a configurable world margin percentage.
+Afterwards all detectors from the internal detector models and passive material models are created according to the specifications in the geometry file.
+
+Charge carriers are deposited in the active volume with the DepositionGeant4 module, which initializes the simulation of particles. The shape of the source beam, as well
+as the type of particle and its energy can be specified. Further parameters are the width of the beam, its angular distribution based on a gaussian distribution and the energy
+uncertainty of the simulated particles. All particles created at the same time define an event. The number of generated electron hole pairs is calculated with the
+mean pair creation energy and is subject to fluctuations, which are defined by the fano factor.
+
+An electric field is added to the sensors with the ElectricFieldReader module. By default all sensors are targeted by the module, though specific sensors can be stated.
+There are three types of electric field models available, constant electric fields, linear electric fields and external simulated electric fields, with only
+linear electric fiels being used in the scope of this thesis. The constant slope of linear electirc fields are defined by the bias voltage and the
+depletion voltage of the sensor. Optionally, the depletion depth instead of the depletion voltage can be specified.
