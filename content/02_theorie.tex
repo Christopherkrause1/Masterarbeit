@@ -313,3 +313,22 @@ An electric field is added to the sensors with the ElectricFieldReader module. B
 There are three types of electric field models available, constant electric fields, linear electric fields and external simulated electric fields, with only
 linear electric fiels being used in the scope of this thesis. The constant slope of linear electirc fields are defined by the bias voltage and the
 depletion voltage of the sensor. Optionally, the depletion depth instead of the depletion voltage can be specified.
+
+Either with the ProjectionPropagation or the GenericPropagation module the transport of charge carriers through the sensitive material are simulated.
+The first module projects electrons or hole onto the surface and performs a randomized diffusion based on a two dimensional gaussian distribution around
+the projection. Using an approximation of the drift time makes it possible to determine the diffusion width under the assumption of a linear electric field. This
+module save computing time at the cost of accuracy. \\
+The GenericPropagation module consists of a combined simulation of diffusion and drift calculated with a Runge-Kutter-Fehlberg method.
+It is compatible with any electric field model and can simulate both electrons and holes
+at the same time making the module
+more accurate at the cost of computing time. The integration time can be specified by the user to determine the time of the propagation process. \\
+In both modules, charge carriers are combined to sets and propagated together with no interaction between them. The set size of charge carriers can be specified by the user,
+making it possible to control the accuracy and computing time of the simulation. For diffusion simultaions it is necessary to specifiy the temperature of the sensor material
+to calculate the diffusion constant.
+
+Sets of charges are combined on the sensor pixels with the SimpleTransfer module and are prepared  to be processed by the front-end chips. The
+propagated charges are mapped directly to the nearest pixel, while charge carriers that are outside the pixel grid or too far away from the implants are ignored.
+
+Collected charges are then translated into digitised signals proportional to the input charge by the DefaultDigitizer module. Additionally, gaussian noise constributions
+from the readout electronics can be simulated and a signal threshold can be defined. The output signal is given in units of the electron charge per default, but
+can also be given in bits by simulating a QDC converter. Optionally, a gain factor and gain smearing can be set.
