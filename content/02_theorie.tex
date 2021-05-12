@@ -298,7 +298,8 @@ Figure \ref{fig:allpix} depicts the overall structure of Allpix$^2$.
 \end{figure}
 
 The telescope geometry has to be specified in a geometry file, which includes all sensors and their pixel matrix as well as their spatial and time resolution. Additionally,
-the position and orientation have to be stated. In the configuration file, the geometry is imported as well as the modules for the simulation in order of execution, which
+the position and orientation have to be stated. Optionally, uncertainties on the position and orientation can be set to account for misalignment in real telescope setups.
+In the configuration file, the geometry is imported as well as the modules for the simulation in order of execution, which
 will be explained in the following.
 
 The world frame of the simulation is created with the GeometryBuilderGeant4 module. The world material can be either air or vacuum with a configurable world margin percentage.
@@ -323,7 +324,7 @@ It is compatible with any electric field model and can simulate both electrons a
 at the same time making the module
 more accurate at the cost of computing time. The integration time can be specified by the user to determine the time of the propagation process. \\
 In both modules, charge carriers are combined to sets and propagated together with no interaction between them. The set size of charge carriers can be specified by the user,
-making it possible to control the accuracy and computing time of the simulation. For diffusion simultaions it is necessary to specifiy the temperature of the sensor material
+making it possible to control the accuracy and computing time of the simulation. For diffusion simulations it is necessary to specifiy the temperature of the sensor material
 to calculate the diffusion constant.
 
 Sets of charges are combined on the sensor pixels with the SimpleTransfer module and are prepared  to be processed by the front-end chips. The
@@ -332,3 +333,50 @@ propagated charges are mapped directly to the nearest pixel, while charge carrie
 Collected charges are then translated into digitised signals proportional to the input charge by the DefaultDigitizer module. Additionally, gaussian noise constributions
 from the readout electronics can be simulated and a signal threshold can be defined. The output signal is given in units of the electron charge per default, but
 can also be given in bits by simulating a QDC converter. Optionally, a gain factor and gain smearing can be set.
+
+Simulated events and the produced plots of the different modules are stored in a root file. With the ROOTObjectWriter module further information like propagated charge,
+deposited charge, Monte Carlo (MC) particle information and pixel hit information are stored in an additional ROOT file. Allpix$^2$ also enables the storing of
+data in formats compatible with the EUTelescope and Corryvreckan software with the LCIOWriter module and the CorryvreckanWriter module respectively. Both modules possess parameters, which
+determine what information of the Allpix$^2$ simulation is written into the ROOT files.
+
+
+\chapter{Radiation therapy}
+Radiation therapies are medical treatments using ionizing radiation mainly to kill cancer cells in patients. The ionizing particles interact with the
+cancer cells to damage their DNA causing cellular death. These treatments focus on cancer, which is localized to one area inside the body. \\
+The type of particle used in radiation therapy is crucial to the overall treatment due to the different interaction of particles with the human body.
+Photons, specifically x-rays, are the most common particles being used for radiation therapy.
+A newer alternative is the proton therapy, due to the different properties protons giving advantages over conventional x-ray therapy explained in the following section.
+
+\section{Proton therapy}
+The proton therapy is an external beam radiotherapy using a proton beam for irradiation. While proton therapy centres have only been used since 1889 the technological
+advancement ensures the continual rise of hospitals offering proton therapy.
+The proton therapy centres either use cyclotrons or synchrotron to accelerate the protons, with the former being compact and simple to operate and the latter being able
+to produce protons of varying energies from $\SI{50}{\MeV}$ to $\SI{250}{\MeV}$.
+Unlike photons, which tend to deposit their entire energy in a single ionisation process, protons undergo multiple coulomb scattering inside matter. The
+energy loss of protons is inversely proportional to the sqaure of their velocity, which causes them to deposit most of their energy on the last millimeters of their path.
+This beaviour is called the Bragg peak and is shown in figure \ref{fig:bragg}. Regulating the energy of the protons allows for precise control of the Bragg peak depth inside
+the human body.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.6\textwidth]{images/bragg.png}
+  \caption{Radiation dose of protons and x-rays as a function of the penetration depth. Protons deposit most of their energy in a localized spot, while
+  x-rays deposit energy in a much borader region.}
+  \label{fig:bragg}
+\end{figure}
+Due to this property, protons enable to irradiate tumors with greater precision than with
+x-rays, as surrounding healthy tissue is less damaged, especially behind the tumor. Figure \ref{fig:risk} shows the irradiated areas of a brain for conventional and
+proton therapy to emphasise their differences.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.5\textwidth]{images/risk.png}
+  \caption{Radiated areas for protons and x-rays to trea a brain tumor. The irradiation for proton therapy is far more precise and damages less healthy tissue than
+  x-ray therapy.}
+  \label{fig:risk}
+\end{figure}
+
+
+\section{Proton computed tomography}
+To irradiate a patient save and efficiently it is necessary to identify the tumor and the surrounding healthy tissue. In order to do so a computed
+tomography scan is performed using a particle beam to create an image of the region encompassing the tumor.
