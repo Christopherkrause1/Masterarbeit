@@ -342,7 +342,7 @@ determine what information of the Allpix$^2$ simulation is written into the ROOT
 
 \chapter{Radiation therapy}
 Radiation therapies are medical treatments using ionizing radiation mainly to kill cancer cells in patients. The ionizing particles interact with the
-cancer cells to damage their DNA causing cellular death. These treatments focus on cancer, which is localized to one area inside the body. \\
+cancer cells to damage their DNA causing cellular death. These treatments focus on cancer that is localized to one area inside the body. \\
 The type of particle used in radiation therapy is crucial to the overall treatment due to the different interaction of particles with the human body.
 Photons, specifically x-rays, are the most common particles being used for radiation therapy.
 A newer alternative is the proton therapy, due to the different properties protons giving advantages over conventional x-ray therapy explained in the following section.
@@ -379,4 +379,19 @@ proton therapy to emphasise their differences.
 
 \section{Proton computed tomography}
 To irradiate a patient save and efficiently it is necessary to identify the tumor and the surrounding healthy tissue. In order to do so a computed
-tomography scan is performed using a particle beam to create an image of the region encompassing the tumor.
+tomography (ct) scan is performed using a particle beam to create an image of the region encompassing the tumor. For x-ray therapy as well as proton therapy x-ray ct scans
+are used primarily. \\
+To create an image, the patient lies within a rotating x-ray tube, the gantry, which generates x-ray beams to irradiate the specific areas. The gantry also
+includes a row of detectors measuring the photons after traversing the human body. Due to the fact that different tissue materials inside the body absorb a different
+amount of light, a projection of the irradiated area can be created. By rotating the x-ray tube, projections are created from many different angles around the patient.
+Unlike in radiography, where two dimensional projections are produced, ct scan measurements are one dimensional absorption profiles. The sum of the profiles contain
+the entire information of the inside structure, but can not be interpreted directly. Projections and the original three dimensional structure are connected through
+the inverse radon transformation. An implementation of that algorithm is the filtered back projection:
+\begin{align}
+  f(x,y) = \int_0^{\pi} \left(\int_{-\infty}^{\infty} p_{\phi}(z') \cdot g(z - z') \mathrm{d}z'\right) \mathrm{d}\phi
+\end{align}
+Where $f(x,y)$ is the original image, $p_{\phi}(z)$ the projection in the direction of the angle $\phi$ and $g(z)$ a high-pass filter. However, the inverse
+radon tranformation is an ill posed problem, which demands an irregular filter kernel g(z). To solve this problem in praxis, a fast convolution algorithm is used for the
+filtered back projection. This means that the projection is multiplied with the high-pass filter in fourier space, where each frequency component is weighted proportional to their
+absolute value. In the end, each one dimensional projection is stretched into two dimensions and rotated around the angle $-\phi$. The sum over all projections will yield the
+final image.
