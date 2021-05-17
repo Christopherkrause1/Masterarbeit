@@ -371,19 +371,19 @@ proton therapy to emphasise their differences.
 \begin{figure}
   \centering
   \includegraphics[height=0.5\textwidth]{images/risk.png}
-  \caption{Radiated areas for protons and x-rays to trea a brain tumor. The irradiation for proton therapy is far more precise and damages less healthy tissue than
+  \caption{Radiated region for protons and x-rays to trea a brain tumor. The irradiation for proton therapy is far more precise and damages less healthy tissue than
   x-ray therapy.}
   \label{fig:risk}
 \end{figure}
 
 
-\section{Proton computed tomography}
-To irradiate a patient save and efficiently it is necessary to identify the tumor and the surrounding healthy tissue. In order to do so a computed
+\section{Computed tomography} \label{sec:ct}
+To irradiate a patient save and efficiently it is necessary to create an irradiation plan by identifying the tumor and the surrounding healthy tissue. In order to do so a computed
 tomography (ct) scan is performed using a particle beam to create an image of the region encompassing the tumor. For x-ray therapy as well as proton therapy x-ray ct scans
 are used primarily. \\
-To create an image, the patient lies within a rotating x-ray tube, the gantry, which generates x-ray beams to irradiate the specific areas. The gantry also
+To create an image, the patient lies within a rotating x-ray tube, the gantry, which generates x-ray beams to irradiate the specific volume. The gantry also
 includes a row of detectors measuring the photons after traversing the human body. Due to the fact that different tissue materials inside the body absorb a different
-amount of light, a projection of the irradiated area can be created. By rotating the x-ray tube, projections are created from many different angles around the patient.
+amount of light, a projection of the irradiated volume can be created. By rotating the x-ray tube, projections are created from many different angles around the patient.
 Unlike in radiography, where two dimensional projections are produced, ct scan measurements are one dimensional absorption profiles. The sum of the profiles contain
 the entire information of the inside structure, but can not be interpreted directly. Projections and the original three dimensional structure are connected through
 the inverse radon transformation. An implementation of that algorithm is the filtered back projection:
@@ -395,3 +395,37 @@ radon tranformation is an ill posed problem, which demands an irregular filter k
 filtered back projection. This means that the projection is multiplied with the high-pass filter in fourier space, where each frequency component is weighted proportional to their
 absolute value. In the end, each one dimensional projection is stretched into two dimensions and rotated around the angle $-\phi$. The sum over all projections will yield the
 final image.
+
+
+\section{Proton computed tomogrophy}
+Creating irradiation plans for proton therapy with x-ray ct images causes larger uncertainty due to the different stopping powers of the particles.
+To compensate for the differences,a range uncertainty margin is applied to the prescribed range, which increases with greater travel distance through the body. This
+method is shown in figure \ref{fig:paganetti}.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.6\textwidth]{images/prescription.png}
+  \caption{Applied uncertainty margins at the Massachusetts General Hospital (3.5\,\% +
+1mm), the MD Anderson Proton Therapy Center in Houston (3.5\,\% + 3mm), the Loma Linda
+University Medical Center (3.5\,\% + 3mm), the Roberts Proton Therapy Center at the
+University of Pennsylvania (3.5\,\% + 3mm), and the University of Florida Proton Therapy
+Institute (2.5\,\% + 1.5mm), shown as dashed lines. Dashed-dotted and dashed line: Uncertainty margin for with and without the use of Monte Carlo dose calculation.
+The solid-line describes the safety margin for complex geometries without Monte Carlo dose calculation \cite{paganetti}.}
+  \label{fig:paganetti}
+\end{figure}
+
+Since the position of the protons energy deposition has to be determined as precise as possible to minimise damage dealt to healthy tissue, a computed tomogrophy scan using protons
+is a promising alternative to conventional ct. Creating an image with proton ct is similar to conventional. A proton beam irradiates and deposits energy in the patient. The
+protons remaining energy is then measured with a calorimeter system behind the patient to gain information about the composition of the tissue. A projection can be created,
+if the protons tracks can be reconstructed. However, due to multiple coulomb scatterings of the protons inside the patient, the spatial resolution will decrease in comparison
+to conventional ct. Numerous projections are created by varying the angle of the proton beam in respect to the target. The entire setup is schematically in figure \ref{fig:proton_ct}.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.4\textwidth]{images/proton_ct.png}
+  \caption{Procedure of the proton computed tomogrophy. The tracker planes are used to reconstruct the proton tracks and the calorimeter to measure their remaining energy.
+  The phantom is the placeholder of a patient \cite{proton_ct}.}
+  \label{fig:proton_ct}
+\end{figure}
+
+The different projections can then be reconstructed to a complete image of the irradiated volume as explained in section \ref{sec:ct}.
