@@ -245,5 +245,93 @@ For both softwares, the charge weighted center of gravity algorithm is used.
 \end{figure}
 
 The number of identified clusters is identical and the distribution looks similar implying an identical clustering process
-and no differences due to the data conversion step. A closer look at the individual bin entries, shown in table ..., confirms that the
-distributions are identical.
+and no differences due to the data conversion step. A closer look at the individual bin entries, shown in table \ref{tab:cluster_sizes} in the appendix,
+confirms that the distributions are identical.
+
+\section{Track reconstruction}
+The alignment and final track reconstruction of Corryvreckan and EUTelescope are based on different algorithms, thus the
+results will not be identical. However, their precision can still be compared based on the calculated residuals for each sensor.
+Since they describe the distance between a cluster center and the corresponding interpolated track, the position of
+residuals in global coordinates are an indicator for how good the alignment process worked. The standard deviation of a
+residual curve reflects the spatial resolution $\sigma$ of a sensor, making the form of the residual another crucial indicator
+for a successful track reconstruction. Here, the spatial resolution is defined as ${\sigma = p/\sqrt{12}}$ with $p$ being the
+pixel pitch of the sensor.
+
+Figure \ref{fig:residualX} depicts the residuals of the first plane in x direction calculated by both frameworks. Three iterations
+of the alignment step have been performed and the tracks are reconstructed with a general broken lines algorithm in both softwares.
+
+\begin{figure}
+  %\centering
+  \hspace{-2.5cm}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \includegraphics[height=0.82\textwidth]{plots/june_residualX_tel1_corry.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/june_residualX_tel1_EU.pdf}
+  \end{subfigure}
+  \caption{Residual in x direction of the first sensor plane calculated by Corryvreckan on the left and EUTelescope on the right.}
+  \label{fig:residualX}
+\end{figure}
+
+Both residuals are narrow and symmetric around their mean, which are smaller than $\SI{1}{\micro\meter}$ indicating a successful
+alignment. The standard deviation of the residuals is smaller than the spatial resolution of the Mimosa26 sensor, being
+$\sigma_{\text{M26}} = \SI{18.4}{\micro\meter}/\sqrt{12} \approx \SI{5.311}{\micro\meter}$ in both directions. This is possible due to
+the center of gravity algorithm used for calculating the cluster center. While the arithmetic mean of the pixel centers can
+only be as accurate as the spatial resolution of the pixels, weighting the amount of deposited charge in each pixel increases the
+spatial resolution of the particle hit position for clusters with more than one pixel. Since the number of cluster with more than
+one pixel is non negligible, shown in figure \ref{fig:cluster_size}, the standard deviation of the residuals is expected to be
+smaller than the sensors spatial resolution, further indicating a valid track reconstruction for both frameworks.
+
+\section{DUT residuals}
+After the final track reconstruction with the telescope, the hit information on the DUT planes is compared to the
+reconstructed tracks. Again, three iterations of alignment are performed for the DUT planes. In figure \ref{fig:residual_dut}, the residuals in
+x and y direction are shown for the FEI4 sensor.
+
+\begin{figure}
+  %\centering
+  \hspace{-2.5cm}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \includegraphics[height=0.82\textwidth]{plots/june_residualX_dut2_corry.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/june_residualX_dut2_EU.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+    \hspace{-2.5cm}
+      %\centering
+      \includegraphics[height=0.82\textwidth]{plots/june_residualY_dut2_corry.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+    \hspace{-2.5cm}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/june_residualY_dut2_EU.pdf}
+  \end{subfigure}
+  \caption{Residuals of the FEI4 sensor in x direction in upper row and y direction in the lower row. The plots on the left
+  were created with Corryvreckan and the plots on the right with EUTelescope.}
+  \label{fig:residual_dut}
+\end{figure}
+
+For both directions the residuals calculated by Corryvreckan and EUTelescope are similar. All mean values are below $\SI{1}{\micro\meter}$
+indicating a successful alignment. The spatial resolution of the sensor in horizontal and vertical direction is:
+\begin{align*}
+  &\sigma_{\text{FEI4},\text{x}} = \SI{50}{\micro\meter}/\sqrt{12} \approx \SI{14.434}{\micro\meter} \\
+  &\sigma_{\text{FEI4},\text{y}} = \SI{250}{\micro\meter}/\sqrt{12} \approx \SI{72.169}{\micro\meter}
+\end{align*}
+
+Both softwares determined similar standard deviations, with the ones for the residuals in vertical direction being close the
+the corresponding spatial resolution of the sensor and the ones for the horizontal residuals being larger.
+
+%In this batch only a third
+%of the RD53a sensor volume has been depleted limiting the statistics and thus the alignment performance, which is based on
+%the reconstructed tracks.
+
+
+Results produced by the Corryvreckan framework showed noticeable similarities to the EUTelescope calculations. While the track
+fitting process isn't identical, the quality of the reconstructed tracks determined by Corryvreckan is on par with EUTelescope.
