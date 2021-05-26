@@ -1,15 +1,40 @@
 \chapter{Simulation studies for proton computed tomogrophy}
+With the demonstration of Corryvreckans validity as a track reconstruction framework, its performance for conditions present
+in proton computed tomogrophy scans can be investigated. The telescope used to reconstruct the protons consists of six IBL planar sensors
+grouped into two triplets. Due to the fact that the spatial resolution of the sensors are five times better in horizontal direction, the middle sensor
+of each triplet is rotated by 90°. This way the lower track reconstruction precision in vertical direction is partially compensated for.
+The setup for proton computed tomogrophy is shown schematically in figure \ref{fig:phantom} with the phantom inbetween the triplets representing
+the patient. \\
+For proton computed tomogrophy it is necessary that the protons are able to traverse the entire telescope including the patient
+to measure their remaining energy, which is the reason the energy of the proton beam has to be significantly higher than during
+the proton therapy. Current proton synchrotrons used in proton therapy centers have an upper energy limit of $200 - \SI{250}{\mega\eV}$.
+Therefore, a $\SI{200}{\mega\eV}$ proton beam is used in this analysis.
 
+\begin{figure}
+  \centering
+  \includegraphics[height=0.45\textwidth]{images/phantom_proton_2.jpg}
+  \caption{Schematic representation of the telescope used for the reconstruction of proton computed tomogrophy. The phantom represents the
+  patient and is not present in upcoming analysis.}
+  \label{fig:phantom}
+\end{figure}
 
+Since the tracking performance of Corryvreckan will be investigated, the phantom will not be present in further analysis as it would
+increase the number of multiple scatterings and significantly decrease the number of protons passing the telescope. Instead, another
+IBL planar sensor placed directly in the middle of the telescope serves as a DUT.
+
+To analyse Corryvreckans performance in reconstructing proton tracks, data feeded into the framework is simulated by the Allpix$^2$ software,
+which explained in the folloing section.
 
 \section{The simulation software Allpix$^2$}
-Allpix$^2$ is a generic simulation framework developed at CERN to simulate the performance of silicon detectors and was released in 2017. It builds upon the
+Allpix$^2$ is a generic simulation framework developed at CERN to simulate the performance of silicon detectors and was released in 2017.
+It builds upon the
 Geant4 \cite{geant4} package to perform tasks in the simulation chain. The main tasks of Allpix$^2$ is the simulation of energy depostions of particles
 in the sensors, the propagation of charge carriers in the sensor material and the digitization of the signal. It has a modular
-structure to ensure an easy handling, while still allowing for complex detector simulations. Instantiation and processing of the modules is done by the core of the framework,
+structure to ensure an easy handling, while still allowing for complex detector simulations.
+Instantiation and processing of the modules is done by the core of the framework,
 which contains five subsystems. This includes the configuration containing the configuration manager, which grants access to the configuration file, the
-module subsystem, which loads and executes the modules and the geometry subsystem, which provides the information of the telescope setup. Objects are transferred
-from one module to another with the messenger subsystem.
+module subsystem, which loads and executes the modules and the geometry subsystem, which provides the information of the telescope setup.
+Objects are transferred from one module to another with the messenger subsystem.
 Figure \ref{fig:allpix} depicts the overall structure of Allpix$^2$.
 
 \begin{figure}
@@ -19,8 +44,10 @@ Figure \ref{fig:allpix} depicts the overall structure of Allpix$^2$.
   \label{fig:allpix}
 \end{figure}
 
-The telescope geometry has to be specified in a geometry file, which includes all sensors and their pixel matrix as well as their spatial and time resolution. Additionally,
-the position and orientation have to be stated. Optionally, uncertainties on the position and orientation can be set to account for misalignment in real telescope setups.
+The telescope geometry has to be specified in a geometry file, which includes all sensors and their pixel matrix as well as their spatial and time
+resolution. Additionally,
+the position and orientation have to be stated. Optionally, uncertainties on the position and orientation can be set to account for misalignment in real
+telescope setups.
 In the configuration file, the geometry is imported as well as the modules for the simulation in order of execution, which
 will be explained in the following.
 
