@@ -106,14 +106,15 @@ Only pixels with a charge threshold of $600$\, e will trigger a hit.
 Simulated data is written out with the CorryvreckanWriter module into a root file having the format to be read
 in by Corryvreckan with the FileReader module.
 
-\section{Proton reconstruction}
+\section{Proton reconstruction}\label{sec:proton_reconstruction}
 Before the reconstruction of low energy protons is performed with Corryvreckan, it is crucial to understand how well the
 track reconstruction works with protons and the employed telescope, since proton beams are not used in major testbeam
 experiments for which Corryvreckan was designed for. Because of that, a simulation containing 50000 protons
 with an energy $\SI{100}{\giga\eV}$ is implemented. Particles in this energy region only have small scattering angles, effectively travelling
 in straight lines.
 No fluctuation in the proton energy is simulated and only one particle traverses
-the telescope per event. The residual in x and y direction are shown in figure \ref{fig:100GeV}.
+the telescope per event.
+The residual in x and y direction are shown in figure \ref{fig:100GeV}.
 
 \begin{figure}
   \hspace{-2.5cm}
@@ -145,7 +146,179 @@ $\SI{250}{\micro\meter}/\SI{50}{\micro\meter} = 5$. This effect is shown schemat
   \label{fig:peaks}
 \end{figure}
 
-In the vertical residual of the first plane, only one peak is visible due to the lower spatial resolution, while the rotated planes
-in this direction exhibit a five-peak structure. The peaks in the residual a narrow due to the fact that no uncertainties regards
+For the vertical residual of the first plane, only one peak is visible due to the lower spatial resolution, while the rotated planes
+in this direction exhibit a five-peak structure. The peaks in the residual are narrow due to the fact that no uncertainties regards
 to the sensor positions, sensor inefficiencies or spread in the particles energy is simulated. When taking these into account, the
 five peaks broaden to a gaussian profile.
+
+The number of reconstructed track per event is shown in table \ref{tab:cluster_per_track} and indicates how often the proton is
+reconstructed correctly. Since only one proton is simulated in an event, further reconstructed tracks arise from secondary
+particles produced by the proton in an interaction. While a track fit requires a hit on all six planes, a single hit can be used by
+Corryvreckan for multiple track fits, if the spatial cuts allow it. Here the spatial cuts refer to a matching radius of $\SI{750}{\micro\meter}$.
+As a comparison, the track reconstruction for a matching radius of $\SI{150}{\micro\meter}$ is also listed in the table for the same
+simulation.
+%Any combination of clusters from the first and the last plane can
+%then be connected to a track.
+%Approximately $\SI{93}{\percent}$ of events were associated with a single track.
+
+\begin{table}
+  \centering
+  \begin{tabular}{c | c c}
+    \toprule
+    Tracks per event &  $\SI{750}{\micro\meter}$ cut & $\SI{150}{\micro\meter}$ cut\\
+    \midrule
+    0 & 787    & 2854  \\
+    1 & 48393  & 46903  \\
+    2 & 643    & 104  \\
+    3 & 34     & 0  \\
+    4 & 3      & 0   \\
+    5 & 1      & 0    \\
+    6- & 0 & 0 \\
+  \end{tabular}
+  \caption{Number of tracks reconstructed per event for a
+  $\SI{750}{\micro\meter}$ and $\SI{150}{\micro\meter}$ cut on the
+  matching radius. One proton is simulated in simulated in an event, further tracks arise from clusters
+  produced by secondary particles}
+  \label{tab:cluster_per_track}
+\end{table}
+
+The number of events with no reconstructed tracks increases with a smaller matching radius, as slightly non straight paths can lead
+more likely to clusters being outside of the matching radius. On the other hand, less tracks from secondary particles reconstructed
+for the same reason. Small cuts still lead to proper results
+for reconstructing high energy protons due to their straight path through the telescope.
+%, for lower energy protons the initial $\SI{750}{\micro\meter}$ is
+%used to ensure a successful association of clusters.
+
+
+
+\section{Reconstruction of low energy protons}
+Lowering the energy of the protons in the simulation, will increase their scattering angle when interacting with the air or the sensor
+planes, essentially traversing the telescope on a more complex path.
+
+...
+
+
+\section{Reconstruction of high track density proton beams}
+Unlike in the DESY testbeam facility, proton beams in proton ct tend to have a significant higher number of particles in a sensor
+per time frame. To analyse how Corrvreckan reconstructs a high track density beam, the number of particles per event in the Allpix$^2$
+simulation is increased, while the proton energy is kept constant at $\SI{200}{\mega\eV}$. \\
+The track multiplicity, meaning number of reconstructed tracks per event, for 25 and 50 particles simulated in an event is shown in figure \ref{fig:multiplicity}. To take the different spatial resolutions of the sensors in x and y direction into account, a relative
+spatial cut of 15.1 is applied in the reconstruction. Unlike absolute spatial cuts, relative cuts are used construct a
+matching radius by multpiling the spatial resolution
+of each sensor by the specified factor, creating an ellipse in the process.
+
+\begin{figure}
+  \hspace{-2.5cm}
+  %\centering
+  \begin{subfigure}{0.62\textwidth}
+      \centering
+      \includegraphics[height=0.82\textwidth]{plots/track_multiplicity_200MeV_25.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/track_multiplicity_200MeV_50.pdf}
+  \end{subfigure}
+  \caption{Number of reconstructed tracks of $\SI{200}{\mega\eV}$ protons for 25 protons per event shown on the left and
+  50 protons per event shown on the right. A total number of 50000 protons were generated in each simulation. }
+  \label{fig:multiplicity}
+\end{figure}
+
+Even though the same number of protons were generated in each simulation, the mean number of tracks $\mu_{\text{Tracks}}$ reconstructed in an event
+for 50 protons per event is noticeably higher, even when taking the different number of events into account. Statistically
+$\mu_{\text{Tracks}}/ N_{\text{event}} \approx 0.6$ tracks per proton are created for a simulation with 25 protons per event and $\approx 1.4$ for
+the 50 protons per event. In this energy region, clusters of secondary particles are negligibly rare. The cause of the
+higher number of tracks in the second simulation, lies in the combinatorics of fitted tracks, briefly mentioned in
+\label{sec:proton_reconstruction}. Since the reconstruction software does not know which clusters belong to a specific track, a track
+is fitted through each combination of clusters from the first and the last plane within allowed spatial and time cuts.
+With increasing track density, the number
+of clusters within a time frame grows along with the number of possible track fits.
+This also explains the far higher number of reconstructed tracks than protons simulated in certain event. \\
+Additional tracks due to a higher number of clusters are problematic, as reconstructed tracks through a false
+combination of clusters will cause larger errors in a proton ct image. To minimise the number of falsely reconstructed tracks
+several approaches are investigated, which are addressed in the following sections.
+
+\section{Spatial cuts for high track densities} \label{sec:cuts}
+While the time resolution of the sensors in the telescope can actively contribute to lower the number of clusters within a time frame,
+Allpix$^2$ automatically groups each proton simulated in an event into a single time frame, which means that no time cut will be able
+to distinguish protons of the same event. However, the number of false combinatorics can be reduced by decreasing the matching radius, as
+it will lower the probability of false combination of clusters being inside the matching radius. \\
+In order to be able to compare the results of different spatial cuts, it is necassary to find out how many correct and false combinations of clusters
+are reconstructed. Particles simulated with Allpix$^2$ can be precisley tracked with their Monte Carlo (MC) truth information. Each exact
+position of the protons on all planes can be accessed. To find correct reconstructed tracks, the MC tracks of Allpix$^2$ can be
+compared with the coordinates of the cluster centers belonging to a track created by Corryvreckan. \\
+
+The number of correct reconstructed tracks for the relative spatial cuts of 15.1 and 12.2 are given in table
+\ref{tab:true_tracks} for 50000 generated protons with
+25 and 50 protons simulated per event.
+
+
+\begin{table}
+  \centering
+  \begin{tabular}{c | c c}
+    \toprule
+     &  25 proton per event & 50 protons per event\\
+    \midrule
+    reconstructed tracks (15.1) cut & 27726 & 68712  \\
+    true reconstructed tracks (15.1) & 4772  & 5187 \\
+    ratio & 0.172 & 0.075 \\
+    \midrule
+    reconstructed tracks (12.2) cut & 11891 & 28141 \\
+    true reconstructed tracks (12.2) & 2513  & 2686 \\
+    ratio & 0.211 & 0.095
+
+  \end{tabular}
+  \caption{Reconstructed tracks for two different spatial cuts for 25 and 50 protons per event. The ratio refers to the true
+  number reconstructed tracks divided by the total number of tracks.}
+  \label{tab:true_tracks}
+\end{table}
+
+With a stronger spatial cut,  the ratio of true reconstructed tracks to
+the total number of tracks increases. While this shows that stronger cuts help reducing false combinatorics, they cannot be chosen too strict,
+as the number of true tracks decreases significantly due to their high scattering angles. Even with the stricter relative cut of 12.2 the
+number of true reconstructed tracks is only a 1/5 for 25 protons per event and only 1/10 for 50 protons per event highlighting
+the combinatorics problematic. No spatial cut can achieve a ratio useful for pct, while still keeping the number
+of tracks high enough for the pct to be feasible. Further approaches are therefore necessary, which are investigated in the following sections.
+
+\section{Beam divergence for high track densities}
+Another approach in limiting false combinatorics is in simulating a beam divergence to differentiate between tracks. Former simulations had no variation
+in the initial protons direction, but an opening angle in form of a gauss profile can be specified in the DepostionGeant4 module. The specified value of
+the beam divergence parameter describes the standard deviation of the gaussian distribution of the opening angle.  \\
+Three simulations of 50000 protons with 5 protons per event and three different opening angles are created. The number of true reconstructed tracks and the ratio
+of true reconstructed tracks to the total number of tracks is specified in table \ref{tab:angle}. In section \ref{sec:cuts} the method of identifying
+true and false tracks in Allpix$^2$ is specified.
+
+\begin{table}
+  \centering
+  \begin{tabular}{c | c c c}
+    \toprule
+     &  $\SI{0}{\milli\radian}$ & $\SI{2}{\milli\radian}$ & $\SI{3}{\milli\radian}$\\
+    \midrule
+    reconstructed tracks & 7612 & 4627 & 3158  \\
+    true reconstructed tracks & 4486 & 3199 & 2312 \\
+    ratio & 0.59 & 0.69 & 0.73
+  \end{tabular}
+  \caption{Reconstructed tracks of 50000 protons with 5 protons per event for different opening angles. The first simulation has no opening angle and the initial protons
+  trajectory is perpendicular to the sensor surface. For the other simulatioms, the opening angle refers to the standard deviation of the gaussian distribution of
+  the opening angle. The ratio describes the number of true reconstructed tracks to the total number of reconstructed tracks.}
+  \label{tab:angle}
+\end{table}
+
+The ratio of true tracks to the overall number of tracks increases with a higher standard deviation of the opening angle. Similarly to the spatiall cut approach the
+number of true reconstructed tracks also decreases considerably. This is due to a higher probability of particles with a large opening angle to be scattered out of the telescope.
+Again, tracks are only fitted, whenever a cluster is found on each of the six sensor planes, making this case unlikelier for wider opening angle distributions.
+Even larger opening angles decrease the number of reconstructed tracks in this telescope significantly, while also being impractical for precisely irradiating a target volume.
+Thus, further investigation of countering the problem of high track density beams remains necessary.
+
+\section{Advanced track finding algorithm for high track densities}
+
+\section{Feature cuts for high track densities}
+Tracks inherit numerous features, which characterise them,
+for exampleS their deposited energy, the kink angles or their corresponding cluster position on the sensor.
+These features might be characteristic, meaning they differ for tracks from true and false combinations of clusters.
+Analysing these properties can therefore help in differentiating true and false tracks. \\
+The track features determined by Corryvreckan can be written out with the FileWriter module for further investigation.
+In order to differentiate between the features of true and false tracks, the Monte Carlo truth information of the particles is used again.
+A simulation containing 100000 generated $\SI{200}{\mega\eV}$ proton with 10 protons per event is created. No beam divergence and a relative spatial cut of 15.1 is applied.
+
+Figure ... depicts several track features divided in the distribution of true and false reconstructed tracks.
