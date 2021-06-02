@@ -1,4 +1,10 @@
-\chapter{XGBoost}
+\chapter{Machine learning approach for true track tagging}
+Applying cuts to track features in order to differentiate between improved the ratio of true and false reconstructed tracks, slightly. A more effective
+approach in classfying a track as true or false can be achieved with a machine learning algorithm for classification. Unlike one dimensional cuts, a machine learning
+algorithm can be implemented to find correlations between the input feature for a more accurate identification of true tracks. The library used for
+machine learning is XGBoost, which is explained in the following section. 
+
+\section{XGBoost}
 XGBoost \cite{xgboost} is a gradient boosting machine learning algorithm, which primarily uses decision trees as a predictive model for classification and regession analysis.
 It is used for supervised learning problems to predict a target variable $y_i$ based on the training data $x_i$ containing multiple features. The model
 of XGBoost describes the mathematical structure, which determines the prediction from its input data. A linear model is a common example, where the predictions

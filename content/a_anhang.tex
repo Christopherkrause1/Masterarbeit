@@ -34,3 +34,375 @@
     \caption{Bin entries of the cluster size plots of Corryvreckan and EUTelescope for the first plane shown in figure \ref{fig:cluster_size}.}
     \label{tab:cluster_sizes}
   \end{table}
+
+\clearpage
+
+\begin{lstlisting}[caption={Configuration file of Corryvreckan for the testbeam anaylsis of June 2020 Batch 3}]
+[Corryvreckan]
+detectors_file = output/updated_real_geometry.conf
+detectors_file_updated = output/updated_real_geometry.conf
+histogram_file=histogram_testbeam_realdata.root
+
+[EventLoaderEUDAQ]
+file_name = "/eos/atlas/atlascerngroupdisk/pixel-upgrade/itk/BeamTest/desy_2020_june_itk/native/run002016.raw"
+long_detector_id = false
+
+[Clustering4D]
+
+[Correlations]
+
+[Prealignment]
+method= gauss_fit
+
+[Tracking4D]
+track_model = "gbl"
+exclude_dut = true
+spatial_cut_abs = 120um, 120um
+timing_cut_abs = 350ns
+min_hits_on_track = 6
+momentum = 5GeV
+
+[AlignmentTrackChi2]
+iterations = 3
+
+[DUTAssociation]
+spatial_cut_abs =500um, 200um
+time_cut_abs = 230us
+
+[AlignmentDUTResidual]
+iterations = 3
+
+[AnalysisDUT]
+chi2ndof_cut = 5
+\end{lstlisting}
+
+\clearpage
+\begin{lstlisting}[caption={Detector file of Corryvreckan for the testbeam anaylsis of June 2020 Batch 3}]
+[plane0]
+material_budget = 0.00075
+number_of_pixels = 1152, 576
+orientation = -0.659875deg,5.4639deg,0.350077deg
+orientation_mode = "xyz"
+pixel_pitch = 18.4um,18.4um
+position = -658.122um,-147.97um,0
+spatial_resolution = 5.4um,5.4um
+time_resolution = 230us
+type = "mimosa26"
+
+[plane1]
+material_budget = 0.00075
+number_of_pixels = 1152, 576
+orientation = -0.47332deg,4.61982deg,-0.117972deg
+orientation_mode = "xyz"
+pixel_pitch = 18.4um,18.4um
+position = -587.717um,-133.671um,111mm
+spatial_resolution = 5.4um,5.4um
+time_resolution = 230us
+type = "mimosa26"
+
+[plane2]
+material_budget = 0.00075
+number_of_pixels = 1152, 576
+orientation = -0.136822deg,3.69758deg,0.117857deg
+orientation_mode = "xyz"
+pixel_pitch = 18.4um,18.4um
+position = -386.259um,-237.934um,222mm
+spatial_resolution = 5.4um,5.4um
+time_resolution = 230us
+type = "mimosa26"
+
+[plane110]
+material_budget = 0.003
+number_of_pixels = 401, 193
+orientation = 8.55701deg,46.4751deg,3.61319deg
+orientation_mode = "xyz"
+pixel_pitch = 50um,50um
+position = -6.65508mm,-83.16um,355mm
+roi = [[266,1],[266,193],[401,1],[401,193]]
+role = "dut"
+spatial_resolution = 14um,14um
+time_resolution = 200ns
+type = "rd53a"
+
+[plane112]
+material_budget = 0.003
+number_of_pixels = 401, 193
+orientation = 0,-0,-0.0220589deg
+orientation_mode = "xyz"
+pixel_pitch = 50um,50um
+position = -5.5818mm,448.868um,425mm
+roi = [[266,1],[266,193],[401,1],[401,193]]
+role = "dut"
+spatial_resolution = 14um,14um
+time_resolution = 200ns
+type = "rd53a"
+
+[plane3]
+material_budget = 0.00075
+number_of_pixels = 1152, 576
+orientation = 0,0,0
+orientation_mode = "xyz"
+pixel_pitch = 18.4um,18.4um
+position = 0,0,571mm
+role = "reference"
+spatial_resolution = 5.4um,5.4um
+time_resolution = 230us
+type = "mimosa26"
+
+[plane4]
+material_budget = 0.00075
+number_of_pixels = 1152, 576
+orientation = 1.15485deg,-0.940166deg,0.246945deg
+orientation_mode = "xyz"
+pixel_pitch = 18.4um,18.4um
+position = -274.402um,134.999um,681mm
+spatial_resolution = 5.4um,5.4um
+time_resolution = 230us
+type = "mimosa26"
+
+[plane5]
+material_budget = 0.00075
+number_of_pixels = 1152, 576
+orientation = 0.735678deg,-1.16597deg,-0.0280176deg
+orientation_mode = "xyz"
+pixel_pitch = 18.4um,18.4um
+position = -482.401um,213.683um,793mm
+spatial_resolution = 5.4um,5.4um
+time_resolution = 230us
+type = "mimosa26"
+
+[plane21]
+material_budget = 0.003
+number_of_pixels = 80, 336
+orientation = 179.875deg,3.70623deg,89.9804deg
+orientation_mode = "xyz"
+pixel_pitch = 250um,50um
+position = -1.42585mm,504.062um,835mm
+role = "dut"
+spatial_resolution = 72um,14um
+time_resolution = 25ns
+type = "fei4"
+\end{lstlisting}
+
+\clearpage
+
+\begin{lstlisting}[caption={Configuration file of EUTelescope for the testbeam anaylsis of June 2020 Batch 3}]
+[DEFAULT]
+# The path to this config file
+BasePath                = /afs/cern.ch/work/c/chkrause/testBeam/testBeamReco
+
+# Set the folder which contains the raw/native data files
+NativePath              = /eos/atlas/atlascerngroupdisk/pixel-upgrade/itk/BeamTest/desy_2020_june_itk/native
+
+#The location of the steering templates
+TemplatePath    = %(BasePath)s/steering-templates
+
+# The GEAR file describing the detector geometry, this is passed from the runlist.csv
+GearFile                = @GearGeoFile@
+
+# Beam Energy is retrieved from the runlist.csv
+BeamEnergy              = @BeamEnergy@
+
+# Path to the GEAR files
+GearFilePath    = %(BasePath)s/gear
+
+# The XML file with histogram information
+HistoInfoFile   = %(TemplatePath)s/histoinfo.xml
+
+# Formats the output; @RunNumber@ is the current run number padded with leading zeros to 6 digits
+FilePrefix              = run@RunNumber@
+
+# Skip events in a run; set to 0 for all data
+SkipNEvents             = 0
+
+# Output subfolder structure
+OutPath         = %(BasePath)s/output
+DatabasePath    = %(OutPath)s/database
+HistogramPath   = %(OutPath)s/histograms
+LcioPath        = %(OutPath)s/lcio
+LogPath         = %(OutPath)s/logs
+TBTrackFilePath = %(OutPath)s/tbtrack
+
+# Limit processing of a run to a certain number of events
+MaxRecordNumber = 1000000000
+
+# The verbosity used by the EUTelescope producers
+Verbosity               = MESSAGE5
+
+# After how many events you want a "Processing event XXXX" message
+NEventsMessage  = 2500
+
+[converter]
+# How many events for noisy pixel analysis
+NoOfEvents              = 100000
+
+M26SensorVec            = 0 1 2 3 4 5
+FiringFreqCutM26        = 0.005
+
+APIXSensorVec           = 110 112 21
+FiringFreqCutAPIX       = 0.001
+
+[clustering]
+
+[hitmaker]
+# ID of fixed Sensor for correlation and alignemnt
+FixedPlane              = 3
+
+#Number of events used for Correlator and PreAligner
+NoEvents                = 100000
+
+#Residual cuts for Correlator and PreAligner
+ResidualsXMin   = -3. -3. -3.  -10. -10.  -3. -3. -3.  -10.
+ResidualsXMax   =  3.  3.  3.   10.  10.   3.  3.  3.   10.
+ResidualsYMin   = -3. -3. -3.  -10. -10.  -3. -3. -3.  -10.
+ResidualsYMax   =  3.  3.  3.   10.  10.   3.  3.  3.   10.
+
+
+[alignGBL]
+#Template for steering file is the same in all the alignment iterations
+TemplateFile    = alignGBL-tmp.xml
+
+MaxTrackCandidatesTotal = 100000
+
+GearFile                = @GearGeoFile@@RunNumber@_pre.xml
+Iteration               = 0
+
+# Number of alignment constants used.
+AlignMode               = XYZShiftsRotXYZ
+
+UpstreamTriplet         = 0 1 2
+LastUpstreamSensor      = 2
+DownstreamTriplet       = 3 4 5
+
+FixedPlanes             = 0 5
+FixedZShift             = 0 1 2 110 112 3 4 5 21
+
+# res = pitch/sqrt(12)
+resMim                  = 0.0052
+resRD531X               = 0.0289
+resRD531Y               = 0.0072
+resRD532XY              = 0.0144
+resFEI4X                = 0.0722
+resFEI4Y                = 0.0144
+
+# Both DUTs are 50x50
+ResolutionX = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
+ResolutionY = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
+
+UpstreamTripletCut              = 0.2
+DownstreamTripletCut            = 0.2
+UpstreamSlopeCut                = 3.0
+DownstreamSlopeCut              = 3.0
+TripletMatchingCut              = 0.5
+DUTCuts                         = 1.0 1.0
+
+[alignGBL1]
+#Template for steering file is the same in all the alignment iterations
+TemplateFile    = alignGBL-tmp.xml
+
+MaxTrackCandidatesTotal = 100000
+
+GearFile  = @GearGeoFile@@RunNumber@_pre_alignGBL0.xml
+Iteration = 1
+
+#Number of alignment constants used.
+AlignMode               = XYZShiftsRotXYZ
+
+UpstreamTriplet         = 0 1 2
+LastUpstreamSensor      = 2
+DownstreamTriplet       = 3 4 5
+
+FixedPlanes             = 0 5
+FixedZShift             = 0 1 2 110 112 3 4 5 21
+
+# res = pitch/sqrt(12)
+resMim                  = 0.0052
+resRD531X               = 0.0289
+resRD531Y               = 0.0072
+resRD532XY              = 0.0144
+resFEI4X                = 0.0722
+resFEI4Y                = 0.0144
+
+# Both DUTs are 50x50
+ResolutionX = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
+ResolutionY = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
+
+UpstreamTripletCut              = 0.2
+DownstreamTripletCut            = 0.2
+UpstreamSlopeCut                = 3.0
+DownstreamSlopeCut              = 3.0
+TripletMatchingCut              = 0.5
+DUTCuts                         = 1.0 1.0
+
+[alignGBL2]
+#Template for steering file is the same in all the alignment iterations
+TemplateFile    = alignGBL-tmp.xml
+
+MaxTrackCandidatesTotal = 100000
+
+GearFile = @GearGeoFile@@RunNumber@_pre_alignGBL0_alignGBL1.xml
+Iteration = 2
+
+#Number of alignment constants used.
+AlignMode               = XYZShiftsRotXYZ
+
+UpstreamTriplet         = 0 1 2
+LastUpstreamSensor      = 2
+DownstreamTriplet       = 3 4 5
+
+FixedPlanes             = 0 5
+FixedZShift             = 0 1 2 110 112 3 4 5 21
+
+# res = pitch/sqrt(12)
+resMim                  = 0.0052
+resRD531X               = 0.0289
+resRD531Y               = 0.0072
+resRD532XY              = 0.0144
+resFEI4X                = 0.0722
+resFEI4Y                = 0.0144
+
+# Both DUTs are 50x50
+ResolutionX  = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
+ResolutionY  = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
+
+UpstreamTripletCut              = 0.03
+DownstreamTripletCut            = 0.03
+UpstreamSlopeCut                = 2.00
+DownstreamSlopeCut              = 2.00
+TripletMatchingCut              = 0.20
+DUTCuts                         = 0.3 0.3
+
+[fitGBL]
+#Template for steering file is the same in all the alignment iterations
+TemplateFile    = fitGBL-tmp.xml
+
+GearFile = @GearGeoFile@@RunNumber@_pre_alignGBL0_alignGBL1_alignGBL2.xml
+
+UpstreamTriplet         = 0 1 2
+LastUpstreamSensor      = 2
+DownstreamTriplet       = 3 4 5
+
+#Planes which should be excluded from track fitting:
+DUTPlanes               = 110 112 21
+
+# res = pitch/sqrt(12)
+resMim                  = 0.0052
+resRD531X               = 0.0289
+resRD531Y               = 0.0072
+resRD532XY              = 0.0144
+resFEI4X                = 0.0722
+resFEI4Y                = 0.0144
+
+# Both DUTs are 50x50
+ResolutionX = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
+ResolutionY = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
+
+UpstreamTripletCut              = 0.03
+DownstreamTripletCut            = 0.03
+UpstreamSlopeCut                = 2.00
+DownstreamSlopeCut              = 2.00
+TripletMatchingCut              = 0.20
+DUTCuts                         = 0.3 0.3
+
+OutputPlanes    = 110 112 21
+\end{lstlisting}
