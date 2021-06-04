@@ -1,0 +1,35 @@
+\chapter{Track reconstruction for different energies and track densities}
+The quality of the reconstruction of tracks with Corryvreckan depends on numerous factors regarding the particle, the telescope and the reconstruction software.
+For the reconstruction of the proton, the two most crucial properties are their energy, which influences their scatterings as well as the probability of
+depositing energy in each sensor plane, and the particle density, which influences the number of possible combinations of clusters.
+Both of these properties significantly affect the number and the quality of the reconstructed tracks, which raises the question, how Corryvreckan performs
+under the variation of both of the these properties.
+In the sections \ref{sec:energy} and \ref{sec:density}, the variation of the energy and the track density is investigated respectively. \\
+
+To analyse Corryvreckans performance, the setup from section \ref{sec:setup} is used and tracks are fitted with the general broken lines algorithm from the Tracking4d module.
+The proton energies to be analysed are $\SI{50}{\mega\eV}$, $\SI{100}{\mega\eV}$, $\SI{200}{\mega\eV}$
+$\SI{1}{\giga\eV}$, $\SI{5}{\giga\eV}$, $\SI{20}{\giga\eV}$ and $\SI{180}{\giga\eV}$. For each value of these parameters a simulation with track densities
+of 2, 5, 10, 25 and 50 protons per event and a total amount of 50000 protons is created. \\
+The ratio of reconstructed tracks to the total number of tracks for each configuration is shown in table \ref{tab:study}. Here, the relative spatial cut applied is 15.1.
+
+
+\begin{table}
+  \centering
+  \begin{tabular}{c | c c c c c c c}
+    \toprule
+     Protons per event &  $\SI{50}{\mega\eV}$ & $\SI{100}{\mega\eV}$ & $\SI{200}{\mega\eV}$ & $\SI{1}{\giga\eV}$ & $\SI{5}{\giga\eV}$ & $\SI{20}{\giga\eV}$ & $\SI{180}{\giga\eV}$ \\
+    \midrule
+     2   & 1 & 0.8924 & 0.8224 & 0.8241 & 0.7870 & 0.7790 & 0.7706  \\
+     5   & 1 & 0.6328 & 0.5903 & 0.5853 & 0.5184 & 0.5050 & 0.5025  \\
+     10  & 0.625 & 0.4038 & 0.3930 & 0.3842 & 0.3224 & 0.3149 & 0.3136  \\
+     25  & 0.5 & 0.1823 & 0.1723 & 0.1740 & 0.1441 & 0.1409 & 0.1410  \\
+     50  & 0.2727 & 0.0840 & 0.0755 & 0.0788 & 0.0681 & 0.0669 & 0.0674  \\
+  \end{tabular}
+  \caption{Ratio of true reconstructed track to the total amount of reconstructed tracks for different proton energies and protons per event.}
+  \label{tab:study}
+\end{table}
+
+An increasing track density and energ both cause the ratio to decrease with the track density being the dominant factor influencing this property. Especially for high energies,
+the ratios seem to converge, with the lack of simulated uncertainties in the detector setup, the proton energy or the initial direction also contributing to this result.
+For a proton energy of $\SI{50}{\mega\eV}$, the number of protons depositing energy is low enough for no false combinatorics to arise. This is the consequence of the
+limited statistic of 50000 generated protons.
