@@ -113,22 +113,21 @@ experiments for which Corryvreckan was designed for. Because of that, a simulati
 with an energy $\SI{100}{\giga\eV}$ is implemented. Particles in this energy region only have small scattering angles, effectively travelling
 in straight lines.
 No fluctuation in the proton energy is simulated and only one particle traverses
-the telescope per event.
-The residual in x and y direction are shown in figure \ref{fig:100GeV}.
+the telescope per event. The residual in x and y direction are shown in figure \ref{fig:100GeV}.
 
 \begin{figure}
   \hspace{-2.5cm}
   %\centering
   \begin{subfigure}{0.62\textwidth}
       \centering
-      \includegraphics[height=0.82\textwidth]{plots/100GeV_residualX_tel0.pdf}
+      \includegraphics[height=0.82\textwidth]{plots/100GeV_residualX_tel2.pdf}
   \end{subfigure}
   \begin{subfigure}{0.62\textwidth}
       %\centering
       \hspace{0.95cm}
-      \includegraphics[height=0.82\textwidth]{plots/100GeV_residualY_tel0.pdf}
+      \includegraphics[height=0.82\textwidth]{plots/100GeV_residualY_tel2.pdf}
   \end{subfigure}
-  \caption{Residual of the first plane in x and y direction shown on the left and right respectively.
+  \caption{Residuals of the third plane in x and y direction shown on the left and right respectively.
   The IBL sensor has a five times larger pixel pitch in x direction. }
   \label{fig:100GeV}
 \end{figure}
@@ -194,8 +193,71 @@ for reconstructing high energy protons due to their straight path through the te
 \section{Reconstruction of low energy protons}\label{sec:energy}
 Lowering the energy of the protons in the simulation, will increase their scattering angle when interacting with the air or the sensor
 planes, essentially traversing the telescope on a more complex path.
+The horizontal residuals for the third plane for 50000 protons with an energy of $\SI{20}{\giga\eV}$ and $\SI{5}{\GeV}$ are shown in figure \ref{fig:20GeV}.
 
-...
+\begin{figure}
+  \hspace{-2.5cm}
+  %\centering
+  \begin{subfigure}{0.62\textwidth}
+      \centering
+      \includegraphics[height=0.82\textwidth]{plots/20GeV_residualX_tel2.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/5GeV_residualX_tel2.pdf}
+  \end{subfigure}
+  \caption{Residuals in x-direction for the third plane in the telescope with a proton energy of $\SI{20}{\giga\eV}$ on the left
+  and $\SI{5}{\GeV}$ on the right. A total of 50000 protons were generated in each simulation and a matching radius of $\SI{750}{\micro\meter}$ is applied. The third plane has
+  a horizontal pixel pitch of $\SI{250}{\micro\meter}$.}
+  \label{fig:20GeV}
+\end{figure}
+
+The five-peak structure starts to smear for $\SI{20}{\giga\eV}$ protons, since the protons are more likely to scatter under larger angles causing secondary maxima.
+For $\SI{5}{\GeV}$ protons, the structure is mostly vanished implying a significant number of non linear tracks. Both simulations show that most
+protons tracks can still be reconstructed.
+
+Since the proton energy used in pct is approximately $\SI{200}{\mega\eV}$, further simulation with even lower energies are created, while all other paramters stay constant.
+The horizontal residuals for proton energies below $\SI{1}{\giga\eV}$ are depicted in \ref{fig:low}.
+
+\begin{figure}
+  \hspace{-2.5cm}
+  %\centering
+  \begin{subfigure}{0.62\textwidth}
+      \centering
+      \includegraphics[height=0.82\textwidth]{plots/750MeV_residualX_tel2.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/500MeV_residualX_tel2.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      \hspace{-2.5cm}
+      %\centering
+      \includegraphics[height=0.82\textwidth]{plots/250MeV_residualX_tel2.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{-1.5cm}
+      \includegraphics[height=0.82\textwidth]{plots/150MeV_residualX_tel2.pdf}
+  \end{subfigure}
+  \caption{Residuals in x-direction for the third plane in the telescope with a proton energy of $\SI{750}{\mega\eV}$ on the upper left, $\SI{500}{\mega\eV}$ on the
+  upper right, $\SI{250}{\mega\eV}$ on the lower left
+  and $\SI{150}{\mega\eV}$ on the right. A total of 50000 protons were generated in each simulation and a matching radius of $\SI{750}{\micro\meter}$ is applied. The third plane has
+  a horizontal pixel pitch of $\SI{250}{\micro\meter}$.}
+  \label{fig:low}
+\end{figure}
+
+All four residual plots have a defined maximum due to highly non linear tracks. By gradually lowering the enegy the standard deviation of the residual shrinks. While,
+this might seem like the accuracy of the telescope and the track reconstruction increased, it is simply the consequence of the increasing number of protons scattering
+out of the telescope and therefore do not deposit energy in each sensor. Since this is a requirement for a reconstructed track, the number of fitted tracks decreases
+noticeably, especially between $\SI{250}{\mega\eV}$ and $\SI{150}{\mega\eV}$. The first tracks that are lost for lower energies
+are the ones with a high absolute value of the residual, as they are more likely to leave the telescope before traversing all sensors. \\
+While the reconstruction of low energy protons and their complex path is possible, the number of reconstructable tracks decreases with lower energies.
+Since it is still necessary to have a sufficient amount of tracks for a pct image, one method to counter this problem is in irradiating the patient longer.
+An additional problem arises due to the increasing number of multiple coulomb scattering inside the patient, which inevitably decreases the spatial resolution of the image.
+However, the used energy reason still allows for a successful track reconstruction of protons for pct.
 
 
 \section{Reconstruction of high track density proton beams}\label{sec:density}
