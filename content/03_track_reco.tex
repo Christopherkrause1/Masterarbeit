@@ -119,7 +119,7 @@ There are two major processors for the alignment step, which implement different
 The DAF processor is based on a Kalman filter and was specifically designed for high noise environments. It uses the inbuild combinatorics filter, which fits
 straight line tracks through all combinations of clusters allowed by the specified cuts and only keeps the ones with a minimum $\chi^2$. Here, the $\chi^2$ parameter
 describes the goodness of the fit and is defined as:
-\begin{align}
+\begin{align} \label{eqn:chi}
   \chi^2 = \sum_i (r_x/\sigma_x)^2 + (r_y/\sigma_y)^2
 \end{align}
 

@@ -383,4 +383,114 @@ The track features determined by Corryvreckan can be written out with the FileWr
 In order to differentiate between the features of true and false tracks, the Monte Carlo truth information of the particles is used again.
 A simulation containing 100000 generated $\SI{200}{\mega\eV}$ proton with 10 protons per event is created. No beam divergence and a relative spatial cut of 15.1 is applied.
 
-Figure ... depicts several track features divided in the distribution of true and false reconstructed tracks.
+Figure \ref{fig:kinks} depicts the kink angles in x- and y-direction for the third and fourth sensor plane divided in the distribution of true and false reconstructed tracks.
+
+\begin{figure}
+  %\centering
+  \hspace{-2.5cm}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \includegraphics[height=0.82\textwidth]{plots/kink_x_3_true_false.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/kink_y_3_true_false.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+    \hspace{-2.5cm}
+      %\centering
+      \includegraphics[height=0.82\textwidth]{plots/kink_x_4_true_false.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+    \hspace{-2.5cm}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/kink_y_4_true_false.pdf}
+  \end{subfigure}
+  \caption{Kink angles for the third plane in the upper row and the fouth in the lower row. The first column contains the kinks in horizontal direction and the second column
+  the vertical direction.}
+  \label{fig:kinks}
+\end{figure}
+
+All distribution follow the expected gaussian profile around 0°, with the horizontal kink distribution being broader due to the higher pixel pitch.
+While the kink distribution of true and false tracks in vertical direction does not enable a useful
+cut for track identification, the horizontal kinks of false tracks show a broader distribution in comparison to the true tracks. Therefore it is
+possible to cut on the horizontal kink to reject false tracks without losing a significant amount of true tracks.
+The kinks of the first and last plane can not be defined correctly and are neglected in this anaylsis. For the planes in the middle of the triplets, both
+distributions do not enable a useful cut on the kink angle.
+
+Another feature to investigate is the position of the cluster centers of clusters which are fitted to true and false tracks. Figure \ref{fig:clus_pos} shows the
+horizontal and vertical cluster positions for true and false tracks on the last plane exemplary.
+
+\begin{figure}
+  \hspace{-2.5cm}
+  %\centering
+  \begin{subfigure}{0.62\textwidth}
+      \centering
+      \includegraphics[height=0.82\textwidth]{plots/global_x_6_true_false.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/global_y_6_true_false.pdf}
+  \end{subfigure}
+  \caption{Distributions of the true and false tracks for the horizontal cluster position on the left and the vertical cluster position on the right.}
+  \label{fig:clus_pos}
+\end{figure}
+
+While both of the distributions of the cluster positions show a greater number of false tracks in the middle of the sensor in comparison the number of true tracks,
+any cut would result in a noticable loss of true tracks. Similar distributions of the cluster centers can be found on the other planes, which means that this feature
+is not suitable for the identification of true tracks through cuts.
+
+The last two major track features stored by Corryvreckan are the number of deposited charges of particles in each sensor and the $\chi^2$ value of the track,
+which is defined in equation \ref{eqn:chi}.
+Both features are shown in figure \ref{fig:charge_chi} with the charge depostion referring to the last plane exemplary.
+
+\begin{figure}
+  \hspace{-2.5cm}
+  %\centering
+  \begin{subfigure}{0.62\textwidth}
+      \centering
+      \includegraphics[height=0.82\textwidth]{plots/charge_6_true_false.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/chi2_10_200MeV_xgb_true_false.pdf}
+  \end{subfigure}
+  \caption{Deposited charges on the left and and the $\chi^2$ value on the right for true and false particle tracks.}
+  \label{fig:clus_pos}
+\end{figure}
+
+Similarly to the distribution of the cluster centers, no cut on the charge deposition is suitable to effectively sort out false tracks without losing a significant
+amount of true tracks. This is the case for the charge deposition of all sensor planes.
+The $\chi^2$ values of true and false tracks show noticable difference. While both distribution have a large number of tracks
+with a small $\chi^2$ value, substantially more false tracks have large $\chi^2$ values. This is to be expected as the $\chi^2$ value describes the goodness of the fit and
+many false combinatorics within the matching radius having larger residuals. \\
+The peak of the $\chi^2$ distribution is below 1 due to the fact that the residual distribution
+for $\SI{200}{\mega\eV}$ protons have a generally smaller standard deviation, explained in section \ref{sec:energy}.
+
+Of the investigated track features, only the horizontal kink angles of the third and fourth sensor plane and the $\chi^2$ value of the tracks. To determine a suitable
+cut for all three features to maximise the ratio of remaining true and false tracks, a grid search with several parameter configuration is performed. The
+possible parameter values are shown in table \ref{tab:params}.
+
+\begin{table}
+  \centering
+  \begin{tabular}{c c c}
+    \toprule
+    $\chi^2$ & $\text{kink}_{x,3}$ & $\text{kink}_{x,4}$\\
+    \midrule
+    0.3 & 0.003 & 0.003 \\
+    0.4 & 0.004 & 0.004 \\
+    0.5 & 0.005 & 0.005 \\
+    0.6 & 0.006 & 0.006 \\
+    0.7 & 0.007 & 0.007 \\
+    0.8 & 0.008 & 0.008
+  \end{tabular}
+  \caption{Possible parameters used in a grid search to determine an adequate combination of cuts on the parameters.}
+  \label{tab:params}
+\end{table}
+
+A ratio of $7329/13604 = 0.538$ of true tracks to the total number tracks is achieved by cutting on smaller values than $\chi^2 = 0.5$,  kink$_{x,3} = 0.004$ and kink$_{x,4}=0.004$. Stronger cuts can create even better ratios with the number of true tracks decreasing significantly. For that reason, the before mentioned
+combination is preferred.
