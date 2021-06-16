@@ -376,13 +376,16 @@ Thus, further investigation of countering the problem of high track density beam
 
 \section{Feature cuts for high track densities}
 Tracks inherit numerous features, which characterise them,
-for exampleS their deposited energy, the kink angles or their corresponding cluster position on the sensor.
+including their deposited energy, the kink angles, their corresponding cluster position on the sensor and the $\chi^2$ value of the track.
 These features might be characteristic, meaning they differ for tracks from true and false combinations of clusters.
 Analysing these properties can therefore help in differentiating true and false tracks. \\
 The track features determined by Corryvreckan can be written out with the FileWriter module for further investigation.
 In order to differentiate between the features of true and false tracks, the Monte Carlo truth information of the particles is used again.
 A simulation containing 100000 generated $\SI{200}{\mega\eV}$ proton with 10 protons per event is created. No beam divergence and a relative spatial cut of 15.1 is applied.
+Corryvreckan reconstructed a total of 23304 tracks, of which 9096 tracks have a correct combination of clusters.
 
+Kinks describe an angles, which arise due to the scattering of particles and the resulting change of direction. Particles have kinks for each sensor plane, with the kink being
+the angle between the initial direction and the direction after scattering. These angles are crucial features of a track fit and therefore important parameters to investigate.
 Figure \ref{fig:kinks} depicts the kink angles in x- and y-direction for the third and fourth sensor plane divided in the distribution of true and false reconstructed tracks.
 
 \begin{figure}
@@ -492,5 +495,9 @@ possible parameter values are shown in table \ref{tab:params}.
   \label{tab:params}
 \end{table}
 
-A ratio of $7329/13604 = 0.538$ of true tracks to the total number tracks is achieved by cutting on smaller values than $\chi^2 = 0.5$,  kink$_{x,3} = 0.004$ and kink$_{x,4}=0.004$. Stronger cuts can create even better ratios with the number of true tracks decreasing significantly. For that reason, the before mentioned
-combination is preferred.
+A ratio of $7329/13604 = 0.538$ of true tracks to the total number tracks is achieved by cutting on smaller values than $\chi^2 = 0.5$,  kink$_{x,3} = 0.004$ and kink$_{x,4}=0.004$.
+Stronger cuts can create even better ratios with the number of true tracks decreasing significantly. For that reason, the before mentioned combination is preferred. \\
+In comparison to the ratio without cuts $9096/23304 = 0.390$, the number of true tracks divided by the number of overall tracks increased by $\SI{37.9}{\percent}$. Due to
+the feature cuts, 1767 true tracks and 7933 false tracks are rejected. \\
+Thus, the feature cuts showed in improvement for the track reconstruction of high track density beams. Due to the limited amount of features to cut on, the aquired ratio
+is still not optimal for the use of proton computed tomogrophy.
