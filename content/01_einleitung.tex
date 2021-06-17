@@ -10,13 +10,30 @@ an optimal working detector to analyse of the produced data precisely.
 The Large Hadron Collider (LHC) located at CERN is a proton proton collider and currently the largest particle collider, being able to accelerate protons up to $\SI{14}{\tera\eV}$.
 It operates since 2008 and helped particle physicists in finding the last missing particle of the standard model, the higgs boson, as well as giving more insight
 into properties of particles like the top quark. Standard model parameters can be measured with greater precision, improving our understanding and enables physicists to
-test the theory. Physics beyond the standard model is also searched for at the LHC with great interest.
+test their theories. Physics beyond the standard model is also searched for at the LHC with great interest.
 
-The ATLAS detector is one of the four large experiments at the LHC. % and the largest particle detector with a length of $\SI{46}{\meter}$ and a diameter of $\SI{25}{\meter}$.
-It was build to observe many different type of physical phenomena including the detection of the higgs boson in 2012 along with the CMS experiment. In order
-to identify the produced particles in the collisions, many layers of different detectors make up the entire ATLAS detector. The most inner layer is the pixel detector, which
-is composed of pixel sensor modules to detect particles and reconstruct their tracks.
+Besides the use of detectors in high energy physics experiments they are also a crucial part of medical equipment, specifically used for radiative treatments.
+The idea to use protons as an effective particle for the treatment of cancer arose in 1946 and over the years it proved to have several advantages over
+conventional x-ray therapy. To apply proton therapy, a radiation plan has to be created to determine the location of the tumor and the dose of the radiation.
+For that purpose tomogrophy scans create images of the inside of patients, enabling the precise irradiation of tumors.
+Benefits of using protons for tomogrophy scans in comparison to x-ray tomogrophy scans for proton therapy caused a growing interest in this technique. \\
+In order to create images with proton computed tomography, the reconstruction of proton tracks traversing the human body is necessary.
 
-To measure the efficiency of pixel sensors,
-particle tracks are reconstructed in testbeam facilities with a telescope setup made of Mimosa26 pixel sensors to investigate the devices under test (DUT), which are
-placed inside the telescope. These measurements are necessary to ensure an optimal performance of sensor modules inside the experiments.
+This thesis focuses on the reconstruction protons under conditions present in proton computed tomography scans. To achieve that, the new track reconstruction software
+Corryvreckan is analysed based on its capability of reconstructing tracks in comparison to the EUTelescope framework. Furthermore, it is used to reconstruct
+protons, which are generated in Allpix$^2$ simulations to investigate the possibility of making proton computed tomography scans feasible with this framework.
+
+
+%An interest for the imaging
+%technique of proton computed tomogrophy came up around 1990, with proton therapy gaining in popularity due to its advantages over conventional x-ray therapy.
+%In order to create images with proton computed tomography, the reconstruction of proton tracks traversing the human body is
+
+
+%The ATLAS detector is one of the four large experiments at the LHC. % and the largest particle detector with a length of $\SI{46}{\meter}$ and a diameter of $\SI{25}{\meter}$.
+%It was build to observe many different type of physical phenomena including the detection of the higgs boson in 2012 along with the CMS experiment. In order
+%to identify the produced particles in the collisions, many layers of different detectors make up the entire ATLAS detector. The most inner layer is the pixel detector, which
+%is composed of pixel sensor modules to detect particles and reconstruct their tracks.
+%
+%To measure the efficiency of pixel sensors,
+%particle tracks are reconstructed in testbeam facilities with a telescope setup made of Mimosa26 pixel sensors to investigate the devices under test (DUT), which are
+%placed inside the telescope. These measurements are necessary to ensure an optimal performance of sensor modules inside the experiments.
