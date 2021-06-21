@@ -3,8 +3,7 @@ With the demonstration of Corryvreckans validity as a track reconstruction frame
 in proton computed tomogrophy scans can be investigated. The telescope used to reconstruct the protons consists of six IBL planar sensors
 grouped into two triplets. Due to the fact that the spatial resolution of the sensors are five times better in horizontal direction, the middle sensor
 of each triplet is rotated by 90°. This way the lower track reconstruction precision in vertical direction is partially compensated for.
-The setup for proton computed tomogrophy is shown schematically in figure \ref{fig:phantom} with the phantom inbetween the triplets representing
-the patient. \\
+The setup for proton computed tomogrophy is shown schematically in figure \ref{fig:phantom} with an IBL sensor inbetween the triplets serving as a DUT instead of a patient. \\
 For proton computed tomogrophy it is necessary that the protons are able to traverse the entire telescope including the patient
 to measure their remaining energy, which is the reason the energy of the proton beam has to be significantly higher than during
 the proton therapy. Current proton synchrotrons used in proton therapy centers have an upper energy limit of $200 - \SI{250}{\mega\eV}$.
@@ -12,15 +11,16 @@ Therefore, a $\SI{200}{\mega\eV}$ proton beam is used in this analysis.
 
 \begin{figure}
   \centering
-  \includegraphics[height=0.45\textwidth]{images/phantom_proton_2.jpg}
-  \caption{Schematic representation of the telescope used for the reconstruction of proton computed tomogrophy. The phantom represents the
-  patient and is not present in upcoming analysis.}
+  \includegraphics[height=0.45\textwidth]{images/phantom_proton_4.jpg}
+  \caption{Schematic representation of the telescope used for the reconstruction of proton computed tomogrophy. For the real
+  case lies a patient in the middle instead of a DUT.}
   \label{fig:phantom}
 \end{figure}
 
-Since the tracking performance of Corryvreckan will be investigated, the phantom will not be present in further analysis as it would
+Since the tracking performance of Corryvreckan will be investigated, no
+phantom will be present in the setup as it would
 increase the number of multiple scatterings and significantly decrease the number of protons passing the telescope. Instead, another
-IBL planar sensor placed directly in the middle of the telescope serves as a DUT.
+IBL planar sensor is placed directly in the middle of the telescope serves as a DUT.
 
 To analyse Corryvreckans performance in reconstructing proton tracks, data feeded into the framework is simulated by the Allpix$^2$ software,
 which is explained in the folloing section.
@@ -95,8 +95,8 @@ Corryvreckan to reconstruct. Since Corryvreckans performance in regards to these
 of the sensor position and orientation, as well as the beam energy and direction are set to zero. The simulated
 beam has a gaussian profile with a standard deviation of $\SI{3}{\milli\meter}$ and is orientated orthogonal to the sensor
 surfaces. All information about the geometry of the telescope is specified in section \ref{sec:setup} with
-figure \ref{fig:phantom} depicting the exact positions of the sensors and the beam source. The IBL planar sensor used as a DUT,
-instead of a phantom, is positioned at $\SI{10}{\centi\meter}$ along the z-axis. \\
+figure \ref{fig:phantom} depicting the exact positions of the sensors and the beam source. \\ %The IBL planar sensor used as a DUT,
+%instead of a phantom, is positioned at $\SI{10}{\centi\meter}$ along the z-axis. \\
 A linear electric field with a bias voltage of $\SI{-100}{\volt}$ and a depletion depth of $\SI{200}{\micro\meter}$,
 thus depleting the entire sensor volume, is specified. For the propagation of charge carriers, the more precise generic propagation
 module is chosen with a room temperature of $\SI{293}{\kelvin}$ and 300 charges being propagated per step to limit time consumption.\\
@@ -260,10 +260,12 @@ An additional problem arises due to the increasing number of multiple coulomb sc
 However, the used energy reason still allows for a successful track reconstruction of protons for pct.
 
 
-\section{Reconstruction of high track density proton beams}\label{sec:density}
+\chapter{Reconstruction of high track density proton beams}\label{sec:density}
 Unlike in the DESY testbeam facility, proton beams in proton ct tend to have a significant higher number of particles in a sensor
 per time frame. To analyse how Corrvreckan reconstructs a high track density beam, the number of particles per event in the Allpix$^2$
-simulation is increased, while the proton energy is kept constant at $\SI{200}{\mega\eV}$. \\
+simulation is increased, while the proton energy is kept constant at $\SI{200}{\mega\eV}$. Other parameters are identical to previous simulations.
+
+\section{Track multiplicities}
 The track multiplicity, meaning number of reconstructed tracks per event, for 25 and 50 particles simulated in an event is shown in figure \ref{fig:multiplicity}. To take the different spatial resolutions of the sensors in x and y direction into account, a relative
 spatial cut of 15.1 is applied in the reconstruction. Unlike absolute spatial cuts, relative cuts are used construct a
 matching radius by multpiling the spatial resolution
@@ -374,7 +376,7 @@ Thus, further investigation of countering the problem of high track density beam
 
 \section{Advanced track finding algorithm for high track densities}
 
-\section{Feature cuts for high track densities}
+\section{Feature cuts for high track densities}\label{sec:feature}
 Tracks inherit numerous features, which characterise them,
 including their deposited energy, the kink angles, their corresponding cluster position on the sensor and the $\chi^2$ value of the track.
 These features might be characteristic, meaning they differ for tracks from true and false combinations of clusters.
@@ -384,9 +386,9 @@ In order to differentiate between the features of true and false tracks, the Mon
 A simulation containing 100000 generated $\SI{200}{\mega\eV}$ proton with 10 protons per event is created. No beam divergence and a relative spatial cut of 15.1 is applied.
 Corryvreckan reconstructed a total of 23304 tracks, of which 9096 tracks have a correct combination of clusters.
 
-Kinks describe an angles, which arise due to the scattering of particles and the resulting change of direction. Particles have kinks for each sensor plane, with the kink being
+Kinks describe angles, which arise due to the scattering of particles and the resulting change of direction. Particles have kinks for each sensor plane, with the kink being
 the angle between the initial direction and the direction after scattering. These angles are crucial features of a track fit and therefore important parameters to investigate.
-Figure \ref{fig:kinks} depicts the kink angles in x- and y-direction for the third and fourth sensor plane divided in the distribution of true and false reconstructed tracks.
+Figure \ref{fig:kinks} depicts the kink angles $\phi$ in x- and y-direction for the third and fourth sensor plane divided in the distribution of true and false reconstructed tracks.
 
 \begin{figure}
   %\centering
@@ -463,7 +465,7 @@ Both features are shown in figure \ref{fig:charge_chi} with the charge depostion
       \includegraphics[height=0.82\textwidth]{plots/chi2_10_200MeV_xgb_true_false.pdf}
   \end{subfigure}
   \caption{Deposited charges on the left and and the $\chi^2$ value on the right for true and false particle tracks.}
-  \label{fig:clus_pos}
+  \label{fig:charge_chi}
 \end{figure}
 
 Similarly to the distribution of the cluster centers, no cut on the charge deposition is suitable to effectively sort out false tracks without losing a significant

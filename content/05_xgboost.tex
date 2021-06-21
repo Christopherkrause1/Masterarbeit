@@ -59,10 +59,36 @@ The tree added in each step is supposed to optimize our objective. For a mean sq
   h_i &= \partial^2_{\hat{y}_i^{(t-1)}} l(y_i, \hat{y}_i^{(t-1)})
 \end{align}
 
-The value of the objective function only depends on $g_i$ and $h_i$, giving XGBoost the advantage of using custom loss fnctions including logistic regression.
+The value of the objective function only depends on $g_i$ and $h_i$, giving XGBoost the advantage of using custom loss functions including logistic regression.
 
 However, the regularization term still needs to be defined. One definition that works well in practice and thus used by XGBoost is:
 \begin{align}
   \Omega (f) = \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T \omega_j^2
 \end{align}
 Here, $\omega_{q(x)}$ is the vector of scores on leaves, $q$ is a function that assigns each data point to the corresponding leave and $T$ is the number of leaves.
+
+With this definition, the objective function can be compressed to:
+\begin{equation} \label{eqn:obj}
+  \text{obj} = -\frac{1}{2}\sum_{j=1}^T \frac{G_j^2}{H_j + \lambda} + \gamma T
+\end{equation}
+Here, $G_j$ and $H_J4$ are the sum over all $g_i$ and $h_i$ repsectively. Equation \ref{eqn:obj} is a measure for how good a structure tree is. Its score
+is determined by the statistics $g_i$ and $h_i$ in the leaves, with a smaller score meaning a better tree structure.
+Since it is not feasible to enumerate all possible tress to find the best one, only one level of a tree is optimized at a time.
+For each split of a leaf into a new left and right leaf, the gained score is defined as:
+\begin{equation}
+  \text{Gain} = \frac{1}{2}\left[\frac{G_L^2}{H_L + \lambda} + \frac{G_R^2}{H_R + \lambda} - \frac{(G_L + G_R)^2}{H_L+H_R+\lambda}\right] -\gamma
+\end{equation}
+
+Optimal splits are then determined by sorting all instances and calculate the structure score of all possible split solutions.
+
+\section{Machine learning setup}
+The data used to train the learner is identical to the one from section \ref{sec:feature} and consists of 100000 generated protons with ten protons per event
+traversing the telescope described in section \ref{sec:setup}. The protons
+are reconstructed with Corryvreckan, with the true tracks being identified with the MC truth from Allpix$^2$ and masked for the learner.
+To test the Learner, another simulation, based on a different seed and consisting of 100000 protons with ten protons per event is created.
+
+The objective of the learner is binary logistic, which performs a logistic regression and outputs a probability for classifying a track as true or false.
+To quantify the performance of a predicitve model, an evaluation metric, here the area under the Receiver Operating Characteristic (ROC) curve, has to be chosen.
+The ROC curve describes the true positive rate $TPR = t_p/(t_p + f_p)$ as a function of the false positive rate $FPR = f_p/(f_p + t_n)$ with
+$t_p$, $t_n$ and $f_p$ meaning the true positive, true negative and false positive classification of a track respectively. The larger the area under the curve in respect
+to the diagonal, representing random classification, the better the performance of the classificator.
