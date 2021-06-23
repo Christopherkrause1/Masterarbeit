@@ -313,26 +313,26 @@ position of the protons on all planes can be accessed. To find correct reconstru
 compared with the coordinates of the cluster centers belonging to a track created by Corryvreckan. \\
 
 The number of correct reconstructed tracks for the relative spatial cuts of 15.1 and 12.2 are given in table
-\ref{tab:true_tracks} for 50000 generated protons with
+\ref{tab:true_tracks} for 50000 generated protons with 10,
 25 and 50 protons simulated per event.
 
 
 \begin{table}
-  \centering
-  \begin{tabular}{c | c c}
+  %\centering
+  \hspace{-1.5cm}
+  \begin{tabular}{c | c c c}
     \toprule
-     &  25 proton per event & 50 protons per event\\
+     & 10 proton per event & 25 proton per event & 50 protons per event\\
     \midrule
-    reconstructed tracks (15.1) cut & 27726 & 68712  \\
-    true reconstructed tracks (15.1) & 4772  & 5187 \\
-    ratio & 0.172 & 0.075 \\
+    reconstructed tracks (15.1) cut & 11595 & 27726 & 68712  \\
+    true reconstructed tracks (15.1) & 4709 & 4772  & 5187 \\
+    ratio & 0.406 & 0.172 & 0.075 \\
     \midrule
-    reconstructed tracks (12.2) cut & 11891 & 28141 \\
-    true reconstructed tracks (12.2) & 2513  & 2686 \\
-    ratio & 0.211 & 0.095
-
+    reconstructed tracks (12.2) cut & 5401 & 11891 & 28141 \\
+    true reconstructed tracks (12.2) &  2421 &2513  & 2686 \\
+    ratio & 0.448 & 0.211 & 0.095
   \end{tabular}
-  \caption{Reconstructed tracks for two different spatial cuts for 25 and 50 protons per event. The ratio refers to the true
+  \caption{Reconstructed tracks for two different spatial cuts for 10, 25 and 50 protons per event. The ratio refers to the true
   number reconstructed tracks divided by the total number of tracks.}
   \label{tab:true_tracks}
 \end{table}
@@ -340,7 +340,7 @@ The number of correct reconstructed tracks for the relative spatial cuts of 15.1
 With a stronger spatial cut,  the ratio of true reconstructed tracks to
 the total number of tracks increases. While this shows that stronger cuts help reducing false combinatorics, they cannot be chosen too strict,
 as the number of true tracks decreases significantly due to their high scattering angles. Even with the stricter relative cut of 12.2 the
-number of true reconstructed tracks is only a 1/5 for 25 protons per event and only 1/10 for 50 protons per event highlighting
+number of true reconstructed tracks is  less than a half for 10 protons per event and only a 1/5 for 25 protons per event and 1/10 for 50 protons per event highlighting
 the combinatorics problematic. No spatial cut can achieve a ratio useful for pct, while still keeping the number
 of tracks high enough for the pct to be feasible. Further approaches are therefore necessary, which are investigated in the following sections.
 
