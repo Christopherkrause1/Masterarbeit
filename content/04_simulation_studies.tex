@@ -110,10 +110,13 @@ in by Corryvreckan with the FileReader module.
 Before the reconstruction of low energy protons is performed with Corryvreckan, it is crucial to understand how well the
 track reconstruction works with protons and the employed telescope, since proton beams are not used in major testbeam
 experiments for which Corryvreckan was designed for. Because of that, a simulation containing 50000 protons
-with an energy $\SI{100}{\giga\eV}$ is implemented. Particles in this energy region only have small scattering angles, effectively travelling
+with an energy $\SI{100}{\giga\eV}$ is created.
+Particles in this energy region only have small scattering angles, effectively travelling
 in straight lines.
 No fluctuation in the proton energy is simulated and only one particle traverses
-the telescope per event. The residual in x and y direction are shown in figure \ref{fig:100GeV}.
+the telescope per event. All simulations in this chapter have a random seed of zero to make the results more comparable by preventing
+statistical differences.
+The residual in x and y direction are shown in figure \ref{fig:100GeV}.
 
 \begin{figure}
   \hspace{-2.5cm}
@@ -348,7 +351,8 @@ of tracks high enough for the pct to be feasible. Further approaches are therefo
 Another approach in limiting false combinatorics is in simulating a beam divergence to differentiate between tracks. Former simulations had no variation
 in the initial protons direction, but an opening angle in form of a gauss profile can be specified in the DepostionGeant4 module. The specified value of
 the beam divergence parameter describes the standard deviation of the gaussian distribution of the opening angle.  \\
-Three simulations of 50000 protons with 5 protons per event and three different opening angles are created. The number of true reconstructed tracks and the ratio
+Three simulations of 50000 protons with 10 protons per event and three different opening angles are created.
+The number of true reconstructed tracks and the ratio
 of true reconstructed tracks to the total number of tracks is specified in table \ref{tab:angle}. In section \ref{sec:cuts} the method of identifying
 true and false tracks in Allpix$^2$ is specified.
 
@@ -358,11 +362,11 @@ true and false tracks in Allpix$^2$ is specified.
     \toprule
      &  $\SI{0}{\milli\radian}$ & $\SI{2}{\milli\radian}$ & $\SI{3}{\milli\radian}$\\
     \midrule
-    reconstructed tracks & 7612 & 4627 & 3158  \\
-    true reconstructed tracks & 4486 & 3199 & 2312 \\
-    ratio & 0.59 & 0.69 & 0.73
+    reconstructed tracks & 11595 & 6431 & 3948  \\
+    true reconstructed tracks & 4709 & 3162 & 2267 \\
+    ratio & 0.406 & 0.492 & 0.574
   \end{tabular}
-  \caption{Reconstructed tracks of 50000 protons with 5 protons per event for different opening angles. The first simulation has no opening angle and the initial protons
+  \caption{Reconstructed tracks of 50000 protons with 10 protons per event for different opening angles. The first simulation has no opening angle and the initial protons
   trajectory is perpendicular to the sensor surface. For the other simulatioms, the opening angle refers to the standard deviation of the gaussian distribution of
   the opening angle. The ratio describes the number of true reconstructed tracks to the total number of reconstructed tracks.}
   \label{tab:angle}
