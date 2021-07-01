@@ -82,13 +82,67 @@ For each split of a leaf into a new left and right leaf, the gained score is def
 Optimal splits are then determined by sorting all instances and calculate the structure score of all possible split solutions.
 
 \section{Machine learning setup}
-The data used to train the learner is identical to the one from section \ref{sec:feature} and consists of 100000 generated protons with ten protons per event
+The data used to train the learner %is identical to the one from section \ref{sec:feature} and
+consists of 400000 generated $\SI{200}{\mega\eV}$ protons with ten protons per event
 traversing the telescope described in section \ref{sec:setup}. The protons
-are reconstructed with Corryvreckan, with the true tracks being identified with the MC truth from Allpix$^2$ and masked for the learner.
-To test the Learner, another simulation, based on a different seed and consisting of 100000 protons with ten protons per event is created.
+are reconstructed with Corryvreckan, with the true tracks being identified with the MC truth from Allpix$^2$ and masked for the learner. A total number of 92546 tracks
+are reconstructed, with 36340 being true tracks.
+To test the learner, another simulation, being identical to the one in \ref{sec:feature} is used and consists of 100000 protons with ten protons per event.
 
 The objective of the learner is binary logistic, which performs a logistic regression and outputs a probability for classifying a track as true or false.
-To quantify the performance of a predicitve model, an evaluation metric, here the area under the Receiver Operating Characteristic (ROC) curve, has to be chosen.
+Therefore, a logistic loss function is used for training the model.
+To determine the optimal number of boosting rounds, early stopping is utilized on a validation set, consisting of 100000 generated protons. This means, that
+the model will train until the validation score stops improving for ten consecutive boosting rounds, with the number
+of boosting rounds belonging to the highest validation score being chosen for testing. In this case, the validation score refers to the area under the
+Receiver Operating Characteristic (ROC) curve. \\
 The ROC curve describes the true positive rate $TPR = t_p/(t_p + f_p)$ as a function of the false positive rate $FPR = f_p/(f_p + t_n)$ with
-$t_p$, $t_n$ and $f_p$ meaning the true positive, true negative and false positive classification of a track respectively. The larger the area under the curve in respect
-to the diagonal, representing random classification, the better the performance of the classificator.
+$t_p$, $t_n$ and $f_p$ meaning the true positive, true negative and false positive classification of a track respectively. The larger the area under the curve (auc) in respect
+to the diagonal, which represents random classification, the better the performance of the classificator. \\
+All features, including $\chi^2$, kink angles, cluster positions and charge depositions are selected as input for the classifier. Less useful features
+may not contribute significantly for classification, but also do not disrupt the learning process, as trees do not split as often on variables with little impact.
+Thus, no problems will arise by taking all features into account, as long as the training data is sufficiently large to be able to compensate for inefficiencies.
+
+Tuning several hyper parameters is necessary to ensure an optimal performance of the classificator. Taking many hyper parameters and values into account, comes at the
+cost of a large computation time. For this reason, four parameters are chosen to be optimised. The maximum depth of each tree influences the
+complexity of the model and the likeliness of overfitting. With the learning rate $\eta$, overfitting can be prevented as it represents a weighting factor for
+corrections added by new trees in the model. It takes values from zero to one, with smaller values describing smaller corrections from further trees. \\
+The minimum loss reduction required for an additional partition on a leaf node is referred to as $\gamma$. A similar impact has the minimum sum of instance weight $\theta$
+needed in a child. Leaf nodes with a sum of weights less than the specified value will prevent further tree partition steps.
+Both the $\theta$ and $\gamma$ take values from 0 to $\infty$ and are a measure for how conservative the algorithm will be, with larger values representing a more
+conservative algorithm.
+
+A grid search from the library Scikit-learn \cite{scikit} is used to determine an optimal value for each of the parameters mentioned above. The values given as input into the grid search
+are shown in table \ref{tab:grid}.
+
+  \begin{table}
+    \centering
+    \begin{tabular}{c c c c}
+      \toprule
+      tree depth & $\eta$ & $\gamma$ & $\theta$ \\
+      \midrule
+      3 & 0.05 & 0.5 & 1  \\
+      4 & 0.1  & 1   & 25  \\
+      5 & 0.3  & 2 & 50  \\
+      6 & 0.7  & 5   &  \\
+    \end{tabular}
+    \caption{Parameter values that are used for the grid search. The tree depth refers to the maximum depth of a tree, $\eta$ refers to the learning rate,
+    $\gamma$ is a threshold for the allowed minimum loss reduction in a partition step and $\theta$ is the minimum sum of instance weight needed in a child.}
+    \label{tab:grid}
+  \end{table}
+To quantify each different combination of the hyper parameter values, a 5-fold cross validation is performed. This means that the data set is split into five equally
+large sets, with the learner training on four of them and evaluating on the last one. Each of the five sets serves as the test data, which means that for each
+parameter combination five runs are performed. The area under the ROC curve serves as the scoring function to measure how good the predicition on the test data set is.
+A mean of the five auc values represents the score, which is compared in the grid search. Thus, the cross validation helps to compensate for variability in the simulated
+data to derive an accurate estimate of the predictive power of the model. \\
+The maximal auc of $0.579(3)$ is achieved with a maximum tree depth of 5, $\eta=0.7$, $\gamma=5$ and $\theta=25$. With $\gamma=5$, the result of the grid search of the remaining
+parameters can be visualized and is shown in figure \ref{fig:grid}
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.6\textwidth]{plots/grid_search.pdf}
+  \caption{The mean test score referring to the auc for the different hyper parameter configurations with the errorbars being the standard deviation of the mean. The
+  smaller bars refer to $\eta$ and the larger bars to $\theta$. A maximal auc is marked in red.}
+  \label{fig:grid}
+\end{figure}
+
+\section{Machine learning results}

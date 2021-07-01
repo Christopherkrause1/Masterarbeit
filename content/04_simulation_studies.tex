@@ -429,7 +429,7 @@ possible to cut on the horizontal kink to reject false tracks without losing a s
 The kinks of the first and last plane can not be defined correctly and are neglected in this anaylsis. For the planes in the middle of the triplets, both
 distributions do not enable a useful cut on the kink angle.
 
-Another feature to investigate is the position of the cluster centers of clusters which are fitted to true and false tracks. Figure \ref{fig:clus_pos} shows the
+Another feature to investigate is the position of the cluster centers $r$ which are fitted to true and false tracks. Figure \ref{fig:clus_pos} shows the
 horizontal and vertical cluster positions for true and false tracks on the last plane exemplary.
 
 \begin{figure}
@@ -468,7 +468,7 @@ Both features are shown in figure \ref{fig:charge_chi} with the charge depositio
       \hspace{0.95cm}
       \includegraphics[height=0.82\textwidth]{plots/chi2_10_200MeV_xgb_true_false.pdf}
   \end{subfigure}
-  \caption{Deposited charges on the left and and the $\chi^2$ value on the right for true and false particle tracks.}
+  \caption{Deposited charges for the last sensor on the left and and the $\chi^2$ value on the right for true and false particle tracks.}
   \label{fig:charge_chi}
 \end{figure}
 
@@ -488,7 +488,7 @@ possible parameter values are shown in table \ref{tab:params}.
   \centering
   \begin{tabular}{c c c}
     \toprule
-    $\chi^2$ & $\text{kink}_{x,3}$ & $\text{kink}_{x,4}$\\
+    $\chi^2$ & $\phi_{x,3}$ & $\phi_{x,4}$\\
     \midrule
     0.3 & 0.003 & 0.003 \\
     0.4 & 0.004 & 0.004 \\
@@ -501,9 +501,33 @@ possible parameter values are shown in table \ref{tab:params}.
   \label{tab:params}
 \end{table}
 
-A ratio of $7329/13604 = 0.538$ of true tracks to the total number tracks is achieved by cutting on smaller values than $\chi^2 = 0.5$,  kink$_{x,3} = 0.004$ and kink$_{x,4}=0.004$.
-Stronger cuts can create even better ratios with the number of true tracks decreasing significantly. For that reason, the before mentioned combination is preferred. \\
-In comparison to the ratio without cuts $9096/23304 = 0.390$, the number of true tracks divided by the number of overall tracks increased by $\SI{37.9}{\percent}$. Due to
-the feature cuts, 1767 true tracks and 7933 false tracks are rejected. \\
+A ratio of $6501/13632 = 0.477$ of true tracks to the total number tracks is achieved by cutting on smaller values than $\chi^2 = 0.5$, $\phi_{x,3} = 0.003$ and $\phi_{x,4}=0.004$.
+Stronger cuts can create even better ratios with the number of true tracks decreasing significantly. For that reason, the score $TPR-FPR$ of each combination
+was calculated to determine the best combination. The value $TPR = t_p/(t_p + f_p)$ and $FPR = f_p/(f_p + t_n)$
+refer to the true positive and false positive rate with
+$t_p$, $t_n$ and $f_p$ describing the true positive, true negative and false positive classification of a track respectively respectively.
+Strict cuts will decrease both rates and are therefore not preferred. Plotting the
+true positive rate as a function of the false positive rate for many different cuts gives insight into the usefullnes of the cut on the respective feature. The resulting
+graphs are called Receiver Operating Characteristic (ROC) curves.
+Figure \ref{fig:feature_grid} shows the the ROC curves of the individual feature as well as the TPR and FPR of the cut configuration determined with the grid search.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.6\textwidth]{plots/feature_cuts_auc.pdf}
+  \caption{ROC curves of the $\chi^2$ value and the kink angles $\phi_{x,3}$ and $\phi_{x,4}$. Also shown is the best configuration determined with the grid search. The diagonal
+  line represents random classification of tracks as true and false.}
+  \label{fig:feature_grid}
+\end{figure}
+
+
+For the $\chi^2$ value, 120 equally distributed cut values in [0,3] and for the kink angles the same number of cuts in [0, 0015] are applied. Only the absolute value of the
+kink angles is taken from the data set, as their distribtution is assumed to be symmetric around their mean. Each area under the curve (auc) is noticeably larger than the diagonal
+one, which means that each individual cut improves the ratio of true to false tracks. The specific values of the areas are $\chi^2_{\text{auc}} = 0.615$,
+$\phi_{x,3,\text{auc}} = 0.617$ and $\phi_{x,4,\text{auc}} = 0.587$. Cuts on $\chi^2$ and $\phi_{x,3}$ are similarly effective, while cuts $\phi_{x,4}$ are slightly
+less effective than the other two. The combination of cuts from the grid search has an even better ratio of TPR to FPR than point on the ROC curve, indicating the
+effectiveness of the combination of cuts on the three features.
+
+In comparison to the ratio without cuts $9096/23304 = 0.390$, the number of true tracks divided by the number of overall tracks increased by $\SI{22.3}{\percent}$. Due to
+the feature cuts, 2595 true tracks and 9672 false tracks are rejected. \\
 Thus, the feature cuts showed in improvement for the track reconstruction of high track density beams. Due to the limited amount of features to cut on, the aquired ratio
 is still not optimal for the use of proton computed tomography.
