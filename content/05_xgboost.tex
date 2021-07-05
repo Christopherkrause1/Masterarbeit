@@ -134,15 +134,44 @@ large sets, with the learner training on four of them and evaluating on the last
 parameter combination five runs are performed. The area under the ROC curve serves as the scoring function to measure how good the predicition on the test data set is.
 A mean of the five auc values represents the score, which is compared in the grid search. Thus, the cross validation helps to compensate for variability in the simulated
 data to derive an accurate estimate of the predictive power of the model. \\
-The maximal auc of $0.579(3)$ is achieved with a maximum tree depth of 5, $\eta=0.7$, $\gamma=5$ and $\theta=25$. With $\gamma=5$, the result of the grid search of the remaining
+The maximal AUC of $0.579(3)$ is achieved with a maximum tree depth of 5, $\eta=0.7$, $\gamma=5$ and $\theta=25$. With $\gamma=5$, the result of the grid search of the remaining
 parameters can be visualized and is shown in figure \ref{fig:grid}
 
 \begin{figure}
   \centering
   \includegraphics[height=0.6\textwidth]{plots/grid_search.pdf}
   \caption{The mean test score referring to the auc for the different hyper parameter configurations with the errorbars being the standard deviation of the mean. The
-  smaller bars refer to $\eta$ and the larger bars to $\theta$. A maximal auc is marked in red.}
+  smaller bars refer to $\eta$, the larger bars to $\theta$ and the red marked value to the maximal AUC.}
   \label{fig:grid}
 \end{figure}
 
+Varying the values of the hyper parameters only causes small changes in the mean test score, especially the learning rate has a negligible influence on the AUC. Taking the
+standard deviations into account makes it impossible to determine, wether the best combination of hyper parameters actually have the highest AUC. However, due to the
+small differences, no significant impact is to be expected in this case. For that reason, the above mentioned hyper parameter values are chosen for training and testing the model.
+
 \section{Machine learning results}
+To compare the performance of the learner on the train and test data, the normalised distribution of the output probabilities are investigated.
+These are shown in figure \ref{fig:output} alongside the corresponding differences.
+
+\begin{figure}
+  \hspace{-2.5cm}
+  %\centering
+  \begin{subfigure}{0.62\textwidth}
+      \centering
+      \includegraphics[height=0.82\textwidth]{plots/output_normed.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/output_difference.pdf}
+  \end{subfigure}
+  \caption{Normalised probabilitiy distributions of tracks being true and false for the train and test data set shown on the left.
+  The corresponding differences between the performance on the training and testing data is shown on the right.}
+  \label{fig:output}
+\end{figure}
+
+The distribtions of the train and test data predictions show small differences, indicating that no signifiacnt overtraining occurs during the training process.
+%For both true and false tracks, the greatest deviations are found at their most probable value, between 0.8 and 0.9.
+Both true and false tracks have a maximum around 0.8 as their most probable value, though the peak for the true tracks is higher due to the larger number
+of false tracks assigned to small probabilities of being true. Also noteworthy is, that a neglicable number of tracks have a probability of 0.9 and higher. This means that
+with the given input, a lot of false combinations of clusters still show similar properties to true tracks.
