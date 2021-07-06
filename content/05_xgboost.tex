@@ -175,3 +175,56 @@ The distribtions of the train and test data predictions show small differences, 
 Both true and false tracks have a maximum around 0.8 as their most probable value, though the peak for the true tracks is higher due to the larger number
 of false tracks assigned to small probabilities of being true. Also noteworthy is, that a neglicable number of tracks have a probability of 0.9 and higher. This means that
 with the given input, a lot of false combinations of clusters still show similar properties to true tracks.
+
+The usefullness of the individual features to classify the reconstructed tracks can be quantified with the number of times each feature was split on.
+This feature importance score is shown in figure \ref{fig:importance}.
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.6\textwidth]{plots/feature_importance_all.pdf}
+  \caption{The number of splits of each feature used as input for the learner.}
+  \label{fig:importance}
+\end{figure}
+
+All three features, which proved to be useful for classifying tracks with cuts have a high feature score, highlighting their importance for separating true and false tracks.
+Other features with a high number of splits, like the vertical kink angle of the second plane can still be useful for the learner in combination with other features, even though
+their use for classifying on their own is insignificant.
+
+To evaluate the predictive power of the learner, a ROC curve can be constructed for several thresholds of classifying tracks as true and false in regard to
+their probability. The ROC curves for the test and train data set are shown in figure \ref{fig:auc_comparison} alongside the ROC curves of the feature cuts from section \ref{sec:feature}.
+
+
+\begin{figure}
+  \hspace{-2.5cm}
+  %\centering
+  \begin{subfigure}{0.62\textwidth}
+      \centering
+      \includegraphics[height=0.82\textwidth]{plots/roc_curve_learner.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/feature_cuts_auc.pdf}
+  \end{subfigure}
+  \caption{ROC curves of the machine learner for the train and test data set shown on the left. In comparison, the ROC curves for the individual feature cuts as well as the
+  TPR and FPR of the best combination of cuts for all three features.}
+  \label{fig:auc_comparison}
+\end{figure}
+
+With the AUC of each ROC curve, the performances of the classifying methods can be compared. Table \ref{tab:AUC} lists each of the AUC.
+
+\begin{table}
+  \centering
+  \begin{tabular}{c | c c c c c}
+    \toprule
+      & Train & Test & $\chi^2$ & $\phi_{x,3}$ & $\phi_{x,4}$\\
+    \midrule
+    AUC & 0.779 & 0.756 & 0.615 & 0.617 & 0.587 \\
+  \end{tabular}
+  \caption{Area Under the Curve for the feature cuts and the train and test data of the machine learner.}
+  \label{tab:AUC}
+\end{table}
+
+The ROC curves of the learner have a noticebly higher AUC than the individual feature cuts and have a better ratio of TPR and FPR for each possible cut, showing the effectiveness
+of using machine learning for track classification in comparison to individual feature cuts. For the best combination of cuts, the ratio of the TPR and FPR is still worse than
+corresponding points on the ROC curve of the test data. This means that for the same FPR of the two methods, the learner consistently achieves a better TPR.  
