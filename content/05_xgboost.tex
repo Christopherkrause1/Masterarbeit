@@ -227,4 +227,16 @@ With the AUC of each ROC curve, the performances of the classifying methods can 
 
 The ROC curves of the learner have a noticebly higher AUC than the individual feature cuts and have a better ratio of TPR and FPR for each possible cut, showing the effectiveness
 of using machine learning for track classification in comparison to individual feature cuts. For the best combination of cuts, the ratio of the TPR and FPR is still worse than
-corresponding points on the ROC curve of the test data. This means that for the same FPR of the two methods, the learner consistently achieves a better TPR.  
+comparable points on the ROC curve of the test data. This means that for the same FPR of the two methods, the learner consistently achieves a better TPR.
+
+Further optimisation of the machine learning results are possible, considering that at most only one track of each cluster
+on the first and last pane is part of a true track. By only keeping the track of clusters that has the highest probability of being true, it enables the rejection of
+false positive tracks. The ROC curve of the test data with the rejection of tracks is shown in figure \ref{fig:rejection}.
+
+
+\begin{figure}
+  \centering
+  \includegraphics[height=0.6\textwidth]{plots/roc_curve_learner_rejection.pdf}
+  \caption{ROC curves of the train and test data set and the test data set including the rejection of all but one track from clusters with on the first and last plane.}
+  \label{fig:rejection}
+\end{figure}
