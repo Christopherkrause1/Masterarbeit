@@ -1,30 +1,40 @@
 \chapter{Testbeam}
-Studying the properties of sensor modules is crucial for an optimal performance of particle detectors. The new pixel modules used for the ATLAS ITk upgrade have to be thoroughly
-tested in terms of efficiency and radiation hardness to fulfill the necessary requirements for their installment.
-In order to evaluate the sensor's performance they are irradiated in testbeam experiments similar to the conditions in the LHC.
-These beam test measurements are performed mainly in two testbeam facilities, being located at Cern and Deutsches Elektronen Synchrotron (DESY). Sensors that are planned to be
-installed in the ATLAS ITk are tested at DESY during the LS2.
+Studying the properties of sensor modules is crucial for an optimal performance of particle detectors.
+%The new pixel modules used for the ATLAS ITk upgrade have to be thoroughly
+%tested in terms of efficiency and radiation hardness to fulfill the necessary requirements for their installment.
+In order to evaluate the performance of the sensor they are irradiated in testbeam experiments similar to the conditions in the LHC.
+These beam test measurements are performed in testbeam facilities, with one being being located at Deutsches Elektronen Synchrotron (DESY).
+%Sensors that are planned to be installed in the ATLAS ITk are tested at DESY during the LS2.
 
-\section{DESY Testbeam}
-DESY is a national research center located in Hamburg. It operates the electron synchrotron DESY II since 1987 initially to accelerate electrons before injecting them into
-HERA, the largest synchrotron at DESY. After the shut down of HERA in 2007, DESY II is now used for testbeam measurements. It produces an electron beam with energies up to
+DESY is a national research center located in Hamburg.
+%It operates the electron synchrotron DESY II since 1987 initially to accelerate electrons before injecting them into
+%HERA, the largest synchrotron at DESY. After the shut down of HERA in 2007, DESY II is now used for testbeam measurements.
+It produces an electron beam with energies up to
 $\SI{7}{\GeV}$, which collides with a carbon fiber target creating bremsstrahlung in the process. The photons are extracted and collide with a secondary target
-converting them to electron-positron pairs. A dipole magnet behind the target creates a homogenous magnetic field to filter out unwanted energies and particles. This process
+converting them to electron-positron pairs. A dipole magnet behind the target creates a homogenous magnetic field to select the desired energy and particle type. This process
 is shown schematically in figure \ref{fig:testbeam}.
 
 \begin{figure}
   \centering
-  \includegraphics[height=0.4\textwidth]{images/desy.png}
+  \includegraphics[height=0.4\textwidth]{images/desy_modified.jpg}
   \caption{Depiction of the beam generation in testbeam experiments going through the beam line TB21 \cite{testbeam}.}
   \label{fig:testbeam}
 \end{figure}
 
-The permanently installed EUDET-type Pixel Beam telescopes DATURA and DURANTA are located behind the beamlines TB21 and TB22 and enable the tracking of the particles
-produced by DESY II. Both telescopes consist of six Mimosa26 monolithic active pixel sensors with %a pixel pitch of $\SI{18.4}{\micro\meter} \times \SI{18.4}{\micro\meter}$.
-three sensors each incorporated into one arm of the telescope and the DUT's being placed in between. A polystyrene box filled with dry ice is used to cool the DUT's to
-avoid annealing and other unwanted effects due to heat. For time references during the measurements, an FE-I4 sensor is placed behind the telescope with a
-time resolution of $\SI{25}{\nano\second}$ The sensors contain $336 \times 80$ pixels with a
-$\SI{50}{\micro\meter} \times \SI{250}{\micro\meter}$ pixel pitch. Figure \ref{fig:telescope} shows the telescope setup of DATURA.
+The permanently installed EUDET-type Pixel Beam telescopes DATURA and DURANTA are located in the beamlines TB21 and TB22 and enable the tracking of the particles
+produced by DESY II. Both telescopes consist of six Mimosa26 monolithic active pixel sensors \cite{mimosa26} with %a pixel pitch of $\SI{18.4}{\micro\meter} \times \SI{18.4}{\micro\meter}$.
+three sensors each incorporated into one arm of the telescope and the device under test (DUT) being placed in between. \\
+The Mimosa26 sensors are fabricated in a standard $\SI{0.35}{\micro\meter}$ CMOS process with a fast binary read-out.
+%size of $\SI{13.7}{\milli\meter} \times \SI{21.5}{\milli\meter}$.
+Signals are measured with a time resolution of $\SI{230}{\micro\second}$ with each measurement in a read-out cycle belonging to the same event.
+They contain $576 \times 1152$ pixels with a pixel pitch of $\SI{18.4}{\micro\meter} \times \SI{18.4}{\micro\meter}$
+and a thickness of $\SI{50}{\micro\meter}$.
+
+For time references during the measurements, an FE-I4 sensor \cite{fei4} is placed behind the telescope with a
+time resolution of $\SI{25}{\nano\second}$. The sensor contains 336 rows and 80 columns of pixels with a
+$\SI{250}{\micro\meter} \times \SI{50}{\micro\meter}$ pixel pitch. Figure \ref{fig:telescope} shows the telescope setup of DATURA. \\
+A polystyrene box filled with dry ice can be used to cool the DUT's to
+avoid annealing and other unwanted effects due to heat and also to prevent the interaction of light with the sensors.
 
 %\begin{figure}
 %  \centering
@@ -50,20 +60,14 @@ $\SI{50}{\micro\meter} \times \SI{250}{\micro\meter}$ pixel pitch. Figure \ref{f
   \label{fig:telescope}
 \end{figure}
 
-The Mimosa26 sensors are fabricated in a standard $\SI{0.35}{\micro\meter}$ CMOS process with a fast binary read-out
-%size of $\SI{13.7}{\milli\meter} \times \SI{21.5}{\milli\meter}$.
-Signals are measured with a time resolution of $\SI{230}{\micro\second}$ with each measurement in a read-out cycle belonging to the same event.
-They contain $576 \times 1152$ pixels with a pixel pitch of $\SI{18.4}{\micro\meter} \times \SI{18.4}{\micro\meter}$
-and a thickness of $\SI{50}{\micro\meter}$.
 
-The generic data acquisition framework EUDAQ records the data produced in testbeam experiments. It centrally handles the data flow and synchronises data stream to enable
-the integration of different independent devices under test. An exemplary setup of a beam telescope with EUDAQ is shown in figure \ref{fig:eudaq_bild}.
-More information in \cite{eudaq}.
+The generic data acquisition framework EUDAQ \cite{eudaq} records the data produced in testbeam experiments. It centrally handles the data flow and synchronises data stream to enable
+the integration of different independent devices under test. A schematic setup of a beam telescope with EUDAQ is shown in figure \ref{fig:eudaq_bild}.
 
 \begin{figure}
   \centering
-  \includegraphics[height=0.4\textwidth]{images/eudaq.png}
-  \caption{Necessary components for an analogue telescope \cite{eudaq_bild}.}
+  \includegraphics[height=0.4\textwidth]{images/eudaq_2.png}
+  \caption{Necessary components for an analogue telescope \cite{eudaq_bild_2}.}
   \label{fig:eudaq_bild}
 \end{figure}
 
