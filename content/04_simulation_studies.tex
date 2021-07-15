@@ -13,7 +13,7 @@ Therefore, a $\SI{200}{\mega\eV}$ proton beam is used in this analysis.
   \centering
   \includegraphics[height=0.45\textwidth]{images/phantom_proton_4.jpg}
   \caption{Schematic representation of the telescope used for the reconstruction of proton computed tomography. For the real
-  case, a patient replaces the DUT sensor.}
+  application, a patient replaces the DUT sensor.}
   \label{fig:phantom}
 \end{figure}
 
@@ -28,10 +28,10 @@ which is explained in the following section.
 \section{The simulation software Allpix$^2$}
 Allpix$^2$ is a generic simulation framework developed at CERN to simulate the performance of silicon detectors and was released in 2017.
 It builds upon the
-Geant4 \cite{geant4} package to perform tasks in the simulation chain. The main tasks of Allpix$^2$ is the simulation of energy depositions of particles
+Geant4 \cite{geant4} package to perform tasks in the simulation chain. The main tasks of Allpix$^2$ are the simulation of energy depositions of particles
 in the sensors, the propagation of charge carriers in the sensor material, and the digitization of the signal. It has a modular
 structure to ensure easy handling, while still allowing for complex detector simulations.
-Instantiation and processing of the modules is done by the core of the framework,
+Instantiation and processing of the modules are done by the core of the framework,
 which contains five subsystems. This includes the configuration containing the configuration manager, which grants access to the configuration file, the
 module subsystem, which loads and executes the modules, and the geometry subsystem, which provides the information of the telescope setup.
 Objects are transferred from one module to another with the messenger subsystem.
@@ -55,7 +55,7 @@ The world frame of the simulation is created with the GeometryBuilderGeant4 modu
 Afterwards, all detectors from the internal detector models and passive material models are created according to the specifications in the geometry file.
 
 Charge carriers are deposited in the active volume with the DepositionGeant4 module, which initializes the simulation of particles. The shape of the source beam, as well
-as the type of particle and its energy, can be specified. Further parameters are the width of the beam, its angular distribution based on a Gaussian distribution and the energy
+as the type of particle and its energy, can be specified. Further parameters are the width of the beam, its angular distribution based on Gaussian distribution, and the energy
 uncertainty of the simulated particles. All particles created at the same time define an event. The number of generated electron-hole pairs is calculated with the
 mean pair creation energy and is subject to fluctuations, which are defined by the fano factor.
 
@@ -64,8 +64,8 @@ There are three types of electric field models available, constant electric fiel
 linear electric fields being used in the scope of this thesis. The constant slope of linear electric fields is defined by the bias voltage and the
 depletion voltage of the sensor. Optionally, the depletion depth instead of the depletion voltage can be specified.
 
-Either with the ProjectionPropagation or the GenericPropagation module, the transport of charge carriers through the sensitive material are simulated.
-The first module projects electrons or hole onto the surface and performs a randomized diffusion based on a two-dimensional Gaussian distribution around
+Either with the ProjectionPropagation or the GenericPropagation module, the transport of charge carriers through the sensitive material is simulated.
+The first module projects electrons or holes onto the surface and performs a randomized diffusion based on a two-dimensional Gaussian distribution around
 the projection. Using an approximation of the drift time makes it possible to determine the diffusion width under the assumption of a linear electric field. This
 module saves computing time at the cost of accuracy. \\
 The GenericPropagation module consists of a combined simulation of diffusion and drift calculated with a Runge-Kutter-Fehlberg method.
@@ -89,7 +89,7 @@ data in formats compatible with the EUTelescope and Corryvreckan software with t
 determine what information of the Allpix$^2$ simulation is written into the ROOT files.
 
 \section{Simulated setup}
-Unlike conditions present in testbeam experiments, protons in pct have significant lower energy than the $\SI{5}{\giga\eV}$
+Unlike conditions present in testbeam experiments, protons in pct have a significant lower energy than the $\SI{5}{\giga\eV}$
 electron beam produced by DESY II and a higher particle density, creating different and more complex particle tracks for
 Corryvreckan to reconstruct. Since Corryvreckans performance in regards to these properties will be investigated, uncertainties
 of the sensor position and orientation, as well as the beam energy and direction are set to zero. The simulated
@@ -116,7 +116,7 @@ in straight lines.
 No fluctuation in the proton energy is simulated and only one particle traverses
 the telescope per event. All simulations in this chapter have a random seed of zero to make the results more comparable by preventing
 statistical differences.
-The residual in x- and y-direction are shown in figure \ref{fig:100GeV}.
+The residual in the x- and y-direction are shown in figure \ref{fig:100GeV}.
 
 \begin{figure}
   \hspace{-2.5cm}
@@ -136,8 +136,8 @@ The residual in x- and y-direction are shown in figure \ref{fig:100GeV}.
 \end{figure}
 
 Especially notable is the five-peak structure of the residual in the horizontal direction, which is caused by the different
-spatial resolution of subsequent planes. With the horizontal pixel pitch of the non rotated sensors being
-five times larger than the other two, the granularity increases by a ratio of the different pitches, in this case
+spatial resolution of subsequent planes. With the horizontal pixel pitch of the non-rotated sensors being
+five times larger than the other two, the granularity increases by a ratio of the different pitches, in this case,
 $\SI{250}{\micro\meter}/\SI{50}{\micro\meter} = 5$. This effect is shown schematically in figure \ref{fig:peaks}.
 
 \begin{figure}
@@ -149,8 +149,8 @@ $\SI{250}{\micro\meter}/\SI{50}{\micro\meter} = 5$. This effect is shown schemat
 \end{figure}
 
 For the vertical residual of the first plane, only one peak is visible due to the lower spatial resolution, while the rotated planes
-in this direction exhibit a five-peak structure. The peaks in the residual are narrow due to the fact that no uncertainties in regards
-to the sensor positions, sensor inefficiencies, or spread in the energy of the particles is simulated. When taking these into account, the
+in this direction exhibit a five-peak structure. The peaks in the residual plot are narrow due to the fact that no uncertainties in regards
+to the sensor positions, sensor inefficiencies, or spread in the energy of the particles are simulated. When taking these into account, the
 five peaks broaden to a Gaussian profile.
 
 The number of reconstructed tracks per event is shown in table \ref{tab:cluster_per_track} and indicates how often the proton is
@@ -210,17 +210,17 @@ The horizontal residuals for the third plane for 50000 protons with an energy of
       \hspace{0.95cm}
       \includegraphics[height=0.82\textwidth]{plots/5GeV_residualX_tel2.pdf}
   \end{subfigure}
-  \caption{Residuals in x-direction for the third plane in the telescope with a proton energy of $\SI{20}{\giga\eV}$ on the left
+  \caption{Residuals in the x-direction for the third plane in the telescope with a proton energy of $\SI{20}{\giga\eV}$ on the left
   and $\SI{5}{\GeV}$ on the right. A total of 50000 protons were generated in each simulation and a matching radius of $\SI{750}{\micro\meter}$ is applied. The third plane has
   a horizontal pixel pitch of $\SI{250}{\micro\meter}$.}
   \label{fig:20GeV}
 \end{figure}
 
-The five-peak structure starts to smear for $\SI{20}{\giga\eV}$ protons, since the protons are more likely to scatter under larger angles causing secondary maxima.
-For $\SI{5}{\GeV}$ protons, the structure is mostly vanished implying a significant number of non linear tracks. Both simulations show that most
+The five-peak structure starts to smear for $\SI{20}{\giga\eV}$ protons since the protons are more likely to scatter under larger angles causing secondary maxima.
+For $\SI{5}{\GeV}$ protons, the structure is mostly vanished implying a significant number of non-linear tracks. Both simulations show that most
 protons tracks can still be reconstructed.
 
-Since the proton energy used in pct is approximately $\SI{200}{\mega\eV}$, further simulation with even lower energies are created, while all other paramters stay constant.
+Since the proton energy used in pct is approximately $\SI{200}{\mega\eV}$, further simulations with even lower energies are created, while all other parameters stay constant.
 The horizontal residuals for proton energies below $\SI{1}{\giga\eV}$ are depicted in \ref{fig:low}.
 
 \begin{figure}
@@ -245,21 +245,21 @@ The horizontal residuals for proton energies below $\SI{1}{\giga\eV}$ are depict
       \hspace{-1.5cm}
       \includegraphics[height=0.82\textwidth]{plots/150MeV_residualX_tel2.pdf}
   \end{subfigure}
-  \caption{Residuals in x-direction for the third plane in the telescope with a proton energy of $\SI{750}{\mega\eV}$ on the upper left, $\SI{500}{\mega\eV}$ on the
-  upper right, $\SI{250}{\mega\eV}$ on the lower left
+  \caption{Residuals in the x-direction for the third plane in the telescope with a proton energy of $\SI{750}{\mega\eV}$ on the upper left, $\SI{500}{\mega\eV}$ on the
+  upper right, $\SI{250}{\mega\eV}$ on the lower left,
   and $\SI{150}{\mega\eV}$ on the right. A total of 50000 protons were generated in each simulation and a matching radius of $\SI{750}{\micro\meter}$ is applied. The third plane has
   a horizontal pixel pitch of $\SI{250}{\micro\meter}$.}
   \label{fig:low}
 \end{figure}
 
-All four residual plots have a defined maximum due to highly non linear tracks. By gradually lowering the enegy the standard deviation of the residual shrinks. While,
-this might seem like the accuracy of the telescope and the track reconstruction increased, it is simply the consequence of the increasing number of protons scattering
-out of the telescope and therefore do not deposit energy in each sensor. Since this is a requirement for a reconstructed track, the number of fitted tracks decreases
+All four residual plots have a defined maximum due to highly non-linear tracks. By gradually lowering the energy the standard deviation of the residual shrinks. While
+it seems like the accuracy of the telescope and the track reconstruction increased, it is simply the consequence of the increasing number of protons scattering
+out of the telescope, which therefore do not deposit energy in each sensor. Since this is a requirement for a reconstructed track, the number of fitted tracks decreases
 noticeably, especially between $\SI{250}{\mega\eV}$ and $\SI{150}{\mega\eV}$. The first tracks that are lost for lower energies
 are the ones with a high absolute value of the residual, as they are more likely to leave the telescope before traversing all sensors. \\
 While the reconstruction of low energy protons and their complex path is possible, the number of reconstructable tracks decreases with lower energies.
 Since it is still necessary to have a sufficient amount of tracks for a pct image, one method to counter this problem is in irradiating the patient longer.
-An additional problem arises due to the increasing number of multiple coulomb scattering inside the patient, which inevitably decreases the spatial resolution of the image.
+An additional problem arises due to the increasing number of multiple Coulomb scattering inside the patient, which inevitably decreases the spatial resolution of the image.
 However, the used energy reason still allows for a successful track reconstruction of protons for pct.
 
 
@@ -269,7 +269,7 @@ per time frame. To analyse how Corrvreckan reconstructs a high track density bea
 simulation is increased, while the proton energy is kept constant at $\SI{200}{\mega\eV}$. Other parameters are identical to previous simulations.
 
 \section{Track multiplicities}
-The track multiplicity, meaning number of reconstructed tracks per event, for 25 and 50 particles simulated in an event is shown in figure \ref{fig:multiplicity}. To take the different spatial resolutions of the sensors in x- and y-direction into account, a relative
+The track multiplicity, meaning number of reconstructed tracks per event, for 25 and 50 particles simulated in an event is shown in figure \ref{fig:multiplicity}. To take the different spatial resolutions of the sensors in the x- and y-direction into account, a relative
 spatial cut of 15.1 is applied in the reconstruction. Unlike absolute spatial cuts, relative cuts are used construct a
 matching radius by multpiling the spatial resolution
 of each sensor by the specified factor, creating an ellipse in the process.
@@ -394,7 +394,7 @@ Corryvreckan reconstructed a total of 23304 tracks, of which 9096 tracks have a 
 
 Kinks describe angles, which arise due to the scattering of particles and the resulting change of direction. Particles have kinks for each sensor plane, with the kink being
 the angle between the initial direction and the direction after scattering. These angles are crucial features of a track fit and therefore important parameters to investigate.
-Figure \ref{fig:kinks} depicts the kink angles $\phi$ in x- and y-direction for the third and fourth sensor plane divided in the distribution of true and false reconstructed tracks.
+Figure \ref{fig:kinks} depicts the kink angles $\phi$ in the x- and y-direction for the third and fourth sensor plane divided in the distribution of true and false reconstructed tracks.
 
 \begin{figure}
   %\centering

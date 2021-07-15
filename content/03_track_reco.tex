@@ -61,7 +61,7 @@ avoid annealing and other unwanted effects due to heat and also to prevent the i
 \end{figure}
 
 
-The generic data acquisition framework EUDAQ \cite{eudaq} records the data produced in testbeam experiments. It centrally handles the data flow and synchronises data stream to enable
+The generic data acquisition framework EUDAQ \cite{eudaq} records the data produced in testbeam experiments. It centrally handles the data flow and synchronises data streams to enable
 the integration of different independent devices under test. A schematic setup of a beam telescope with EUDAQ is shown in figure \ref{fig:eudaq_bild}.
 
 \begin{figure}
@@ -155,7 +155,7 @@ Corryvreckan is a fast and lightweight track reconstruction framework released i
 Since the development and support of the EUTelescope discontinued, Corryvreckan is planned to supersede the former as the primarily used track
 reconstruction software. Its main advantage is the minimal amount of external dependencies connected to the software and the more user-friendly usage of
 it.
-Corryvreckans structure is based on the modular concept of the simulation software Allpix$^2$, making the software flexible and ensures to meet the requirements for track reconstruction in
+Corryvreckans structure is based on the modular concept of the simulation software Allpix$^2$, making the software flexible and ensures it meets the requirements for track reconstruction in
 complex environments. Global parameters and modules used for the track reconstruction are specified in the configuration file, which starts the event loop upon
 executing. Data and the geometry of the setup are both imported into the configuration file as well. A reference sensor has to be specified in the geometry folder
 for which the rest of the telescope is aligned with.
@@ -171,7 +171,7 @@ EventloaderEUDAQ module, which requires the EUDAQ library as an external depende
 with the FileReader module, which is mainly used for simulated data or data written out with the FileWriter module.
 
 The clustering process can be either done with the Clustering4D or the ClusteringSpatial module, with the former being the standard clustering module taking hit timestamps
-into account. Spatial and timing cuts can be defined by the user either through absolute values or relative factors multiplied by the sensor's spatial and time resolution. Both
+into account. Spatial and timing cuts can be defined by the user either through absolute values or relative factors multiplied by the spatial and time resolution of the sensor. Both
 center-of-gravity or arithmetic mean calculations for the cluster centre can be chosen.
 
 
@@ -185,7 +185,7 @@ To calculate the applied shifts, the mean of the 1D correlation
 histograms of each detector is used. A  relative or absolute time cut can be specified.
 
 Reconstructing tracks from cluster centres can then be accomplished with the Tracking4D or Trackingspatial module. Similar to the clustering modules, only the former
-takes timestamp information into account and is therefore the standard track reconstruction module. For the track finding process, clusters on the first plane are
+takes timestamp information into account and is, therefore, the standard track reconstruction module. For the track finding process, clusters on the first plane are
 related to clusters close in time on subsequent planes using straight lines.
 The Tracking4D module has two possible track models, straight lines as the default setting and general
 broken lines, for fitting. General broken lines account for multiple Coulomb scattering and consider scattering at every sensor plane as well as the surrounding air.
@@ -194,7 +194,7 @@ of clusters necessary to fit a track. The DUT can be included reconstruction pro
 
 
 To align the telescope, the AlignmentTrackChi2 module is used. It performs rotational and translational telescope
-alignment according to minimise the $\chi^2$ value by iterating through all planes and refitting the tracks after alignment. Cuts on the $\chi^2$ value can be
+alignment to minimise the $\chi^2$ value by iterating through all planes and refitting the tracks after alignment. Cuts on the $\chi^2$ value can be
 applied to only keep high-quality tracks. Furthermore, the number of iterations of the alignment method can be specified.
 
 After successful alignment, the DUTAssociation module uses the cluster information of the DUT to establish an association with reconstructed tracks. Again, absolute
@@ -221,7 +221,7 @@ The chosen data sample is batch 3 of a DESY testbeam run from june 2020. Besides
 as DUT's in between the triplets and a FEI4 sensor as a time reference behind the telescope. The RD53a sensors are pixel sensors
 manufactured in a $\SI{65}{\nano\meter}$ CMOS technology with a matrix of (400 $\times$ 192) \textmu m$^2$ pixels of
 (50 $\times$ 50) \textmu m$^2$ size. Electrons with an energy of $\SI{5}{\GeV}$ were used to irradiate the sensors.
-To compare the two software, the results of each individual
+To compare the two software, the results of each
 reconstruction step are analysed. \\
 
 \section{Clustering}
@@ -260,7 +260,7 @@ residual curve reflects the spatial resolution $\sigma$ of a sensor, making the 
 for successful track reconstruction. Here, the spatial resolution is defined as ${\sigma = p/\sqrt{12}}$ with $p$ being the
 pixel pitch of the sensor.
 
-Figure \ref{fig:residualX} depicts the residuals of the second plane in x-direction calculated by both frameworks. Three iterations
+Figure \ref{fig:residualX} depicts the residuals of the second plane in the x-direction calculated by both frameworks. Three iterations
 of the alignment step have been performed and the tracks are reconstructed with a general broken lines algorithm in both software.
 
 \begin{figure}
@@ -275,7 +275,7 @@ of the alignment step have been performed and the tracks are reconstructed with 
       \hspace{0.95cm}
       \includegraphics[height=0.82\textwidth]{plots/june_residualX_tel1_EU.pdf}
   \end{subfigure}
-  \caption{Residual in x-direction of the second sensor plane calculated by Corryvreckan on the left and EUTelescope on the right.}
+  \caption{Residual in the x-direction of the second sensor plane calculated by Corryvreckan on the left and EUTelescope on the right.}
   \label{fig:residualX}
 \end{figure}
 
@@ -286,7 +286,7 @@ the center-of-gravity algorithm used for calculating the cluster center. While t
 only be as accurate as the spatial resolution of the pixels, weighting the amount of deposited charge in each pixel increases the
 spatial resolution of the particle hit position for clusters with more than one pixel. Since the number of clusters with more than
 one pixel is non-negligible, shown in figure \ref{fig:cluster_size}, the standard deviation of the residuals is expected to be
-smaller than the sensor's spatial resolution, further indicating a valid track reconstruction for both frameworks.
+smaller than the spatial resolution of the sensor, further indicating a valid track reconstruction for both frameworks.
 
 \section{DUT residuals}
 After the final track reconstruction with the telescope, the hit information on the DUT planes is compared to the
@@ -316,7 +316,7 @@ x- and y-direction are shown for the FEI4 sensor.
       \hspace{0.95cm}
       \includegraphics[height=0.82\textwidth]{plots/june_residualY_dut2_EU.pdf}
   \end{subfigure}
-  \caption{Residuals of the FEI4 sensor in x-direction in upper row and y-direction in the lower row. The plots on the left
+  \caption{Horizontal residuals of the FEI4 sensor in the upper row and the vertical residuals in the lower row. The plots on the left
   were created with Corryvreckan and the plots on the right with EUTelescope.}
   \label{fig:residual_dut}
 \end{figure}

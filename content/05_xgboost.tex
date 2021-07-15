@@ -31,8 +31,8 @@ The model used by the XGBoost library is the decision tree ensemble, which consi
 A CART assigns a prediction score to each of the leaves in which the input features are classified. The prediction of a single tree is usually not accurate,
 therefore the prediction of numerous trees is summed together. This method can be written mathematically as:
 \begin{align}
-  &\hat{y}_i = \sum_{k=1}^K f_k(x_i)\,, \: f_k \in \mathcal{F} \\
-  &\text{obj}(\Theta) = \sum_i^n l(y_i, \hat{y}_i) + \sum_{k=1}^K \Omega(f_k)
+  \hat{y}_i &= \sum_{k=1}^K f_k(x_i)\,, \: f_k \in \mathcal{F} \\
+  \text{obj}(\Theta) &= \sum_i^n l(y_i, \hat{y}_i) + \sum_{k=1}^K \Omega(f_k)
 \end{align}
 Where $K$ is the number of trees, $\mathcal{F}$ the set of all possible CARTs and $f$ a function in $\mathcal{F}$. A decision tree ensemble is shown exemplary in
 figure \ref{fig:random_forest}.
@@ -230,8 +230,8 @@ of using machine learning for track classification in comparison to individual f
 comparable points on the ROC curve of the test data. This means that for the same FPR of the two methods, the learner consistently achieves a better TPR.
 
 Further optimisation of the machine learning results are possible, considering that at most only one track of each cluster
-on the first and last pane is part of a true track. By only keeping the track of clusters that has the highest probability of being true, it enables the rejection of
-false positive tracks. The ROC curve of the test data with the rejection of tracks is shown in figure \ref{fig:rejection}.
+on the first and last pane can be true. By only keeping the track of clusters that has the highest probability of being true, it enables the rejection of
+false tracks. The ROC curve of the test data with the rejection of tracks is shown in figure \ref{fig:rejection}.
 
 
 \begin{figure}
