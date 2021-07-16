@@ -1,9 +1,9 @@
-\chapter{Testbeam}
-Studying the properties of sensor modules is crucial for an optimal performance of particle detectors.
+\chapter{DESY beam test}
+Studying the properties of sensors is crucial for an optimal performance of particle detectors.
 %The new pixel modules used for the ATLAS ITk upgrade have to be thoroughly
 %tested in terms of efficiency and radiation hardness to fulfill the necessary requirements for their installment.
-In order to evaluate the performance of the sensor they are irradiated in testbeam experiments similar to the conditions in the LHC.
-These beam test measurements are performed in testbeam facilities, with one being being located at Deutsches Elektronen Synchrotron (DESY).
+In order to evaluate the performance of the sensor they are irradiated in beam test experiments similar to the conditions in the LHC.
+These beam test measurements are performed in test beam facilities, with one being being located at Deutsches Elektronen Synchrotron (DESY).
 %Sensors that are planned to be installed in the ATLAS ITk are tested at DESY during the LS2.
 
 DESY is a national research center located in Hamburg.
@@ -17,7 +17,7 @@ is shown schematically in figure \ref{fig:testbeam}.
 \begin{figure}
   \centering
   \includegraphics[height=0.4\textwidth]{images/desy_modified.jpg}
-  \caption{Depiction of the beam generation in testbeam experiments going through the beam line TB21 \cite{testbeam}.}
+  \caption{Depiction of the beam generation in beam test experiments going through the beam line TB21 \cite{testbeam}.}
   \label{fig:testbeam}
 \end{figure}
 
@@ -61,7 +61,7 @@ avoid annealing and other unwanted effects due to heat and also to prevent the i
 \end{figure}
 
 
-The generic data acquisition framework EUDAQ \cite{eudaq} records the data produced in testbeam experiments. It centrally handles the data flow and synchronises data streams to enable
+The generic data acquisition framework EUDAQ \cite{eudaq} records the data produced in beam test experiments. It centrally handles the data flow and synchronises data streams to enable
 the integration of different independent devices under test. A schematic setup of a beam telescope with EUDAQ is shown in figure \ref{fig:eudaq_bild}.
 
 \begin{figure}
@@ -182,7 +182,7 @@ the reference sensor.
 
 The Prealignment module accounts for major translational misplacements of sensors and performs translational shifts along the X and Y axis of up to several millimeters to ensure a proper alignment later on, as higher misalignments might cause the main alignment process to not converge correctly.
 To calculate the applied shifts, the mean of the 1D correlation
-histograms of each detector is used. A  relative or absolute time cut can be specified.
+histograms of each sensor is used. A relative or absolute time cut can be specified.
 
 Reconstructing tracks from cluster centres can then be accomplished with the Tracking4D or Trackingspatial module. Similar to the clustering modules, only the former
 takes timestamp information into account and is, therefore, the standard track reconstruction module. For the track finding process, clusters on the first plane are
@@ -217,7 +217,7 @@ the different modules used for general track reconstruction. The entire Corryvre
 \chapter{Comparison of EUTelescope and Corryvreckan}\label{make}
 Before using Corryvreckan to reconstruct particles for proton computed tomography, it is necessary to ensure that it's functioning properly
 and is able to deliver equally valid results as the EUTelescope framework.
-The chosen data sample is batch 3 of a DESY testbeam run from june 2020. Besides the six Mimosa26 sensors it contains two RD53a sensors
+The chosen data sample is batch 3 of a DESY beam test from june 2020. Besides the six Mimosa26 sensors it contains two RD53a sensors
 as DUT's in between the triplets and a FEI4 sensor as a time reference behind the telescope. The RD53a sensors are pixel sensors
 manufactured in a $\SI{65}{\nano\meter}$ CMOS technology with a matrix of (400 $\times$ 192) \textmu m$^2$ pixels of
 (50 $\times$ 50) \textmu m$^2$ size. Electrons with an energy of $\SI{5}{\GeV}$ were used to irradiate the sensors.
