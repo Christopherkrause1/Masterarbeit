@@ -134,12 +134,12 @@ large sets, with the learner training on four of them and evaluating on the last
 parameter combination five runs are performed. The area under the ROC curve serves as the scoring function to measure how good the predicition on the test data set is.
 A mean of the five auc values represents the score, which is compared in the grid search. Thus, the cross validation helps to compensate for variability in the simulated
 data to derive an accurate estimate of the predictive power of the model. \\
-The maximal AUC of $0.579(3)$ is achieved with a maximum tree depth of 5, $\eta=0.7$, $\gamma=5$ and $\theta=25$. With $\gamma=5$, the result of the grid search of the remaining
+The maximal AUC of $0.706(1)$ is achieved with a maximum tree depth of 4, $\eta=0.7$, $\gamma=5$ and $\theta=25$. Setting $\gamma=5$, the result of the grid search of the remaining
 parameters can be visualized and is shown in figure \ref{fig:grid}
 
 \begin{figure}
   \centering
-  \includegraphics[height=0.6\textwidth]{plots/grid_search.pdf}
+  \includegraphics[height=0.6\textwidth]{plots/grid_search_weights.pdf}
   \caption{The mean test score referring to the auc for the different hyper parameter configurations with the errorbars being the standard deviation of the mean. The
   smaller bars refer to $\eta$, the larger bars to $\theta$ and the red marked value to the maximal AUC.}
   \label{fig:grid}
@@ -158,12 +158,12 @@ These are shown in figure \ref{fig:output} alongside the corresponding differenc
   %\centering
   \begin{subfigure}{0.62\textwidth}
       \centering
-      \includegraphics[height=0.82\textwidth]{plots/output_normed.pdf}
+      \includegraphics[height=0.82\textwidth]{plots/output_normed_weights.pdf}
   \end{subfigure}
   \begin{subfigure}{0.62\textwidth}
       %\centering
       \hspace{0.95cm}
-      \includegraphics[height=0.82\textwidth]{plots/output_difference.pdf}
+      \includegraphics[height=0.82\textwidth]{plots/output_difference_weights.pdf}
   \end{subfigure}
   \caption{Normalised probabilitiy distributions of tracks being true and false for the train and test data set shown on the left.
   The corresponding differences between the performance on the training and testing data is shown on the right.}
@@ -199,7 +199,7 @@ their probability. The ROC curves for the test and train data set are shown in f
   %\centering
   \begin{subfigure}{0.62\textwidth}
       \centering
-      \includegraphics[height=0.82\textwidth]{plots/roc_curve_learner.pdf}
+      \includegraphics[height=0.82\textwidth]{plots/roc_curve_learner_weights.pdf}
   \end{subfigure}
   \begin{subfigure}{0.62\textwidth}
       %\centering
@@ -219,7 +219,7 @@ With the AUC of each ROC curve, the performances of the classifying methods can 
     \toprule
       & Train & Test & $\chi^2$ & $\phi_{x,3}$ & $\phi_{x,4}$\\
     \midrule
-    AUC & 0.779 & 0.756 & 0.615 & 0.617 & 0.587 \\
+    AUC & 0.770 & 0.754 & 0.615 & 0.617 & 0.587 \\
   \end{tabular}
   \caption{Area Under the Curve for the feature cuts and the train and test data of the machine learner.}
   \label{tab:AUC}
@@ -236,7 +236,34 @@ false tracks. The ROC curve of the test data with the rejection of tracks is sho
 
 \begin{figure}
   \centering
-  \includegraphics[height=0.6\textwidth]{plots/roc_curve_learner_rejection.pdf}
+  \includegraphics[height=0.6\textwidth]{plots/roc_curve_learner_rejection_weights.pdf}
   \caption{ROC curves of the train and test data set and the test data set including the rejection of all but one track from clusters with on the first and last plane.}
   \label{fig:rejection}
 \end{figure}
+
+With the rejection of tracks, the AUC of the test data set decreases to $0.702$. This is the result of the rejection of many false negative tracks, which in turn increases
+the false positive rate. However, the rejection of false negative tracks does not decrease the quality of the pct image, as these tracks are not taken into account anyway.
+To evaluate the effectiveness of this method, the precision score $P=t_p/(t_p + f_p)$ and the recall score $R=t_p/(t_p + f_n)$ can be calculated. The precision
+score describes the ability of the learner to not classify negative samples as positive and the recall score is the ability to find all positive samples.
+Figure \ref{fig:precision} shows the precision of the learner and the individual feature cuts as a function of the the recall.
+
+\begin{figure}
+  \hspace{-2.5cm}
+  %\centering
+  \begin{subfigure}{0.62\textwidth}
+      \centering
+      \includegraphics[height=0.82\textwidth]{plots/roc_curve_precision_train.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.62\textwidth}
+      %\centering
+      \hspace{0.95cm}
+      \includegraphics[height=0.82\textwidth]{plots/feature_cuts_precision.pdf}
+  \end{subfigure}
+  \caption{Precision as a function of the recall for the train and test data set including the rejection of all but one track from clusters with on the first and last
+           plane. As a comparison, the precision is also shown for the $\chi^2$, $\phi_{x,3}$, and $\phi_{x,3}$ features.}
+  \label{fig:precision}
+\end{figure}
+
+The precision score of the test data set increases with the rejection of tracks noticeably for recall scores larger than $0.1$, indicating a better performance with the rejection method.
+Furthermore, a higher precision score of the test data set in comparison to the individual feature cuts for all recall scores highlights the advantages of the machine
+learning approach. 
