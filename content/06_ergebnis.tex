@@ -30,14 +30,16 @@ will need to be irradiated for longer times to compensate for the small number o
 the human body, making longer radiation steps for pct possible without significantly damaging healthy tissue. \\
 A greater problematic arises from the high track density of the proton beams causing large track mutiplicities and thus a large number of tracks with false combinations of
 clusters. Falsely reconstructed tracks will lower the resolution of the pct image and therefore have to be reduced to a minimum. Using stronger spatial cuts and higher
-opening angles for the proton beam increased the ratio of true and false tracks by (...) respectively, while the number of true tracks decreases significantly. Due to the loss of
+opening angles for the proton beam increased the ratio of true and false tracks, while the number of true tracks decreases significantly. Due to the loss of
 true tracks for increasingly stricter spatial cuts and larger opening angles, the use of these parameters to improve the ratio is limited for the use of pct. \\
 Cuts on track features proved to be useful for the $\chi^2$ value and the horizontal kink angles of the third and fourth plane. The optimal combination of cuts, determined
 with a grid search, result in a ratio of 0.477. (...)
 
 With the utilisation of a boosted decision tree used for the classification of tracks, the true and false positive rates achieved with the machine learner are better
 than any of the previous methods, including the grid search. The resulting AUC of the test data set is 0.756, with the same data set having AUC's of
-0.615, 0.617 and 0.587 for the cut on the $\chi^2$, $\phi_{x,3}$ and $\phi_{x,4}$ respectively. (...)
+0.615, 0.617 and 0.587 for the cut on the $\chi^2$, $\phi_{x,3}$ and $\phi_{x,4}$ respectively. Further improvement is achieved by the rejection of all but one track
+fitted through each cluster on the first and last sensor. With this method, the area under the precision-recall curve increased from $0.604$ to $0.633$ and is especially
+impactful for high recall scores. \\
 However, a significant amount of false tracks are still classified to be true
 with a high probability, which means that the input features do not enable an optimal classification. Thus, the most crucial step to optimise the classification of the machine learner is
 to determine further input features. \\
