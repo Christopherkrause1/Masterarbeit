@@ -6,7 +6,7 @@ of each triplet is rotated by 90°. This way the lower track reconstruction prec
 The setup for proton computed tomography is shown schematically in figure \ref{fig:phantom} with an IBL sensor in between the triplets serving as a DUT instead of a patient. \\
 For proton computed tomography it is necessary that the protons can to traverse the entire telescope including the patient
 to measure their remaining energy, which is the reason the energy of the proton beam has to be significantly higher than during
-the proton therapy. Current proton synchrotrons used in proton therapy centers have an upper energy limit of $200 - \SI{250}{\mega\eV}$.
+the proton therapy. Current proton synchrotrons used in proton therapy centres have an upper energy limit of $200 - \SI{250}{\mega\eV}$.
 Therefore, a $\SI{200}{\mega\eV}$ proton beam is used in this analysis.
 
 \begin{figure}
@@ -313,7 +313,7 @@ it will lower the probability of false combinations of clusters being inside the
 In order to be able to compare the results of different spatial cuts, it is necessary to find out how many correct and false combinations of clusters
 are reconstructed. Particles simulated with Allpix$^2$ can be precisely tracked with their Monte Carlo (MC) truth information. Each exact
 position of the protons on all planes can be accessed. To find correct reconstructed tracks, the MC tracks of Allpix$^2$ can be
-compared with the coordinates of the cluster centers belonging to a track created by Corryvreckan. \\
+compared with the coordinates of the cluster centres belonging to a track created by Corryvreckan. \\
 
 The number of correct reconstructed tracks for the relative spatial cuts of 15.1 and 12.2 are given in table
 \ref{tab:true_tracks} for 50000 generated protons with 10,
@@ -431,7 +431,7 @@ possible to cut on the horizontal kink to reject false tracks without losing a s
 The kinks of the first and last plane can not be defined correctly and are neglected in this analysis. For the planes in the middle of the triplets, both
 distributions do not enable a useful cut on the kink angle.
 
-Another feature to investigate is the position of the cluster centers $r$ which are fitted to true and false tracks. Figure \ref{fig:clus_pos} shows the
+Another feature to investigate is the position of the cluster centres $r$ which are fitted to true and false tracks. Figure \ref{fig:clus_pos} shows the
 horizontal and vertical cluster positions for true and false tracks on the last plane exemplary.
 
 \begin{figure}
@@ -451,7 +451,7 @@ horizontal and vertical cluster positions for true and false tracks on the last 
 \end{figure}
 
 While both of the distributions of the cluster positions show a greater number of false tracks in the middle of the sensor in comparison to the number of true tracks,
-any cut would result in a noticeable loss of true tracks. Similar distributions of the cluster centers can be found on the other planes, which means that this feature
+any cut would result in a noticeable loss of true tracks. Similar distributions of the cluster centres can be found on the other planes, which means that this feature
 is not suitable for the identification of true tracks through cuts.
 
 The last two major track features stored by Corryvreckan are the number of deposited charges of particles in each sensor and the $\chi^2$ value of the track,
@@ -474,7 +474,7 @@ Both features are shown in figure \ref{fig:charge_chi} with the charge depositio
   \label{fig:charge_chi}
 \end{figure}
 
-Similar to the distribution of the cluster centers, no cut on the charge deposition is suitable to effectively sort out false tracks without losing a significant
+Similar to the distribution of the cluster centres, no cut on the charge deposition is suitable to effectively sort out false tracks without losing a significant
 amount of true tracks. This is the case for the charge deposition of all sensors.
 The $\chi^2$ values of true and false tracks show a noticeable difference. While both distributions have a large number of tracks
 with a small $\chi^2$ value, substantially more false tracks have large $\chi^2$ values. This is to be expected as the $\chi^2$ value describes the goodness of the fit and
