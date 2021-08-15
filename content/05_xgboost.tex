@@ -1,10 +1,10 @@
 \chapter{Machine learning approach for true track tagging}
-Applying cuts to track features in order to differentiate between improved the ratio of true and false reconstructed tracks, slightly. A more effective
+Applying cuts to track features in order to differentiate between true and false reconstructed tracks improved their ratio slightly. A more effective
 approach in classifying a track as true or false can be achieved with a machine learning algorithm for classification. Unlike one-dimensional cuts, a machine learning
-algorithm can be implemented to find correlations between the input feature for more accurate identification of true tracks. The library used for
+algorithm can be implemented to benefit from correlations between the input features for more accurate identification of true tracks. The library used for
 machine learning is XGBoost, which is explained in the following section.
 
-\section{XGBoost}
+\section{Introduction to XGBoost}
 XGBoost \cite{xgboost} is a gradient boosting machine learning algorithm \cite{gradient}, which primarily uses decision trees as a predictive model for classification and regression analysis.
 It is used for supervised learning problems to predict a target variable $y_i$ based on the training data $x_i$ containing multiple features. The model
 of XGBoost describes the mathematical structure, which determines the prediction from its input data. A linear model is a common example, where the predictions
@@ -12,14 +12,14 @@ are linear combinations of the weighted input features:
 \begin{align}
   \hat{y}_i = \sum_j \Theta_j x_{ij}
 \end{align}
-The coefficients $\Theta$ are indefinite parameters that need to be learned from the training data. Thus, the task of training is in determining the optimal parameters
-for the target variable $y_i$ based on our input $x_i$. In order to train a model, an objective function needs to be defined, which measures how well
-the model fits the training data. Those functions consist of the training loss function $L(\Theta) $ and the regularization term $\Omega (\Theta)$.
+The coefficients $\Theta_j$ are a-priori undetermined parameters that need to be learned from the training data. Thus, the task of training is in determining the optimal parameters
+for the target variable $y_i$ based on our input $x_i$. In order to train a model, an objective function, which measures how well
+the model fits the training data, needs to be defined and optimised. Those functions consist of the training loss function $L(\Theta) $ and the regularization term $\Omega (\Theta)$.
 \begin{align}
   \text{obj}(\Theta) = L(\Theta) + \Omega(\Theta)
 \end{align}
 
-The training loss function is commonly defined as the mean squared error or logistic loss for logistic regression problems:
+The training loss function is commonly defined as the mean squared error or logistic loss for logistic regression:
 \begin{align}
   &L(\Theta) = \sum_i (y_i - \hat{y}_i)^2 \\
   &L(\Theta) = \sum_i [y_i \ln{(1 + e^{-\hat{y}_i})} + (1 - y_i) \ln{(1 + e^{-\hat{y}_i})}]
@@ -27,14 +27,14 @@ The training loss function is commonly defined as the mean squared error or logi
 The regularization term describes the complexity of a model in order to prevent overfitting.
 
 \section{Decision tree ensemble}
-The model used by the XGBoost library is the decision tree ensemble, which consists of a set of classification and regression trees (CART).
-A CART assigns a prediction score to each of the leaves in which the input features are classified. The prediction of a single tree is usually not accurate,
+The model used by the XGBoost library is the ensemble of decision trees, which consists of a set of classification and regression trees (CART).
+A CART assigns a prediction score to each of the leaves in which the input features are classified. The prediction of a single tree is usually not sufficiently accurate,
 therefore the prediction of numerous trees is summed together. This method can be written mathematically as:
 \begin{align}
   \hat{y}_i &= \sum_{k=1}^K f_k(x_i)\,, \: f_k \in \mathcal{F} \\
   \text{obj}(\Theta) &= \sum_i^n l(y_i, \hat{y}_i) + \sum_{k=1}^K \Omega(f_k)
 \end{align}
-Where $K$ is the number of trees, $\mathcal{F}$ the set of all possible CARTs, and $f$ a function in $\mathcal{F}$. A decision tree ensemble is shown exemplarily in
+Where $K$ is the number of trees, $\mathcal{F}$ the set of all possible CARTs, and $f$ a decision function of the respective CART. A decision tree ensemble is shown exemplarily in
 figure \ref{fig:random_forest}.
 
 \begin{figure}
@@ -45,73 +45,81 @@ figure \ref{fig:random_forest}.
 \end{figure}
 
 \section{Boosted trees}
-The model used for boosted trees and a random forest is both the tree ensembles with the only difference being the training method. Optimizing the objective functions for
-boosted trees is achieved by additive training. This means that everything learned is fixed and only one new tree per step $t$ is added. This can be written
+%The model used for boosted trees and a random forest is both the tree ensembles with the only difference being the training method.
+Random forests and boosted decision trees are both tree ensembles that differ only in their training method.
+Optimising the objective functions for
+boosted trees is achieved by additive training. This means that previous trees are fixed and only one new tree per step $t$ is added. This can be written
 down as follows:
 \begin{align}
-  \hat{y}_i^{(t)} = \sum_{k=1}^t f_k(x_i) = \hat{y}_i + f_t(x_i)
+  \hat{y}_i^{(t)} = \sum_{k=1}^t f_k(x_i) = \hat{y}_i^{(t-1)} + f_t(x_i)
 \end{align}
 
-The tree added in each step is supposed to optimize our objective. For a mean squared error loss function, the objective at step $t$ can be written as:
+The tree added in each step is supposed to optimize our objective and can be written at step $t$:
 \begin{align}
   \text{obj}^{(t)} &= \sum_{i=1}^n \left[g_i f_t(x_i)] + \frac{1}{2}h_i f_t^2(x_i)\right] + \Omega(f_t)  \\
   g_i &= \partial_{\hat{y}_i^{(t-1)}} l(y_i, \hat{y}_i^{(t-1)}) \\
   h_i &= \partial^2_{\hat{y}_i^{(t-1)}} l(y_i, \hat{y}_i^{(t-1)})
 \end{align}
 
-The value of the objective function only depends on $g_i$ and $h_i$, giving XGBoost the advantage of using custom loss functions including logistic regression.
+The value of the objective function only depends on $g_i$ and $h_i$, giving XGBoost the advantage of using custom loss functions including logistic regression. By using the
+second derivative
 
 However, the regularization term still needs to be defined. One definition that works well in practice and is thus used by XGBoost is:
 \begin{align}
   \Omega (f) = \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T \omega_j^2
 \end{align}
-Here, $\omega_{q(x)}$ is the vector of scores on leaves, $q$ is a function that assigns each data point to the corresponding leave, and $T$ is the number of leaves.
+Here, $\omega_{q(x)}$ is the vector of scores on leaves, $q$ is a function that assigns each data point to the corresponding leaf, $\gamma$ is the minimum loss reduction required to make
+another partition on a leaf, $\lambda$ is the Ridge regularisation term \cite{ridge},
+and $T$ is the number of leaves.
 
-With this definition, the objective function can be compressed to:
+With this definition, the objective function for a single tree can be compressed to:
 \begin{equation} \label{eqn:obj}
   \text{obj} = -\frac{1}{2}\sum_{j=1}^T \frac{G_j^2}{H_j + \lambda} + \gamma T
 \end{equation}
-Here, $G_j$ and $H_J4$ are the sums over all $g_i$ and $h_i$ respectively. Equation \ref{eqn:obj} is a measure of how good a structure tree is. Its score
-is determined by the statistics $g_i$ and $h_i$ in the leaves, with a smaller score meaning a better tree structure.
+Here, $G_j$ and $H_J$ are the sums over all $g_i$ and $h_i$ respectively. Equation \ref{eqn:obj} is a measure of how good a tree structure is. Its score
+is determined by the statistics $g_i$ and $h_i$ in the leaves, with a smaller score indicating a better tree structure.
 Since it is not feasible to enumerate all possible trees to find the best one, only one level of a tree is optimized at a time.
-For each split of a leaf into a new left and right leaf, the gained score is defined as:
+For each split of a leaf into a new left leaf L and right leaf R, the gained score is defined as:
 \begin{equation}
   \text{Gain} = \frac{1}{2}\left[\frac{G_L^2}{H_L + \lambda} + \frac{G_R^2}{H_R + \lambda} - \frac{(G_L + G_R)^2}{H_L+H_R+\lambda}\right] -\gamma
 \end{equation}
 
-Optimal splits are then determined by sorting all instances and calculate the structure score of all possible split solutions.
+Optimal splits are then determined by calculating the structure score of all possible split solutions.
 
 \section{Machine learning setup}
 The data used to train the learner %is identical to the one from section \ref{sec:feature} and
-consists of 400000 generated $\SI{200}{\mega\eV}$ protons with ten protons per event
+consist of 40000 events with ten generated $\SI{200}{\mega\eV}$ each
 traversing the telescope described in section \ref{sec:setup}. The protons
-are reconstructed with Corryvreckan, with the true tracks being identified with the MC truth from Allpix$^2$ and masked for the learner. A total number of 92546 tracks
+are reconstructed with Corryvreckan, with the true tracks being identified with the MC truth from Allpix$^2$. A total number of 92546 tracks
 are reconstructed, with 36340 being true tracks.
-To test the learner, another simulation, being identical to the one in \ref{sec:feature} is used and consists of 100000 protons with ten protons per event.
+The learner is tested on a previously unseen dataset, which is identical to the one in \ref{sec:feature} and consists of 100000 protons with ten protons per event.
 
 The objective of the learner is binary logistic, which performs a logistic regression and outputs a probability for classifying a track as true or false.
-Therefore, a logistic loss function is used for training the model.
-To determine the optimal number of boosting rounds, early stopping is utilized on a validation set, consisting of 100000 generated protons. This means, that
-the model will train until the validation score stops improving for ten consecutive boosting rounds, with the number
-of boosting rounds belonging to the highest validation score being chosen for testing. In this case, the validation score refers to the area under the
-Receiver Operating Characteristic (ROC) curve. \\
+%Therefore, a logistic loss function is used for training the model.
+To determine the optimal number of boosting rounds, early stopping is utilised on a validation set, consisting of 100000 generated protons. This means, that
+the model will train until the validation score stops improving for ten consecutive boosting rounds to rule out statistical fluctuations.
+The number of boosted rounds is then determined by the highest validation score.
+In this case, the validation score refers to the area under the ROC curve. \\
 The ROC curve describes the true positive rate $TPR = t_p/(t_p + f_p)$ as a function of the false positive rate $FPR = f_p/(f_p + t_n)$ with
-$t_p$, $t_n$ and $f_p$ meaning the true positive, true negative and false positive classification of a track respectively. The larger the area under the curve in respect
-to the diagonal, which represents random classification, the better the performance of the classificator. \\
+$t_p$, $t_n$ and $f_p$ denoting the true positive, true negative and false positive classification of a track respectively. The larger the area under the curve,
+the better the performance of the classificator. \\
 All features, including $\chi^2$, kink angles, cluster positions, and charge depositions are selected as input for the classifier. Less useful features
-may not contribute significantly to classification, but also do not disrupt the learning process, as trees do not split as often on variables with little impact.
-Thus, no problems will arise by taking all features into account, as long as the training data is sufficiently large to be able to compensate for inefficiencies.
+are not expected to contribute significantly to classification, but also do not disrupt the learning process, as trees do not split as often on variables with little impact.
+Thus, no problems will arise by taking all features into account, as long as the training data is sufficiently large to be able to compensate for inefficient splits on trees.
 
-Tuning several hyperparameters is necessary to ensure optimal performance of the classificator. Taking many hyperparameters and values into account comes at the
+
+Several hyperparameters are tuned in order to improve the performance of the classifier.
+Taking many hyperparameters and values into account comes at the
 cost of a large computation time. For this reason, four parameters are chosen to be optimised. The maximum depth of each tree influences the
-complexity of the model and the likeliness of overfitting. With the learning rate $\eta$, overfitting can be prevented as it represents a weighting factor for
-corrections added by new trees in the model. It takes values from zero to one, with smaller values describing smaller corrections from further trees. \\
-The minimum loss reduction required for an additional partition on a leaf node is referred to as $\gamma$. A similar impact has the minimum sum of instance weight $\theta$
-needed in a child. Leaf nodes with a sum of weights less than the specified value will prevent further tree partition steps.
-Both the $\theta$ and $\gamma$ take values from 0 to $\infty$ and are a measure for how conservative the algorithm will be, with larger values representing a more
+complexity of the model and the likeliness of overfitting. With the learning rate $\eta$, overfitting can be alleviated as it shrinks the feature weights
+by the specified factor. It takes values from zero to one, with smaller values describing smaller corrections from further trees. \\
+The minimum loss reduction required for an additional partition on a leaf is referred to as $\gamma$. The minimum sum of instance weight $\theta$
+needed in a child has a similar impact. Leaf nodes with a sum of weights less than the specified value will prevent further tree partition steps.
+Both $\theta$ and $\gamma$ take values from [0, $\infty$[ and are a measure for how complex the model will be.
+For these parameters, larger values represent a more
 conservative algorithm.
 
-A grid search from the library Scikit-learn \cite{scikit} is used to determine an optimal value for each of the parameters mentioned above. The values given as input into the grid search
+A grid search from the python \cite{python} library Scikit-learn \cite{scikit} is used to determine an optimal value for each of the parameters mentioned above. The values given as input into the grid search
 are shown in table \ref{tab:grid}.
 
   \begin{table}
@@ -125,14 +133,15 @@ are shown in table \ref{tab:grid}.
       5 & 0.3  & 2 & 50  \\
       6 & 0.7  & 5   &  \\
     \end{tabular}
-    \caption{Parameter values that are used for the grid search. The tree depth refers to the maximum depth of a tree, $\eta$ refers to the learning rate,
+    \caption{Parameter values of the grid search. The tree depth refers to the maximum depth of a tree, $\eta$ refers to the learning rate,
     $\gamma$ is a threshold for the allowed minimum loss reduction in a partition step, and $\theta$ is the minimum sum of instance weight needed in a child.}
     \label{tab:grid}
   \end{table}
-To quantify each different combination of the hyperparameter values, a 5-fold cross-validation is performed. This means that the data set is split into five equally
-large sets, with the learner training on four of them and evaluating on the last one. Each of the five sets serves as the test data, which means that for each
+To compare each different combination of the hyperparameter values quantatively and obtain an estimation of the uncertainty, a 5-fold cross-validation is performed. This means that
+the train data set is split into five equally
+large sets, with the learner training on four of them and evaluating on the last one. Each of the five sets serves as the test data once, which means that for each
 parameter combination five runs are performed. The area under the ROC curve serves as the scoring function to measure how good the prediction on the test data set is.
-A mean of the five AUC values represents the score, which is compared in the grid search. Thus, cross-validation helps to compensate for variability in the simulated
+The mean of the five AUC values represents the score, which is compared in the grid search. Thus, cross-validation helps to compensate for variability in the simulated
 data to derive an accurate estimate of the predictive power of the model. \\
 The maximal AUC of $0.706(1)$ is achieved with a maximum tree depth of 4, $\eta=0.7$, $\gamma=5$ and $\theta=25$. Setting $\gamma=5$, the result of the grid search of the remaining
 parameters can be visualized and is shown in figure \ref{fig:grid}.
@@ -140,27 +149,29 @@ parameters can be visualized and is shown in figure \ref{fig:grid}.
 \begin{figure}
   \centering
   \includegraphics[height=0.6\textwidth]{plots/grid_search_weights.pdf}
-  \caption{The mean test score referring to the AUC for the different hyperparameter configurations with the errorbars being the standard deviation of the mean. The
-  smaller bars refer to $\eta$, the larger bars to $\theta$ and the red marked value to the maximal AUC.}
+  \caption{The mean test AUC for the different hyperparameter configurations with the errorbars indicating the standard deviation of the mean. The
+  smaller bars refer to $\eta$, the larger bars to $\theta$ and the point marked in red to the best model.}
   \label{fig:grid}
 \end{figure}
 
 Varying the values of the hyperparameters only causes small changes in the mean test score, especially the learning rate has a negligible influence on the AUC. Taking the
-standard deviations into account makes it impossible to determine, whether the best combination of hyperparameters has the highest AUC. However, due to the
-small differences, no significant impact is to be expected in this case. For that reason, the above-mentioned hyperparameter values are chosen for training and testing the model.
+standard deviations into account shows that the variation of the hyperparameters does not have a significant impact on the performance of the learner.
+%makes it impossible to determine whether the best combination of hyperparameters has the highest AUC. However, due to the
+%small differences, no significant impact is to be expected in this case.
+The above-mentioned hyperparameter values are chosen for training and testing the model, as they belong to  the model with the highest nominal AUC.
 
 \section{Machine learning results}
-To compare the performance of the learner on the train and test data, the normalised distributions of the output probabilities are investigated.
+To compare the performance of the learner on the train and test datasets, the normalised distributions of the output probabilities are investigated.
 These are shown in figure \ref{fig:output} alongside the corresponding differences.
 
 \begin{figure}
-  \hspace{-1cm}
+  \hspace{-0.6cm}
   %\centering
-  \begin{subfigure}{0.53\textwidth}
+  \begin{subfigure}{0.51\textwidth}
       \centering
       \includegraphics[height=0.82\textwidth]{plots/output_normed_weights.pdf}
   \end{subfigure}
-  \begin{subfigure}{0.53\textwidth}
+  \begin{subfigure}{0.51\textwidth}
       %\centering
       %\hspace{0.95cm}
       \includegraphics[height=0.82\textwidth]{plots/output_difference_weights.pdf}
@@ -170,14 +181,17 @@ These are shown in figure \ref{fig:output} alongside the corresponding differenc
   \label{fig:output}
 \end{figure}
 
-The distributions of the train and test data predictions show small differences, indicating that no significant overtraining occurs during the training process.
+The distributions of the train and test data predictions only show small differences, indicating that no significant overtraining occurs during the training process.
 %For both true and false tracks, the greatest deviations are found at their most probable value, between 0.8 and 0.9.
 Both true and false tracks have a maximum of around 0.8 as their most probable value, though the peak for the true tracks is higher due to the larger number
-of false tracks assigned to small probabilities of being true. Also noteworthy is, that a negligible number of tracks have a probability of 0.9 and higher. This means that
+of false tracks assigned to small probabilities of being true. While the number of true tracks increase with the assigned probabilities upto
+approximately 0.8, the false tracks have maximum for small probabilities, which is comparable to their maximum around 0.8.
+This means that
 with the given input, a lot of false combinations of clusters still show similar properties to true tracks.
+Also noteworthy is, that a negligible number of tracks have a probability of 0.9 and higher.
 
-The usefulness of the individual features to classify the reconstructed tracks can be quantified with the number of times each feature was split.
-This feature importance score is shown in figure \ref{fig:importance}.
+The impact of the individual features to classify the reconstructed tracks can be quantified with the number of times each feature was split.
+In figure \ref{fig:importance}, the feature importance scores of the input features are shown.
 
 \begin{figure}
   \centering
@@ -186,51 +200,60 @@ This feature importance score is shown in figure \ref{fig:importance}.
   \label{fig:importance}
 \end{figure}
 
-All three features, which proved to be useful for classifying tracks with cuts have a high feature score, highlighting their importance for separating true and false tracks.
-Other features with a high number of splits, like the vertical kink angle of the second sensor, can still be useful for the learner in combination with other features, even though
-their use for classifying on their own is insignificant.
+All three features, which proved to be useful for classifying tracks with cuts, have a high feature score, highlighting their importance for separating true and false tracks.
+Other features with a high number of splits, like the vertical kink angle of the second sensor, can still be useful for the learner in combination with other features due to their
+correlation, even though their use for classifying on their own is insignificant. \\
 
-To evaluate the predictive power of the learner, a ROC curve can be constructed for several thresholds of classifying tracks as true and false in regard to
-their probability. The ROC curves for the test and train data set are shown in figure \ref{fig:auc_comparison} alongside the ROC curves of the feature cuts from section \ref{sec:feature}.
+To evaluate the predictive power of the learner, a ROC curve can be constructed for several thresholds of classifying tracks as true and false based on the BDT
+output. The ROC curves for the test and train data set are shown in figure \ref{fig:auc_comparison} alongside the ROC curves of the feature cuts from section \ref{sec:feature}.
+With the AUC of each ROC curve, the performances of the classifying methods can be compared. %Table \ref{tab:AUC} lists each of the AUCs.
 
-
+%\begin{figure}
+%  \hspace{-0.6cm}
+%  %\centering
+%  \begin{subfigure}{0.51\textwidth}
+%      \centering
+%      \includegraphics[height=0.82\textwidth]{plots/roc_curve_learner_weights_label.pdf}
+%  \end{subfigure}
+%  \begin{subfigure}{0.51\textwidth}
+%      %\centering
+%      %\hspace{0.95cm}
+%      \includegraphics[height=0.82\textwidth]{plots/feature_cuts_auc_label.pdf}
+%  \end{subfigure}
+%  \caption{ROC curves of the machine learner for the train and test data set are shown on the left. In comparison, the ROC curves for the individual feature cuts as well as the
+%  TPR and FPR of the best combination of cuts for all three features are depicted on the right. A black diagonal line, representing random classifiaction, is shown
+%  in contrast.}
+%  \label{fig:auc_comparison}
+%\end{figure}
 \begin{figure}
-  \hspace{-1cm}
-  %\centering
-  \begin{subfigure}{0.53\textwidth}
-      \centering
-      \includegraphics[height=0.82\textwidth]{plots/roc_curve_learner_weights.pdf}
-  \end{subfigure}
-  \begin{subfigure}{0.53\textwidth}
-      %\centering
-      %\hspace{0.95cm}
-      \includegraphics[height=0.82\textwidth]{plots/feature_cuts_auc.pdf}
-  \end{subfigure}
-  \caption{ROC curves of the machine learner for the train and test data set are shown on the left. In comparison, the ROC curves for the individual feature cuts as well as the
-  TPR and FPR of the best combination of cuts for all three features.}
+  \centering
+  \includegraphics[height=0.6\textwidth]{plots/roc_curve_all.pdf}
+    \caption{ROC curves of the machine learner for the train and test data set. In comparison, the ROC curves for the individual feature cuts as well as the
+    TPR and FPR of the best combination of cuts for all three features are depicted on the right. A black diagonal line, representing random classifiaction, is shown
+    in contrast.}
   \label{fig:auc_comparison}
 \end{figure}
 
-With the AUC of each ROC curve, the performances of the classifying methods can be compared. Table \ref{tab:AUC} lists each of the AUCs.
 
-\begin{table}
-  \centering
-  \begin{tabular}{c | c c c c c}
-    \toprule
-      & Train & Test & $\chi^2$ & $\phi_{x,3}$ & $\phi_{x,4}$\\
-    \midrule
-    AUC & 0.770 & 0.754 & 0.615 & 0.617 & 0.587 \\
-  \end{tabular}
-  \caption{Area Under the Curve for the feature cuts and the train and test data of the machine learner.}
-  \label{tab:AUC}
-\end{table}
+%\begin{table}
+%  \centering
+%  \begin{tabular}{c | c c c c c}
+%    \toprule
+%      & Train & Test & $\chi^2$ & $\phi_{x,3}$ & $\phi_{x,4}$\\
+%    \midrule
+%    AUC & 0.770 & 0.754 & 0.615 & 0.617 & 0.587 \\
+%  \end{tabular}
+%  \caption{Area Under the Curve for the feature cuts and the train and test data of the machine learner.}
+%  \label{tab:AUC}
+%\end{table}
 
+Only small differences between the ROC curve of the train and test dataset indicate that no significant overfitting occurs.
 The ROC curves of the learner have a noticeably higher AUC than the individual feature cuts and have a better ratio of TPR and FPR for each possible cut, showing the effectiveness
 of using machine learning for track classification in comparison to individual feature cuts. For the best combination of cuts, the ratio of the TPR and FPR is still worse than
 comparable points on the ROC curve of the test data. This means that for the same FPR of the two methods, the learner consistently achieves a better TPR.
 
 Further optimisation of the machine learning results is possible, considering that at most only one track of each cluster
-on the first and last pane can be true. By only keeping the track of clusters that has the highest probability of being true, it enables the rejection of
+on the first and last pane can be true. Only keeping the track of clusters with the highest probability of being true enables further rejection of
 false tracks. The ROC curve of the test data with the rejection of tracks is shown in figure \ref{fig:rejection}.
 
 
@@ -241,29 +264,38 @@ false tracks. The ROC curve of the test data with the rejection of tracks is sho
   \label{fig:rejection}
 \end{figure}
 
-With the rejection of tracks, the AUC of the test data set decreases to $0.702$. This is the result of the rejection of many false negative tracks, which in turn increases
-the false positive rate. However, the rejection of false negative tracks does not decrease the quality of the pct image, as these tracks are not taken into account anyway.
-To evaluate the effectiveness of this method, the precision score $P=t_p/(t_p + f_p)$ and the recall score $R=t_p/(t_p + f_n)$ can be calculated. The precision
-score describes the ability of the learner to not classify negative samples as positive and the recall score is the ability to find all positive samples.
+With the rejection of tracks, the AUC on the test data set decreases to $0.702$. This is the result of the rejection of many true negative tracks, which in turn increases
+the false positive rate. However, the rejection of true negative tracks does not decrease the quality of the pct image, as these tracks are not taken into account anyway.
+To evaluate this method, the precision score $P=t_p/(t_p + f_p)$ and the recall score $R=t_p/(t_p + f_n)$ are calculated and compared with the baseline classifier. The precision
+score describes the ability of the learner to not classify negative events as positive and the recall score is the ability to classify all positive events correctly.
 Figure \ref{fig:precision} shows the precision of the learner and the individual feature cuts as a function of the recall.
 
+%\begin{figure}
+%  \hspace{-0.6cm}
+%  %\centering
+%  \begin{subfigure}{0.51\textwidth}
+%      \centering
+%      \includegraphics[height=0.82\textwidth]{plots/roc_curve_precision_train.pdf}
+%  \end{subfigure}
+%  \begin{subfigure}{0.51\textwidth}
+%      %\centering
+%      %\hspace{0.95cm}
+%      \includegraphics[height=0.82\textwidth]{plots/feature_cuts_precision.pdf}
+%  \end{subfigure}
+%  \caption{Precision as a function of the recall for the train and test data set including the rejection of all but one track from clusters of the first and last
+%           sensor for the test dataset. As a comparison, the precision curves are also shown for cuts on the $\chi^2$, $\phi_{x,3}$, and $\phi_{x,4}$ features.}
+%  \label{fig:precision}
+%\end{figure}
+
 \begin{figure}
-  \hspace{-1cm}
-  %\centering
-  \begin{subfigure}{0.53\textwidth}
-      \centering
-      \includegraphics[height=0.82\textwidth]{plots/roc_curve_precision_train.pdf}
-  \end{subfigure}
-  \begin{subfigure}{0.53\textwidth}
-      %\centering
-      %\hspace{0.95cm}
-      \includegraphics[height=0.82\textwidth]{plots/feature_cuts_precision.pdf}
-  \end{subfigure}
-  \caption{Precision as a function of the recall for the train and test data set including the rejection of all but one track from clusters with on the first and last
-           plane. As a comparison, the precision is also shown for the $\chi^2$, $\phi_{x,3}$, and $\phi_{x,4}$ features.}
+  \centering
+  \includegraphics[height=0.6\textwidth]{plots/roc_curve_precision_all.pdf}
+  \caption{Precision as a function of the recall for the train and test data set including the rejection of all but one track from clusters of the first and last
+           sensor for the test dataset. As a comparison, the precision curves are also shown for cuts on the $\chi^2$, $\phi_{x,3}$, and $\phi_{x,4}$ features.}
   \label{fig:precision}
 \end{figure}
 
 The precision score of the test data set increases with the rejection of tracks noticeably for recall scores larger than $0.1$, indicating a better performance with the rejection method.
 Furthermore, a higher precision score of the test data set in comparison to the individual feature cuts for all recall scores highlights the advantages of the machine
-learning approach.
+learning approach. The precision is especially stable for the test dataset with the rejection method for recall scores larger than $0.1$, which means that high recall scores
+are achievable without decreasing the precision score significantly. However, this also mean that no working point can be chosen that has an exceptionally high precision score.
