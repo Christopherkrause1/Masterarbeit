@@ -67,7 +67,7 @@ the integration of different independent devices under test. A schematic setup o
 
 \begin{figure}
   \centering
-  \includegraphics[height=0.4\textwidth]{images/eudaq_2.png}
+  \includegraphics[height=0.5\textwidth]{images/eudaq_2.png}
   \caption{Necessary components for an analogue telescope \cite{eudaq_bild_2}.}
   \label{fig:eudaq_bild}
 \end{figure}
@@ -94,7 +94,7 @@ The steering files define the processors used in each reconstruction step and in
 A complete track reconstruction with EUTelescope contains the converter, the clustering, the hitmaker, the alignment and the track fitting in this respective order.
 The overall track reconstruction of EUTelescope is shown in figure \ref{fig:track_reco} with the most important steps explained in the following.
 
-\begin{figure}
+\begin{figure}[H]
   %\centering
   \hspace{-1.3cm}
   \includegraphics[height=0.85\textwidth]{images/track_reco.png}
@@ -304,7 +304,7 @@ After the final track reconstruction with the telescope, the hit information on 
 reconstructed tracks. Again, three iterations of alignment are performed for the DUT planes. In figure \ref{fig:residual_dut}, the residuals in the
 x- and y-direction are shown for the FE-I4 sensor.
 
-\begin{figure}
+\begin{figure}[H]
   %\centering
   \hspace{-0.6cm}
   \begin{subfigure}{0.51\textwidth}
@@ -340,7 +340,7 @@ indicating a successful alignment. The spatial resolution of the sensor in the h
 \end{align*}
 
 Both software determined similar standard deviations, with the ones for the residuals in the vertical direction being close to
-the corresponding spatial resolution of the sensor and the ones for the horizontal residuals being larger.
+the corresponding spatial resolution of the sensor and the ones for the horizontal residuals being larger. (...)
 
 %In this batch only a third
 %of the RD53a sensor volume has been depleted limiting the statistics and thus the alignment performance, which is based on

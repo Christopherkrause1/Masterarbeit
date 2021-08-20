@@ -100,7 +100,7 @@ To determine the optimal number of boosting rounds, early stopping is utilised o
 the model will train until the validation score stops improving for ten consecutive boosting rounds to rule out statistical fluctuations.
 The number of boosted rounds is then determined by the highest validation score.
 In this case, the validation score refers to the area under the ROC curve. \\
-The ROC curve describes the true positive rate $TPR = t_p/(t_p + f_p)$ as a function of the false positive rate $FPR = f_p/(f_p + t_n)$ with
+The ROC curve describes the true positive rate $TPR = t_p/(t_p + f_n)$ as a function of the false positive rate $FPR = f_p/(f_p + t_n)$ with
 $t_p$, $t_n$ and $f_p$ denoting the true positive, true negative and false positive classification of a track respectively. The larger the area under the curve,
 the better the performance of the classificator. \\
 All features, including $\chi^2$, kink angles, cluster positions, and charge depositions are selected as input for the classifier. Less useful features
@@ -267,7 +267,8 @@ false tracks. The ROC curve of the test data with the rejection of tracks is sho
 With the rejection of tracks, the AUC on the test data set decreases to $0.702$. This is the result of the rejection of many true negative tracks, which in turn increases
 the false positive rate. However, the rejection of true negative tracks does not decrease the quality of the pct image, as these tracks are not taken into account anyway.
 To evaluate this method, the precision score $P=t_p/(t_p + f_p)$ and the recall score $R=t_p/(t_p + f_n)$ are calculated and compared with the baseline classifier. The precision
-score describes the ability of the learner to not classify negative events as positive and the recall score is the ability to classify all positive events correctly.
+score describes the ability of the learner to not classify negative events as positive and the recall score, referring to the same quantity as the true positive rate,
+is the ability to classify all positive events correctly.
 Figure \ref{fig:precision} shows the precision of the learner and the individual feature cuts as a function of the recall.
 
 %\begin{figure}
@@ -287,14 +288,13 @@ Figure \ref{fig:precision} shows the precision of the learner and the individual
 %  \label{fig:precision}
 %\end{figure}
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[height=0.6\textwidth]{plots/roc_curve_precision_all.pdf}
   \caption{Precision as a function of the recall for the train and test data set including the rejection of all but one track from clusters of the first and last
            sensor for the test dataset. As a comparison, the precision curves are also shown for cuts on the $\chi^2$, $\phi_{x,3}$, and $\phi_{x,4}$ features.}
   \label{fig:precision}
 \end{figure}
-
 The precision score of the test data set increases with the rejection of tracks noticeably for recall scores larger than $0.1$, indicating a better performance with the rejection method.
 Furthermore, a higher precision score of the test data set in comparison to the individual feature cuts for all recall scores highlights the advantages of the machine
 learning approach. The precision is especially stable for the test dataset with the rejection method for recall scores larger than $0.1$, which means that high recall scores

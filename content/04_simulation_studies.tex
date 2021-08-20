@@ -1,45 +1,49 @@
 \chapter{Simulation studies for proton computed tomography} \label{sec:setup}
-With the demonstration of Corryvreckans validity as a track reconstruction framework, its performance for conditions present
-in proton computed tomography scans can be investigated. The telescope used to reconstruct the protons consists of six IBL planar sensors
+With the demonstration of the validity of Corryvreckan as a track reconstruction framework, its performance for conditions present
+in proton computed tomography scans can be investigated. The foreseen telescope used to reconstruct the proton paths consists of six IBL planar sensors
 grouped into two triplets. Due to the fact that the spatial resolution of the sensors is five times better in the horizontal direction, the middle sensor
 of each triplet is rotated by 90°. This way the lower track reconstruction precision in the vertical direction is partially compensated for.
-The setup for proton computed tomography is shown schematically in figure \ref{fig:phantom} with an IBL sensor in between the triplets serving as a DUT instead of a patient. \\
-For proton computed tomography it is necessary that the protons can to traverse the entire telescope including the patient
-to measure their remaining energy, which is the reason the energy of the proton beam has to be significantly higher than during
-the proton therapy. Current proton synchrotrons used in proton therapy centres have an upper energy limit of $200 - \SI{250}{\mega\eV}$.
+The setup for proton computed tomography is shown schematically in figure \ref{fig:phantom}. \\
+Since the tracking performance of Corryvreckan will be investigated, no
+phantom will be present in the setup as it would
+increase the number of multiple scatterings and significantly decrease the number of protons passing the telescope. Instead, another
+IBL planar sensor, placed directly in the middle of the telescope, serves as a DUT.
+
+ %with an IBL sensor in between the triplets serving as a DUT instead of a patient. \\
+For proton computed tomography it is necessary that the protons can traverse the entire telescope including the patient
+to measure their remaining energy. For that reason, the energy of the proton beam has to be significantly higher than during
+the proton therapy. Current proton synchrotrons used in proton therapy centres have an upper energy limit of $(200 - 250)\;$MeV.
 Therefore, a $\SI{200}{\mega\eV}$ proton beam is used in this analysis.
 
 \begin{figure}
   \centering
   \includegraphics[height=0.45\textwidth]{images/phantom_proton_4.jpg}
-  \caption{Schematic representation of the telescope used for the reconstruction of proton computed tomography. For the real
+  \caption{Schematic representation of the telescope used for the reconstruction in proton computed tomography. For the real
   application, a patient replaces the DUT sensor.}
   \label{fig:phantom}
 \end{figure}
 
-Since the tracking performance of Corryvreckan will be investigated, no
-phantom will be present in the setup as it would
-increase the number of multiple scatterings and significantly decrease the number of protons passing the telescope. Instead, another
-IBL planar sensor is placed directly in the middle of the telescope serves as a DUT.
 
-To analyse Corryvreckans performance in reconstructing proton tracks, data fed into the framework is simulated by the Allpix$^2$ software,
+
+To analyse the performance of Corryvreckans in reconstructing proton tracks, data fed into the framework is simulated by the Allpix$^2$ software,
 which is explained in the following section.
 
 \section{The simulation software Allpix$^2$}
 Allpix$^2$ is a generic simulation framework developed at CERN to simulate the performance of silicon detectors and was released in 2017.
 It builds upon the
 Geant4 \cite{geant4} package to perform tasks in the simulation chain. The main tasks of Allpix$^2$ are the simulation of energy depositions of particles
-in the sensors, the propagation of charge carriers in the sensor material, and the digitization of the signal. It has a modular
+in the sensors, the propagation of charge carriers in the sensor material, and the digitisation of the signal. It has a modular
 structure to ensure easy handling, while still allowing for complex detector simulations.
 Instantiation and processing of the modules are done by the core of the framework,
-which contains five subsystems. This includes the configuration containing the configuration manager, which grants access to the configuration file, the
-module subsystem, which loads and executes the modules, and the geometry subsystem, which provides the information of the telescope setup.
-Objects are transferred from one module to another with the messenger subsystem.
+which contains four subsystems.
+This includes the module instantiation logic, which determines the module instantiations from the configuration file, the
+geometry subsystem, which provides the information of the telescope setup, and a messenger subsystem, which transfers objects from one module to another.
+A User Interface enables interaction with the user via the command line.
 Figure \ref{fig:allpix} depicts the overall structure of Allpix$^2$.
 
 \begin{figure}
   \centering
-  \includegraphics[height=0.5\textwidth]{images/allpix.png}
+  \includegraphics[height=0.5\textwidth]{images/allpix.jpg}
   \caption{Schematic representation of the overall Allpix$^2$ structure \cite{fig_allpix}.}
   \label{fig:allpix}
 \end{figure}
@@ -51,13 +55,15 @@ telescope setups.
 In the configuration file, the geometry is imported as well as the modules for the simulation in order of execution, which
 will be explained in the following.
 
-The world frame of the simulation is created with the GeometryBuilderGeant4 module. The world material can be either air or vacuum with a configurable world margin percentage.
+The world frame of the simulation is created with the GeometryBuilderGeant4 module. The world material can be either air or vacuum with a configurable world size.
 Afterwards, all detectors from the internal detector models and passive material models are created according to the specifications in the geometry file.
 
-Charge carriers are deposited in the active volume with the DepositionGeant4 module, which initializes the simulation of particles. The shape of the source beam, as well
+%Charge carriers are deposited in the active volume with the
+The DepositionGeant4 module initializes the simulation of particles. The shape of the source beam, as well
 as the type of particle and its energy, can be specified. Further parameters are the width of the beam, its angular distribution based on Gaussian distribution, and the energy
 uncertainty of the simulated particles. All particles created at the same time define an event. The number of generated electron-hole pairs is calculated with the
-mean pair creation energy and is subject to fluctuations, which are defined by the fano factor.
+mean pair creation energy and is subject to fluctuations, which are defined by the fano factor. This module also simulates the energy loss and the charge carriers that
+are deposited in the active volume.
 
 An electric field is added to the sensors with the ElectricFieldReader module. By default, all sensors are targeted by the module, though specific sensors can be stated.
 There are three types of electric field models available, constant electric fields, linear electric fields, and external simulated electric fields, with only
@@ -65,7 +71,7 @@ linear electric fields being used in the scope of this thesis. The constant slop
 depletion voltage of the sensor. Optionally, the depletion depth instead of the depletion voltage can be specified.
 
 Either with the ProjectionPropagation or the GenericPropagation module, the transport of charge carriers through the sensitive material is simulated.
-The first module projects electrons or holes onto the surface and performs a randomized diffusion based on a two-dimensional Gaussian distribution around
+The first module projects electrons or holes onto the surface and performs a randomised diffusion based on a two-dimensional Gaussian distribution around
 the projection. Using an approximation of the drift time makes it possible to determine the diffusion width under the assumption of a linear electric field. This
 module saves computing time at the cost of accuracy. \\
 The GenericPropagation module consists of a combined simulation of diffusion and drift calculated with a Runge-Kutter-Fehlberg method.
@@ -81,7 +87,7 @@ propagated charges are mapped directly to the nearest pixel, while charge carrie
 
 Collected charges are then translated into digitised signals proportional to the input charge by the DefaultDigitizer module. Additionally, Gaussian noise contributions
 from the readout electronics can be simulated and a signal threshold can be defined. The output signal is given in units of the electron charge per default, but
-can also be given in bits by simulating a QDC converter. Optionally, a gain factor and gain smearing can be set.
+can also be given in bits by simulating a charge to digital (QDC) converter. Optionally, a gain factor and gain smearing can be set.
 
 Simulated events and the produced plots of the different modules are stored in a root file. With the ROOTObjectWriter module further information like propagated charge,
 deposited charge, Monte Carlo (MC) particle information, and pixel hit information is stored in an additional ROOT file. Allpix$^2$ also enables the storing of
@@ -91,31 +97,31 @@ determine what information of the Allpix$^2$ simulation is written into the ROOT
 \section{Simulated setup}
 Unlike conditions present in beam test experiments, protons in pct have a significant lower energy than the $\SI{5}{\giga\eV}$
 electron beam produced by DESY II and a higher particle density, creating different and more complex particle tracks for
-Corryvreckan to reconstruct. Since Corryvreckans performance in regards to these properties will be investigated, uncertainties
-of the sensor position and orientation, as well as the beam energy and direction are set to zero. The simulated
+Corryvreckan to reconstruct. Since the performance of Corryvreckan in regards to these properties will be investigated, uncertainties
+of the sensor position and orientation, as well as the uncertainties of the beam energy and direction are set to zero. The simulated
 beam has a Gaussian profile with a standard deviation of $\SI{3}{\milli\meter}$ and is orientated orthogonal to the sensor
 surfaces. All information about the geometry of the telescope is specified in section \ref{sec:setup} with
-figure \ref{fig:phantom} depicting the exact positions of the sensors and the beam source. \\ %The IBL planar sensor used as a DUT,
+figure \ref{fig:phantom} depicting the exact positions of the sensors and the beam source. The simulated world material is air.\\ %The IBL planar sensor used as a DUT,
 %instead of a phantom, is positioned at $\SI{10}{\centi\meter}$ along the z-axis. \\
 A linear electric field with a bias voltage of $\SI{-100}{\volt}$ and a depletion depth of $\SI{200}{\micro\meter}$,
-thus depleting the entire sensor volume, is specified. For the propagation of charge carriers, the more precise generic propagation
+thus depleting the entire sensor volume, is specified. For the propagation of charge carriers, the more precise GenericPropagation
 module is chosen with a room temperature of $\SI{293}{\kelvin}$ and 300 charges being propagated per step to limit the time consumption.\\
-A Gaussian profile with a default standard deviation of $110$\, e as noise in the electronics is applied in the simulation.
-Only pixels with a charge threshold of $600$\, e will trigger a hit.
+A Gaussian profile with a default standard deviation of $110$ elementary charges (e) as noise in the electronics is applied in the simulation.
+Only pixels with a charge threshold of \mbox{$600$\, e} will trigger a hit.
 
 Simulated data is written out with the CorryvreckanWriter module into a root file having the format to be read
 in by Corryvreckan with the FileReader module.
 
 \section{Proton reconstruction}\label{sec:proton_reconstruction}
 Before the reconstruction of low energy protons is performed with Corryvreckan, it is crucial to understand how well the
-track reconstruction works with protons and the employed telescope since proton beams are not used in major beam test
-experiments for which Corryvreckan was designed. Because of that, a simulation containing 50000 protons
+track reconstruction works with high-energy protons and the employed telescope since Corryvreckan was designed for high-energy beam test experiments.
+Because of that, a simulation containing 50000 protons
 with an energy of $\SI{100}{\giga\eV}$ is created.
 Particles in this energy region only have small scattering angles, effectively travelling
 in straight lines.
 No fluctuation in the proton energy is simulated and only one particle traverses
 the telescope per event. All simulations in this chapter have a random seed of zero to make the results more comparable by preventing
-statistical differences.
+statistical differences. Generated protons from two simulations will have the same starting position and travel direction for equal random seeds.
 The residual in the x- and y-direction are shown in figure \ref{fig:100GeV}.
 
 \begin{figure}
@@ -137,23 +143,24 @@ The residual in the x- and y-direction are shown in figure \ref{fig:100GeV}.
 
 Especially notable is the five-peak structure of the residual in the horizontal direction, which is caused by the different
 spatial resolution of subsequent planes. With the horizontal pixel pitch of the non-rotated sensors being
-five times larger than the other two, the granularity increases by a ratio of the different pitches, in this case,
+five times larger than the other two, the granularity increases by the ratio of the different pitches, in this case,
 $\SI{250}{\micro\meter}/\SI{50}{\micro\meter} = 5$. This effect is shown schematically in figure \ref{fig:peaks}.
 
 \begin{figure}
   \centering
   \includegraphics[height=0.6\textwidth]{images/peaks.png}
   \caption{Occurrence of a five-peak residual structure due to a different spatial resolution. The DUT in the middle
-  has a five times larger pixel pitch and increases the number of peaks in its residual \cite{peaks}.}
+  has a five times larger pixel pitch and increases the number of peaks in its residual distribution \cite{peaks}.}
   \label{fig:peaks}
 \end{figure}
 
-For the vertical residual of the first plane, only one peak is visible due to the lower spatial resolution, while the rotated planes
-in this direction exhibit a five-peak structure. The peaks in the residual plot are narrow due to the fact that no uncertainties in regards
+he peaks in the residual plot are narrow due to the fact that no uncertainties in regards
 to the sensor positions, sensor inefficiencies, or spread in the energy of the particles are simulated. When taking these into account, the
 five peaks broaden to a Gaussian profile.
+For the vertical residual of the third plane, only one peak is visible due to the lower spatial resolution, while the rotated planes
+in this direction exhibit a five-peak structure. T
 
-The number of reconstructed tracks per event is shown in table \ref{tab:cluster_per_track} and indicates how often the proton is
+The number of reconstructed tracks per event is shown in table \ref{tab:cluster_per_track} for two different spatial cuts and indicates how often the proton is
 reconstructed correctly. Since only one proton is simulated in an event, further reconstructed tracks arise from secondary
 particles produced by the proton in an interaction. While a track fit requires a hit on all six planes, a single hit can be used by
 Corryvreckan for multiple track fits, if the spatial cuts allow it. Here the spatial cuts refer to a matching radius of $\SI{750}{\micro\meter}$.
@@ -194,8 +201,8 @@ for reconstructing high-energy protons due to their straight path through the te
 
 
 \section{Reconstruction of low energy protons}\label{sec:energy}
-Lowering the energy of the protons in the simulation, will increase their scattering angle when interacting with the air or the sensor
-planes, essentially traversing the telescope on a more complex path.
+Lowering the energy of the protons in the simulation will increase their scattering angle when interacting with the air or the sensor
+planes, resulting in more complex proton paths.
 The horizontal residuals for the third plane for 50000 protons with an energy of $\SI{20}{\giga\eV}$ and $\SI{5}{\GeV}$ are shown in figure \ref{fig:20GeV}.
 
 \begin{figure}
@@ -221,9 +228,9 @@ For $\SI{5}{\GeV}$ protons, the structure is mostly vanished implying a signific
 protons tracks can still be reconstructed.
 
 Since the proton energy used in pct is approximately $\SI{200}{\mega\eV}$, further simulations with even lower energies are created, while all other parameters stay constant.
-The horizontal residuals for proton energies below $\SI{1}{\giga\eV}$ are depicted in \ref{fig:low}.
+The horizontal residuals for proton energies below $\SI{1}{\giga\eV}$ are depicted in figure \ref{fig:low}.
 
-\begin{figure}
+\begin{figure}[H]
   \hspace{-0.6cm}
   %\centering
   \begin{subfigure}{0.51\textwidth}
@@ -242,25 +249,27 @@ The horizontal residuals for proton energies below $\SI{1}{\giga\eV}$ are depict
   \end{subfigure}
   \begin{subfigure}{0.51\textwidth}
       %\centering
-      \hspace{-0.6cm}
+      \hspace{-0.5cm}
       \includegraphics[height=0.82\textwidth]{plots/150MeV_residualX_tel2.pdf}
   \end{subfigure}
   \caption{Residuals in the x-direction for the third plane in the telescope with a proton energy of $\SI{750}{\mega\eV}$ on the upper left, $\SI{500}{\mega\eV}$ on the
   upper right, $\SI{250}{\mega\eV}$ on the lower left,
-  and $\SI{150}{\mega\eV}$ on the right. A total of 50000 protons were generated in each simulation and a matching radius of $\SI{750}{\micro\meter}$ is applied. The third plane has
+  and $\SI{150}{\mega\eV}$ on the lower right. A total of 50000 protons were generated in each simulation and a matching radius of $\SI{750}{\micro\meter}$ is applied. The third plane has
   a horizontal pixel pitch of $\SI{250}{\micro\meter}$.}
   \label{fig:low}
 \end{figure}
 
-All four residual plots have a defined maximum due to highly non-linear tracks. By gradually lowering the energy the standard deviation of the residual shrinks. While
-it seems like the accuracy of the telescope and the track reconstruction increased, it is simply the consequence of the increasing number of protons scattering
+All four residual plots have one smeared out maximum due to the strong scattering of low energy protons. By gradually lowering the energy the standard deviation of the residual shrinks. While
+it seems like the accuracy of the telescope and the track reconstruction increases, it is simply the consequence of the increasing number of protons scattering
 out of the telescope, which therefore do not deposit energy in each sensor. Since this is a requirement for a reconstructed track, the number of fitted tracks decreases
 noticeably, especially between $\SI{250}{\mega\eV}$ and $\SI{150}{\mega\eV}$. The first tracks that are lost for lower energies
 are the ones with a high absolute value of the residual, as they are more likely to leave the telescope before traversing all sensors. \\
 While the reconstruction of low energy protons and their complex path is possible, the number of reconstructable tracks decreases with lower energies.
-Since it is still necessary to have a sufficient amount of tracks for a pct image, one method to counter this problem is in irradiating the patient longer.
+Since it is still necessary to have a sufficient amount of tracks for a pct image, one method to counter this problem is a longer irradiation time.
+This comes at the cost of a higher radiation dose for the patient. Therefore, the patient cannot be irradiated indefinitely and finding a balance between the statistics and the
+radiation dose is necessary.
 An additional problem arises due to the increasing number of multiple Coulomb scattering inside the patient, which inevitably decreases the spatial resolution of the image.
-However, the used energy reason still allows for a successful track reconstruction of protons for pct.
+However, the used energy region still allows for a successful track reconstruction of protons for pct.
 
 
 \chapter{Reconstruction of high track density proton beams}\label{sec:density}
@@ -318,8 +327,6 @@ compared with the coordinates of the cluster centres belonging to a track create
 The number of correct reconstructed tracks for the relative spatial cuts of 15.1 and 12.2 are given in table
 \ref{tab:true_tracks} for 50000 generated protons with 10,
 25, and 50 protons simulated per event.
-
-
 \begin{table}
   \centering
   %\hspace{-1.5cm}
@@ -339,7 +346,6 @@ The number of correct reconstructed tracks for the relative spatial cuts of 15.1
   number of reconstructed tracks divided by the total number of tracks.}
   \label{tab:true_tracks}
 \end{table}
-
 With a stronger spatial cut,  the ratio of true reconstructed tracks to
 the total number of tracks increases by $10.3\%$, $22.7\%$, and $26.7\%$ for 10, 25, and 50 protons per event respectively.
 While this shows that stronger cuts help reducing false combinatorics, they cannot be chosen too strictly,
@@ -505,9 +511,9 @@ possible parameter values are shown in table \ref{tab:params}.
 
 A ratio of $6501/13632 = 0.477$ of true tracks to the total number tracks is achieved by cutting on smaller values than $\chi^2 = 0.5$, $\phi_{x,3} = 0.003$ and $\phi_{x,4}=0.004$.
 Stronger cuts can create even better ratios with the number of true tracks decreasing significantly. For that reason, the score $TPR-FPR$ of each combination
-was calculated to determine the best combination. The value $TPR = t_p/(t_p + f_p)$ and $FPR = f_p/(f_p + t_n)$
+was calculated to determine the best combination. The value $TPR = t_p/(t_p + f_n)$ and $FPR = f_p/(f_p + t_n)$
 refer to the true positive and false positive rate with
-$t_p$, $t_n$ and $f_p$ describing the true positive, true negative, and false positive classification of a track respectively.
+$t_p$, $f_n$, $f_p$, and $t_n$ describing the true positive, false negative, false positive, and true negative classification of a track respectively.
 Strict cuts will decrease both rates and are therefore not preferred. Plotting the
 true positive rate as a function of the false positive rate for many different cuts gives insight into the usefulness of the cut on the respective feature. The resulting
 graphs are called Receiver Operating Characteristic (ROC) curves.

@@ -157,8 +157,9 @@ The solid-line describes the safety margin for complex geometries without Monte 
 
 Creating an image with proton ct is similar to conventional. A proton beam deposits energy in the patient and the
 protons remaining energy is then measured with a calorimeter system behind the patient to gain information about the composition of the tissue. A projection can be created,
-if the tracks of the protons can be reconstructed. However, due to multiple Coulomb scatterings of the protons inside the patient, the spatial resolution will decrease in comparison
-to conventional ct. Numerous projections are created by varying the angle of the proton beam with respect to the target. The entire setup is schematically shown in figure \ref{fig:proton_ct}.
+if the tracks of the protons are reconstructed. However, due to multiple Coulomb scatterings of the protons inside the patient, the spatial resolution will decrease in comparison
+to conventional ct. In order to take the mutliple Coulomb scattering into account, a most likely path formalism is necessary to model the path of the proton inside the patient \cite{mlp}. \\
+Numerous projections are created by varying the angle of the proton beam with respect to the target. The entire setup is schematically shown in figure \ref{fig:proton_ct}.
 
 \begin{figure}
   \centering
