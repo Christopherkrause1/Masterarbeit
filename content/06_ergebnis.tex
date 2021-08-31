@@ -33,7 +33,7 @@ clusters. Falsely reconstructed tracks will lower the resolution of the pct imag
 opening angles for the proton beam increased the ratio of true and false tracks, while the number of true tracks decreases significantly. Due to the loss of
 true tracks for increasingly stricter spatial cuts and larger opening angles, the use of these parameters to improve the ratio is limited for the use of pct. \\
 Cuts on track features proved to be useful for the $\chi^2$ value and the horizontal kink angles of the third and fourth plane. The optimal combination of cuts, determined
-with a grid search, result in a ratio of 0.477. (...)
+with a grid search, results in a ratio of 0.477.
 
 With the utilisation of a boosted decision tree used for the classification of tracks, the true and false positive rates achieved with the machine learner are better
 than any of the previous methods, including the grid search. The resulting AUC of the test data set is 0.756, with the same data set having AUC's of
@@ -41,10 +41,14 @@ than any of the previous methods, including the grid search. The resulting AUC o
 fitted through each cluster on the first and last sensor. With this method, the area under the precision-recall curve increased from $0.604$ to $0.633$ and is especially
 impactful for high recall scores. \\
 However, a significant amount of false tracks are still classified to be true
-with a high probability, which means that the input features do not enable an optimal classification. Thus, the most crucial step to optimise the classification of the machine learner is
-to determine further input features. \\
+with a high probability, which means that the input features do not enable an optimal classification.
+Thus, the most crucial step to optimise the classification of the machine learner is to determine further input features. 
 
-Another option is to improve the reconstruction process of Corryvreckan with more advanced track finding algorithms. The Tracking4D module uses a straight line as the initial track for
+Another option for a better pct image resolution is to improve the reconstruction process of Corryvreckan with more advanced track finding algorithms.
+The Tracking4D module uses a straight line as the initial track for
 the track finding process. The newer TrackingMultiplet module fits two straight lines, one through each triplet, and connects them at a specified position with an arbitrary kink.
 A full track forms by connecting the upstream and downstream tracks with the lowest distance and within specifed cuts, allowing for further rejection of false combinations
-of clusters.
+of clusters. \\
+Furthermore, instead of using logistic regression, artificial neural networks \cite{ann}\cite{neural} offer a couple of advantages,
+including the ability to detect more complex non linear relationships between the input variables and the output. Therefore, a neural network is likely to classify
+more precise in comparison to logistic regression.

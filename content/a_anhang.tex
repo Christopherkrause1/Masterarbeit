@@ -44,7 +44,7 @@ detectors_file_updated = output/updated_real_geometry.conf
 histogram_file=histogram_testbeam_realdata.root
 
 [EventLoaderEUDAQ]
-file_name = "/eos/atlas/atlascerngroupdisk/pixel-upgrade/itk/BeamTest/desy_2020_june_itk/native/run002016.raw"
+file_name = "/path_to_data.raw"
 long_detector_id = false
 
 [Clustering4D]
@@ -189,15 +189,16 @@ type = "fei4"
 \begin{lstlisting}[caption={Configuration file of EUTelescope for the testbeam anaylsis of June 2020 Batch 3}]
 [DEFAULT]
 # The path to this config file
-BasePath                = /afs/cern.ch/work/c/chkrause/testBeam/testBeamReco
+BasePath                = /path_to_config_file
 
 # Set the folder which contains the raw/native data files
-NativePath              = /eos/atlas/atlascerngroupdisk/pixel-upgrade/itk/BeamTest/desy_2020_june_itk/native
+NativePath              = /path_to_data_file
 
 #The location of the steering templates
 TemplatePath    = %(BasePath)s/steering-templates
 
-# The GEAR file describing the detector geometry, this is passed from the runlist.csv
+# The GEAR file describing the detector geometry,
+# this is passed from the runlist.csv
 GearFile                = @GearGeoFile@
 
 # Beam Energy is retrieved from the runlist.csv
@@ -209,7 +210,9 @@ GearFilePath    = %(BasePath)s/gear
 # The XML file with histogram information
 HistoInfoFile   = %(TemplatePath)s/histoinfo.xml
 
-# Formats the output; @RunNumber@ is the current run number padded with leading zeros to 6 digits
+# Formats the output;
+# @RunNumber@ is the current run number
+# padded with leading zeros to 6 digits
 FilePrefix              = run@RunNumber@
 
 # Skip events in a run; set to 0 for all data
@@ -286,8 +289,10 @@ resFEI4X                = 0.0722
 resFEI4Y                = 0.0144
 
 # Both DUTs are 50x50
-ResolutionX = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
-ResolutionY = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
+ResolutionX = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s
+%(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
+ResolutionY = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s
+%(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
 
 UpstreamTripletCut              = 0.2
 DownstreamTripletCut            = 0.2
@@ -324,8 +329,10 @@ resFEI4X                = 0.0722
 resFEI4Y                = 0.0144
 
 # Both DUTs are 50x50
-ResolutionX = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
-ResolutionY = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
+ResolutionX = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s
+%(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
+ResolutionY = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s
+%(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
 
 UpstreamTripletCut              = 0.2
 DownstreamTripletCut            = 0.2
@@ -362,8 +369,10 @@ resFEI4X                = 0.0722
 resFEI4Y                = 0.0144
 
 # Both DUTs are 50x50
-ResolutionX  = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
-ResolutionY  = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
+ResolutionX  = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s
+%(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
+ResolutionY  = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s
+%(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
 
 UpstreamTripletCut              = 0.03
 DownstreamTripletCut            = 0.03
@@ -394,8 +403,10 @@ resFEI4X                = 0.0722
 resFEI4Y                = 0.0144
 
 # Both DUTs are 50x50
-ResolutionX = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
-ResolutionY = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s %(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
+ResolutionX = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s
+%(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4X)s
+ResolutionY = %(resMim)s %(resMim)s %(resMim)s %(resRD532XY)s
+%(resRD532XY)s %(resMim)s %(resMim)s %(resMim)s %(resFEI4Y)s
 
 UpstreamTripletCut              = 0.03
 DownstreamTripletCut            = 0.03
@@ -405,4 +416,85 @@ TripletMatchingCut              = 0.20
 DUTCuts                         = 0.3 0.3
 
 OutputPlanes    = 110 112 21
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Allpix$^2$ simulation for 50000 protons with an energy of $\SI{100}{\giga\eV}$}]
+[Allpix]
+log_level = "WARNING"
+log_format = "DEFAULT"
+detectors_file = path_to_detector_file.conf
+number_of_events = 50000
+random_seed_core = 0
+random_seed = 0
+
+[GeometryBuilderGeant4]
+world_material = "air"
+world_margin_percentage = 0
+
+[DepositionGeant4]
+physics_list = QBBC
+particle_type = "proton"
+source_energy = 100GeV
+source_position = 0 0 -200cm
+source_type = "beam"
+beam_divergence = 0mrad 0mrad
+beam_size = 3mm
+beam_direction = 0 0 1
+number_of_particles = 1
+max_step_length = 1um
+
+[ElectricFieldReader]
+type= "ibl_planar"
+model="linear"
+bias_voltage= -100V
+depletion_depth= 200um
+
+[GenericPropagation]
+type = "ibl_planar"
+temperature = 293K
+charge_per_step = 300
+
+[SimpleTransfer]
+type = "ibl_planar"
+max_depth_distance = 250um
+
+[DefaultDigitizer]
+type = "ibl_planar"
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Allpix$^2$ geometry file for all simulations}]
+[telescope0]
+type = "ibl_planar"
+position = 0 0 -44cm
+orientation = 0deg 0 0
+
+[telescope1]
+type = "ibl_planar"
+position = 0 0 -37cm
+orientation = 0deg 0deg 90deg
+
+[telescope2]
+type = "ibl_planar"
+position = 0 0 -30cm
+orientation = 0deg 0 0
+
+[dut0]
+type = "ibl_planar"
+position = 0 0 10cm
+orientation = 0deg 0 0
+
+[telescope3]
+type = "ibl_planar"
+position = 0 0 50cm
+orientation = 0deg 0 0
+
+[telescope4]
+type = "ibl_planar"
+position = 0 0 57cm
+orientation = 0deg 0deg 90deg
+
+[telescope5]
+type = "ibl_planar"
+position = 0 0 64cm
+orientation = 0deg 0 0
 \end{lstlisting}
