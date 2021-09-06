@@ -9,10 +9,11 @@ reconstructed spatial resolutions proved to be well within
 the expected value of $\sigma_{\text{M26}} = \SI{18.4}{\micro\meter}/\sqrt{12} \approx \SI{5.311}{\micro\meter}$ for Mimosa26 sensors. The noticeably smaller values
 arise due to the used centre-of-gravity algorithm for the calculation of cluster centres. \\
 Similar results are also seen for the DUT residuals, shown for the FEI4 sensor in this thesis, as only a third of the RD53a sensor volume was depleted during the beam test measurement.
-An alignment below $\SI{1}{\micro\meter}$ was achieved for both frameworks with standard deviations of $21.22(4)$\,\textmu m\, and $22.17(4)$\,\textmu m\, in the horizontal direction and
-$72.3(2)$\,\textmu m\, and $72.7(2)$\,\textmu m\, in the vertical direction for Corryvreckan and EUTelescope respectively. With expected spatial resolutions of
-$\sigma_{\text{FEI4},\text{x}} \approx \SI{14.434}{\micro\meter}$ and $\sigma_{\text{FEI4},\text{y}} \approx \SI{72.169}{\micro\meter}$ for cluster centres calculated by
-arithmetic mean, both frameworks determined a similar, but non-optimal value for the horizontal residual of the sensor. (...) \\
+A mean below $\SI{1}{\micro\meter}$ of the residual distribution was achieved for both frameworks with standard deviations of $21.22(4)$\,\textmu m\, and $22.17(4)$\,\textmu m\, in the horizontal direction and
+$72.3(2)$\,\textmu m\, and $72.7(2)$\,\textmu m\, in the vertical direction for Corryvreckan and EUTelescope respectively.
+%With expected spatial resolutions of
+%$\sigma_{\text{FEI4},\text{x}} \approx \SI{14.434}{\micro\meter}$ and $\sigma_{\text{FEI4},\text{y}} \approx \SI{72.169}{\micro\meter}$ for cluster centres calculated by
+%arithmetic mean, both frameworks determined a similar values  \\
 Thus, the results of the reconstruction chain up to the
 association of clusters from the DUT planes are similar for the two software. Due to the minimization of external dependencies and the more user-friendly structure of
 Corryvreckan in comparison to EUTelescope, the former is suitable to supersede the EUTelescope framework for track reconstruction in beam test experiments. \\
@@ -42,7 +43,7 @@ fitted through each cluster on the first and last sensor. With this method, the 
 impactful for high recall scores. \\
 However, a significant amount of false tracks are still classified to be true
 with a high probability, which means that the input features do not enable an optimal classification.
-Thus, the most crucial step to optimise the classification of the machine learner is to determine further input features. 
+Thus, the most crucial step to optimise the classification of the machine learner is to determine further input features.
 
 Another option for a better pct image resolution is to improve the reconstruction process of Corryvreckan with more advanced track finding algorithms.
 The Tracking4D module uses a straight line as the initial track for
