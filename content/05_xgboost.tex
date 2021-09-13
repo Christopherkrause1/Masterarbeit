@@ -1,13 +1,14 @@
 \chapter{Machine learning approach for true track tagging}
-Applying cuts to track features in order to differentiate between true and false reconstructed tracks improved their ratio slightly. A more effective
-approach in classifying a track as true or false can be achieved with a machine learning algorithm for classification. Unlike one-dimensional cuts, a machine learning
+Applying cuts to track features in order to differentiate between true and false reconstructed tracks improved their ratio. A more effective
+approach in classifying a track as true or false might be achieved with a machine learning algorithm for classification. Unlike one-dimensional cuts, a machine learning
 algorithm can be implemented to benefit from correlations between the input features for more accurate identification of true tracks. The library used for
-machine learning is XGBoost \cite{xgboost}, which is explained in the following section.
+machine learning is XGBoost \cite{xgboost}. It is used for supervised learning problems \cite{supervised} which is explained in the following section.
 
-\section{Introduction to XGBoost}
-XGBoost is a gradient boosting machine learning algorithm \cite{gradient}, which primarily uses decision trees as a predictive model for classification and regression analysis.
-It is used for supervised learning problems to predict a target variable $y_i$ based on the training data $x_i$ containing multiple features. The model
-of XGBoost describes the mathematical structure, which determines the prediction from its input data. A linear model is a common example, where the predictions
+%\section{Introduction to XGBoost}
+\section{Supervised learning}
+%XGBoost is a gradient boosting machine learning algorithm \cite{gradient}, which primarily uses decision trees as a predictive model for classification and regression analysis.
+Supervised learning is used to predict a target variable $y_i$ based on the training data $x_i$ containing multiple features. The model
+in supervised learning describes the mathematical structure, which determines the prediction from its input data. A linear model is a common example, where the predictions
 are linear combinations of the weighted input features:
 \begin{align}
   \hat{y}_i = \sum_j \Theta_j x_{ij}
@@ -21,16 +22,19 @@ Those functions consist of the training loss function $L(\Theta) $ and the regul
   \text{obj}(\Theta) = L(\Theta) + \Omega(\Theta)
 \end{align}
 
-The training loss function is commonly defined as the mean squared error or logistic loss for logistic regression:
+The training loss function is commonly defined as the mean squared error or logistic loss for logistic regression \cite{logistic}:
 \begin{align}
   &L(\Theta) = \sum_i (y_i - \hat{y}_i)^2 \\
   &L(\Theta) = \sum_i [y_i \ln{(1 + \text{e}^{-\hat{y}_i})} + (1 - y_i) \ln{(1 + \text{e}^{-\hat{y}_i})}]
 \end{align}
-The regularization term describes the complexity of a model in order to prevent overfitting.
+Logistic regression refers to the statistical model that uses logistic functions to model binary dependent variables. \\
+The regularization term limits the complexity of a model in order to prevent overfitting. Overfitting occurs, when the model fits to the training data too well that it adjusts
+to random fluctuations with no causal relation. Predictions of new unseen data then become worse, as the learner is not able to generalise well.
 
 \section{Decision tree ensemble}
 The model used by the XGBoost library is the ensemble of decision trees, which consists of a set of classification and regression trees (CART).
-A CART assigns a prediction score to each of the leaves in which the input features are classified. The prediction of a single tree is usually not sufficiently accurate,
+A CART assigns a prediction score to each of the leaves, which are the nodes of a decision tree that do not split the data any further.
+The prediction of a single tree is usually not sufficiently accurate,
 therefore the prediction of numerous trees is summed together. This method can be written mathematically as:
 \begin{align}
   \hat{y}_i &= \sum_{k=1}^K f_k(x_i)\,, \: f_k \in \mathcal{F} \\
@@ -49,7 +53,10 @@ figure \ref{fig:random_forest}.
 
 \section{Boosted trees}
 %The model used for boosted trees and a random forest is both the tree ensembles with the only difference being the training method.
-Random forests and boosted decision trees are both tree ensembles that differ only in their training method.
+%Random forests and boosted decision trees are both tree ensembles that differ only in their training method.
+Unlike in random forest algorithms \cite{random}, in which a multitude of decision trees are created independently and combined at the end,
+it is also possible to build one tree at a time and
+combine them iteratively. This method is the gradient boosting machine learning algorithm \cite{gradient}, which is used by XGBoost. \\
 Optimising the objective functions for
 boosted trees is achieved by additive training. This means that previous trees are fixed and only one new tree per step $t$ is added. This can be written
 down as follows:
@@ -69,47 +76,46 @@ However, the regularization term still needs to be defined. One definition that 
 \begin{align}
   \Omega (f) = \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T \omega_j^2
 \end{align}
-Here, $\omega_j$ is the vector of scores on leaves, $\gamma$ is the minimum loss reduction required to make
-another partition on a leaf, $T$ is the number of leaves, and$\lambda$ is the Ridge regularisation term \cite{ridge}, which shrinks the $\omega_j$ to reduce model
-complexity. \\
+Here, $\omega$ is the vector of scores on leaves, $\gamma$ is the minimum loss reduction required to make
+another partition on a leaf, $T$ is the number of leaves, and $\lambda$ is the Ridge regularisation term \cite{ridge}, which shrinks the $\omega_j$ to control the
+regularisation term. \\
 With this definition, the objective function for a single tree can be compressed to:
 \begin{equation} \label{eqn:obj}
   \text{obj} = -\frac{1}{2}\sum_{j=1}^T \frac{G_j^2}{H_j + \lambda} + \gamma T
 \end{equation}
 Here, $G_j$ and $H_j$ are the sums over all $g_i$ and $h_i$ respectively. Equation \ref{eqn:obj} is a measure of how good a tree structure is. Its structure score
 is determined by the statistics $g_i$ and $h_i$ in the leaves, with a smaller score indicating a better tree structure.
-Since it is not feasible to enumerate all possible trees to find the best one, only one level of a tree is optimised at a time.
+Since it is not feasible to enumerate all possible trees to find the best one, only one level at a time is optimised.
 For each split of a leaf into a new left leaf L and right leaf R, the gained structure score is defined as:
 \begin{equation}
   \text{Gain} = \frac{1}{2}\left[\frac{G_{\text{L}}^2}{H_{\text{L}} + \lambda} + \frac{G_{\text{R}}^2}{H_{\text{R}} + \lambda} - \frac{(G_{\text{L}} + G_{\text{R}})^2}{H_{\text{L}}+H_{\text{R}}+\lambda}\right] -\gamma
 \end{equation}
 
-Optimal splits are then determined by calculating the structure score of all possible split solutions.
+Optimal splits are then determined by calculating the structure score of all possible split solutions. \\
 
 \section{Machine learning setup}
 The data used to train the learner %is identical to the one from section \ref{sec:feature} and
-consist of 40000 events with ten generated $\SI{200}{\mega\eV}$ protons each
+consist of 400000 events with ten generated $\SI{200}{\mega\eV}$ protons each
 traversing the telescope described in section \ref{sec:setup}. The protons
 are reconstructed with Corryvreckan, with the true tracks being identified with the MC truth from Allpix$^2$. A total number of 92546 tracks
 are reconstructed, with 36340 being true tracks.
-The learner is tested on a previously unseen dataset, which is identical to the one in \ref{sec:feature} and consists of 100000 protons with ten protons per event.
-
-The objective of the learner is binary logistic, which performs a logistic regression and outputs a probability for classifying a track as true or false.
-%Therefore, a logistic loss function is used for training the model.
+The learner is tested on a previously unseen dataset, similar to the one in \ref{sec:feature} and consists of 100000 protons with ten protons per event.
 To determine the optimal number of boosting rounds, early stopping is utilised on a validation set, consisting of 100000 generated protons. This means, that
 the model will train until the validation score stops improving for ten consecutive boosting rounds to rule out statistical fluctuations.
 The number of boosted rounds is then determined by the highest validation score.
-In this case, the validation score refers to the area under the ROC curve, which was explained in section \ref{sec:feature}.
+In this case, the validation score refers to the area under the ROC curve, which was explained in section \ref{sec:feature}. \\
+The learner performs a logistic regression and outputs a probability for classifying a track as true or false.
+A single tree is created in each iteration, called boosting round, to minimise the loss function.
 
-To determine, whether all features are independant from each other, their correlations are calculated, which is shown in figure \ref{fig:corr} . Here the correlation
+To determine, whether all features are independent from each other, their correlations are calculated, which is shown in figure \ref{fig:corr}. Here the correlation
 refers to the Pearson correlation coefficient \cite{pearson} describing the ratio of the covariance of two variables and the product of their standard deviations. \\
-Most features show only small positive correlations with each other. The most noticeable exceptions are the cluster positions, which correlate particulary high within each
-triplet. All charge deposition features and the $\chi^2$ value show almost no correlation with any other feature, though this does not necessarily mean that they are
+Most features show only small positive correlations with each other. The most noticeable exceptions are the cluster positions, which correlate particularly high within each
+triplet. All charge deposition features and the $\chi^2$ value show almost no correlation with any other features, though this does not necessarily mean that they are
 useful features for separating true and false tracks. \\
 Less useful features
 are not expected to contribute significantly to classification, but also do not disrupt the learning process, as trees do not split as often on variables with little impact.
 However, problems may arise by taking too many features into account, as only limited training data is available to compensate for inefficient splits on features.
-To prevent too many splits on less useful features, the cluster positions on the six sensors in horizontal and vertical direction are not given as input to the machine learner,
+To prevent too many splits on less useful features, the cluster positions on the six sensors in the horizontal and vertical direction are not given as input to the machine learner,
 due to their high correlation with each other and their overall small number of splits, shown in figure \ref{fig:importance_global} in the appendix.
 Thus, the remaining 15 features include the $\chi^2$, the kink angles, and the charge depositions.
 \begin{figure}
@@ -117,7 +123,7 @@ Thus, the remaining 15 features include the $\chi^2$, the kink angles, and the c
   \hspace{-2.5cm}
   \includegraphics[height=1.0\textwidth]{plots/correlation_matrix.pdf}
   \vspace{-1.8cm}
-  \caption{Pearson correlation coefficient of the kink angles, the cluster position, the charge deposition, and the $\chi^2$ value.}
+  \caption{The Pearson correlation coefficient of the kink angles, the cluster position, the charge deposition, and the $\chi^2$ value.}
   \label{fig:corr}
 \end{figure}
 
@@ -160,7 +166,7 @@ large sets, with the learner training on four of them and evaluating on the last
 parameter combination five runs are performed. The area under the ROC curve serves as the scoring function to measure how good the prediction on the test data set is.
 The mean of the five AUC values represents the score, which is compared in the grid search. Thus, cross-validation helps to compensate for variability in the simulated
 data to derive an accurate estimate of the predictive power of the model. \\
-The maximal AUC of $0.706(1)$ is achieved with a maximum tree depth of 4, $\eta=0.7$, $\gamma=5$ and $\theta=25$. Setting $\gamma=5$, the result of the grid search of the remaining
+The maximal AUC of $0.706(1)$ is achieved with a maximum tree depth of 4, $\eta=0.7$, $\gamma=5$ and $\theta=25$. By setting $\gamma=5$, the result of the grid search of the remaining
 parameters can be visualized and is shown in figure \ref{fig:grid}. \\
 Varying the values of the hyperparameters only causes small changes in the mean test AUC, especially the learning rate has a negligible influence on the AUC. Taking the
 standard deviations into account shows that the variation of the hyperparameters does not have a significant impact on the performance of the learner.
@@ -232,7 +238,7 @@ TPR and FPR for each possible cut, showing the effectiveness
 of using machine learning for track classification in comparison to individual feature cuts. For the best combination of cuts, the ratio of the TPR and FPR is still worse than
 comparable points on the ROC curve of the test data. This means that for the same FPR of the two methods, the learner consistently achieves a better TPR.
 
-\begin{figure}[H]
+\begin{figure}
   \centering
   \includegraphics[height=0.6\textwidth]{plots/roc_curve_all.pdf}
     \caption{ROC curves of the machine learner for the training and test data set. In comparison, the ROC curves for the individual feature cuts as well as the
@@ -261,7 +267,7 @@ are not taken into account for pct anyway.
 %However, the rejection of true negative tracks does not decrease the quality of the pct image, as these tracks are not taken into account anyway.
 
 To evaluate this method, the precision score $P=t_p/(t_p + f_p)$ and the recall score $R=t_p/(t_p + f_n)$ are calculated and compared with the baseline classifier. The precision
-score describes the ability of the learner to not classify negative events as positive and the recall score, referring to the same quantity as the true positive rate,
+score describes the ability of the learner to not classify negative events as positive. The recall score, referring to the same quantity as the true positive rate,
 is the ability to classify all positive events correctly.
 Figure \ref{fig:precision} shows the precision of the learner and the individual feature cuts as a function of the recall.
 
