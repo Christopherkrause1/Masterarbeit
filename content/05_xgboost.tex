@@ -32,8 +32,10 @@ The regularization term limits the complexity of a model in order to prevent ove
 to random fluctuations with no causal relation. Predictions of new unseen data then become worse, as the learner is not able to generalise well.
 
 \section{Decision tree ensemble}
-The model used by the XGBoost library is the ensemble of decision trees, which consists of a set of classification and regression trees (CART).
-A CART assigns a prediction score to each of the leaves, which are the nodes of a decision tree that do not split the data any further.
+Decision trees are tree-structured diagrams, which classify a target variable based on a series of decisions. They consist of internal nodes, which denote
+a test on an attribute, branches, which represent the outcome of the tests and leaf nodes, which are the nodes of a decision tree that do not split the data any further. \\
+The model used by the XGBoost library is the ensemble of decision trees, which consists of a set of classification and regression trees (CART) \cite{cart}.
+A CART assigns a prediction score to each of the leaves.
 The prediction of a single tree is usually not sufficiently accurate,
 therefore the prediction of numerous trees is summed together. This method can be written mathematically as:
 \begin{align}
@@ -70,9 +72,10 @@ The tree added in each step is supposed to optimise the objective and can be wri
   g_i &= \partial_{\hat{y}_i^{(t-1)}} l(y_i, \hat{y}_i^{(t-1)}) \\
   h_i &= \partial^2_{\hat{y}_i^{(t-1)}} l(y_i, \hat{y}_i^{(t-1)})
 \end{align}
-
-The value of the objective function only depends on $g_i$ and $h_i$, giving XGBoost the advantage of using custom loss functions including logistic regression.
-However, the regularization term still needs to be defined. One definition that works well in practice and is thus used by XGBoost is:
+By using the second order taylor expansion of the loss function instead of only the first one, a more precise approximation of the loss function is determined in comparison
+to regular gradient boosting algorithms \cite{newton_boosting}.
+Furthermore, the value of the objective function only depends on $g_i$ and $h_i$, giving XGBoost the advantage of using custom loss functions including logistic regression.
+However, the regularisation term still needs to be defined. One definition that works well in practice and is thus used by XGBoost is:
 \begin{align}
   \Omega (f) = \gamma T + \frac{1}{2}\lambda \sum_{j=1}^T \omega_j^2
 \end{align}
@@ -115,7 +118,8 @@ useful features for separating true and false tracks. \\
 Less useful features
 are not expected to contribute significantly to classification, but also do not disrupt the learning process, as trees do not split as often on variables with little impact.
 However, problems may arise by taking too many features into account, as only limited training data is available to compensate for inefficient splits on features.
-To prevent too many splits on less useful features, the cluster positions on the six sensors in the horizontal and vertical direction are not given as input to the machine learner,
+To prevent too many splits on less useful features,
+the cluster positions on the six sensors in the horizontal and vertical direction are not given as input to the machine learner,
 due to their high correlation with each other and their overall small number of splits, shown in figure \ref{fig:importance_global} in the appendix.
 Thus, the remaining 15 features include the $\chi^2$, the kink angles, and the charge depositions.
 \begin{figure}
@@ -123,14 +127,15 @@ Thus, the remaining 15 features include the $\chi^2$, the kink angles, and the c
   \hspace{-2.5cm}
   \includegraphics[height=1.0\textwidth]{plots/correlation_matrix.pdf}
   \vspace{-1.8cm}
-  \caption{The Pearson correlation coefficient of the kink angles, the cluster position, the charge deposition, and the $\chi^2$ value.}
+  \caption{The Pearson correlation coefficient of the kink angles, the cluster positions, the charge depositions, and the $\chi^2$ value.}
   \label{fig:corr}
 \end{figure}
 
 %All features, including $\chi^2$, kink angles, and charge depositions are selected as input for the classifier. Less useful features
 %are not expected to contribute significantly to classification, but also do not disrupt the learning process, as trees do not split as often on variables with little impact.
 %Thus, no problems will arise by taking all features into account, as long as the training data is sufficiently large to be able to compensate for inefficient splits on trees.
-Several hyperparameters are tuned in order to improve the performance of the classifier.
+The parameters, which are predetermined and can not be inferred from the training of the learner, are called hyperparameters. These parameters are used
+to control the machine learner and need to be tuned to improve the performance of the classifier.
 Taking many hyperparameters and hyperparameter values into account comes at the
 cost of a large computation time. For this reason, four parameters are chosen to be optimised. These are firstly the maximum depth of each tree, which influences the
 complexity of the model and the likeliness of overfitting. With the learning rate $\eta$, overfitting can be alleviated as it shrinks the feature weights
@@ -138,8 +143,8 @@ by the specified factor. It takes values from zero to one, with smaller values d
 The minimum loss reduction required for an additional partition on a leaf is referred to as $\gamma$. The minimum sum of instance weight $\theta$
 needed in a child has a similar impact. Leaf nodes with a sum of weights less than the specified value will prevent further tree partition steps.
 Both $\theta$ and $\gamma$ take values from [0, $\infty$[ and are a measure for how complex the model will be.
-For these parameters, larger values represent a more
-conservative algorithm.
+For these parameters, larger values represent a slower learning algorithm.
+%more conservative algorithm, which means that the learner .
 
 A grid search from the python \cite{python} library Scikit-learn \cite{scikit} is used to determine an optimal
 value for each of the parameters mentioned above. The values given as input into the grid search
@@ -238,7 +243,7 @@ TPR and FPR for each possible cut, showing the effectiveness
 of using machine learning for track classification in comparison to individual feature cuts. For the best combination of cuts, the ratio of the TPR and FPR is still worse than
 comparable points on the ROC curve of the test data. This means that for the same FPR of the two methods, the learner consistently achieves a better TPR.
 
-\begin{figure}
+\begin{figure}[H]
   \centering
   \includegraphics[height=0.6\textwidth]{plots/roc_curve_all.pdf}
     \caption{ROC curves of the machine learner for the training and test data set. In comparison, the ROC curves for the individual feature cuts as well as the
@@ -262,14 +267,9 @@ Further optimisation of the machine learning results is possible, considering th
 Only keeping the track of clusters with the highest probability of being true enables further rejection of
 false tracks. The ROC curve of the test data with the rejection of tracks is shown in figure \ref{fig:rejection}. \\
 With the rejection of tracks, the AUC on the test data set decreases to $0.702$. This is due to the rejection of many true negative tracks, which in turn increases
-the false positive rate. Since the goal is to improve the quality of the pct image, the false positive rate is not an ideal quantity, as true negative tracks
-are not taken into account for pct anyway.
+the false positive rate. Since the goal is to improve the quality of the pCT image, the false positive rate is not an ideal quantity, as true negative tracks
+are not taken into account for pCT anyway.
 %However, the rejection of true negative tracks does not decrease the quality of the pct image, as these tracks are not taken into account anyway.
-
-To evaluate this method, the precision score $P=t_p/(t_p + f_p)$ and the recall score $R=t_p/(t_p + f_n)$ are calculated and compared with the baseline classifier. The precision
-score describes the ability of the learner to not classify negative events as positive. The recall score, referring to the same quantity as the true positive rate,
-is the ability to classify all positive events correctly.
-Figure \ref{fig:precision} shows the precision of the learner and the individual feature cuts as a function of the recall.
 
 \begin{figure}[H]
   \centering
@@ -278,7 +278,10 @@ Figure \ref{fig:precision} shows the precision of the learner and the individual
   \label{fig:rejection}
 \end{figure}
 
-
+To evaluate this method, the precision score $P=t_p/(t_p + f_p)$ and the recall score $R=t_p/(t_p + f_n)$ are calculated and compared with the baseline classifier. The precision
+score describes the ability of the learner to not classify negative events as positive. The recall score, referring to the same quantity as the true positive rate,
+is the ability to classify all positive events correctly.
+Figure \ref{fig:precision} shows the precision of the learner and the individual feature cuts as a function of the recall.
 
 %\begin{figure}
 %  \hspace{-0.6cm}

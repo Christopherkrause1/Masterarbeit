@@ -68,22 +68,23 @@
 %withstanding the harsher environment of the HL-LHC.
 
 \chapter{Radiation therapy}
-Radiation therapies are medical treatments using ionising radiation mainly to kill cancer cells in patients. The ionising particles interact with the
+Radiation therapies \cite{med} are medical treatments using ionising radiation mainly to kill cancer cells in patients. The ionising particles interact with the
 cancer cells to damage their DNA causing cellular death. These treatments focus on cancer that is localised to one area inside the body. \\
 The type of particle used in radiation therapy is crucial to the overall treatment due to their different interactions with the human body.
-Photons, specifically x-rays, are the most common particles being used for radiation therapy \cite{pbt}.
+Photons are the most common particles being used for radiation therapy \cite{pbt}.
 A newer alternative is proton therapy, having several advantages over conventional x-ray therapy, due to their different properties, which are explained in the following section.
 
 
 \section{Proton therapy}
 Proton therapy is external beam radiotherapy using a proton beam for irradiation. While proton therapy centres have only been used since 1954 \cite{pct_history}, the technological
 advance ensures the continual rise of hospitals offering proton therapy. \\
-The proton therapy centres either use cyclotrons or synchrotrons to accelerate the protons. For cyclotons, protons are extracted from hydrogen atoms and accelerated with
+The proton therapy centres either use cyclotrons or synchrotrons to accelerate the protons. For cyclotrons, protons are extracted from hydrogen atoms and accelerated with
 a constant magnetic field outwards from the centre of the cyclotron until they reach a velocity of approximately 2/3 of the speed of light. Afterwards, the protons
 are focused into the beam line by a magnet system. Synchrotrons use a variable, high frequency magnetic fields to focus protons on a circular path on which they are accelerated. While they
 are not as compact as cyclotrons, they are able to produce protons of varying energies from $\SI{50}{\MeV}$ to $\SI{250}{\MeV}$ \cite{cyclo}. \\
-Unlike photons, which tend to deposit their entire energy in a single ionisation process, protons undergo multiple Coulomb scattering inside matter. The
-energy loss $-\text{d}E$ of protons per distance $\text{d}x$ in this energy region can be described by the Bethe formula \cite{bethe}:
+Unlike photons, which tend to deposit most of their energy in the first few millimetres within the surface due to Compton scattering,
+protons undergo multiple Coulomb scattering inside matter.
+The energy loss $-\text{d}E$ of protons per distance $\text{d}x$ in this energy region can be described by the Bethe formula \cite{bethe}:
 \begin{align}
   - \frac{dE}{dx} = \frac{4\pi}{m_e c^2}\left(\frac{e^2}{4\pi\epsilon_0}\right)^2\frac{nz^2}{\beta^2} \left[ \frac{1}{2} \ln{\left(\frac{2 m_e c^2 \beta^2}{I(1-\beta^2)}\right)} - \beta^2 \right]
 \end{align}
@@ -117,14 +118,14 @@ proton therapy to emphasise their differences.
 
 
 \section{Computed tomography} \label{sec:ct}
-To irradiate a patient save and efficiently it is necessary to create an irradiation plan by localising the tumor and the surrounding healthy tissue. In order to do so, a computed
-tomography (ct) scan is performed using a particle beam to create an image of the region encompassing the tumor. For x-ray therapy as well as proton therapy x-ray ct scans
+To irradiate a patient safely and efficiently it is necessary to create an irradiation plan by localising the tumor and the surrounding healthy tissue. In order to do so, a computed
+tomography (CT) scan is performed using a particle beam to create an image of the region encompassing the tumor. For x-ray therapy as well as proton therapy x-ray CT scans
 are used primarily. \\
 To create an image, the patient lies within a gantry, which generates x-ray beams to irradiate the specific volume. The gantry also
-includes a row of detectors measuring the photons after traversing the human body. Due to the fact that different tissue materials inside the body absorb a different
-x-rays differently, a projection of the irradiated volume can be created. By rotating the x-ray tube, projections are created from many different angles around the patient.
-Unlike in radiography, where two-dimensional projections are produced, ct scan measurements are one-dimensional absorption profiles. The sum of the profiles contains
-the entire information of the inside structure, but can not be interpreted directly. Projections and the original three-dimensional structure are connected through
+includes a row of detectors measuring the photons after traversing the human body. Due to the fact that each tissue absorbs
+x-rays differently, a projection of the irradiated volume can be created. By rotating the x-ray tube and the detecotrs, projections are created from many different angles around the patient.
+Unlike in radiography, where two-dimensional projections are produced, CT scan measurements are one-dimensional absorption profiles. The sum of the profiles contains
+the entire information of the inside structure, but cannot be interpreted directly. Projections and the original three-dimensional structure are connected through
 the inverse radon transformation. An implementation of that algorithm is the filtered back projection \cite{back_projection}:
 \begin{align}
   f(x,y) = \int_0^{\pi} \left(\int_{-\infty}^{\infty} p_{\phi}(z') \cdot g(z - z') \mathrm{d}z'\right) \mathrm{d}\phi
@@ -137,9 +138,9 @@ final image.
 
 
 \section{Proton computed tomography}
-Creating irradiation plans for proton therapy with x-ray ct images causes large uncertainties due to the different stopping powers of the particles.
+Creating irradiation plans for proton therapy with x-ray computed tomography images causes large uncertainties due to the different stopping powers of the particles.
 To compensate for the differences, a range uncertainty margin is applied to the prescribed range, which increases with greater travel distance through the body. This
-method is shown in figure \ref{fig:paganetti}. These uncertainty margins caused by the conversion of x-rays to protons for the radiation plan can be be prevented by creating a pct image.
+method is shown in figure \ref{fig:paganetti}. These uncertainty margins caused by the conversion of x-rays to protons for the radiation plan can be be prevented by creating a proton computed tomography (pCT) image.
 Since the position of the protons energy deposition has to be determined as precisely as possible to minimise damage inflicted to healthy tissue, a computed tomography scan using protons
 is a promising alternative to conventional ct.
 
@@ -150,12 +151,12 @@ is a promising alternative to conventional ct.
 1mm), the MD Anderson Proton Therapy Centre in Houston (3.5\,\% + 3mm), the Loma Linda
 University Medical Centre (3.5\,\% + 3mm), the Roberts Proton Therapy Centre at the
 University of Pennsylvania (3.5\,\% + 3mm), and the University of Florida Proton Therapy
-Institute (2.5\,\% + 1.5mm), shown as dotted lines. Dashed-dotted and dashed line: Uncertainty margin for with and without the use of Monte Carlo dose calculation.
+Institute (2.5\,\% + 1.5mm), shown as dotted lines. Dashed-dotted and dashed line: Uncertainty margin with and without the use of Monte Carlo dose calculation.
 The solid-line describes the safety margin for complex geometries without Monte Carlo dose calculation \cite{paganetti}.}
   \label{fig:paganetti}
 \end{figure}
 
-Creating an image with proton ct is similar to conventional. A proton beam deposits energy in the patient and the
+Creating an image with proton CT is similar to conventional. A proton beam deposits energy in the patient and the
 protons remaining energy is then measured with a calorimeter system behind the patient to gain information about the composition of the tissue. A projection can be created,
 if the tracks of the protons are reconstructed. However, due to multiple Coulomb scatterings of the protons inside the patient, the spatial resolution will decrease in comparison
 to conventional ct. In order to take the mutliple Coulomb scattering into account, a most likely path formalism is necessary to model the path of the proton inside the patient \cite{mlp}. \\

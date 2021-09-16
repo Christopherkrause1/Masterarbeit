@@ -31,7 +31,7 @@ Signals are measured with a time resolution of $\SI{230}{\micro\second}$ with ea
 They contain $576 \times 1152$ pixels with a pixel pitch of $\SI{18.4}{\micro\meter} \times \SI{18.4}{\micro\meter}$
 and a thickness of $\SI{50}{\micro\meter}$.
 
-For time references during the measurements, an FE-I4 sensor \cite{fei4} is placed behind the telescope with a
+For time references during the measurements, a reference module with an FE-I4 readout chip \cite{fei4} is placed behind the telescope with a
 time resolution of $\SI{25}{\nano\second}$. The sensor contains 336 rows and 80 columns of pixels with a
 $\SI{250}{\micro\meter} \times \SI{50}{\micro\meter}$ pixel pitch. Figure \ref{fig:telescope} shows the telescope setup of DATURA. \\
 A polystyrene box filled with dry ice can be used to cool the DUT's to
@@ -79,7 +79,7 @@ developed reconstruction software were used in this thesis and are explained in 
 
 \section{The track reconstruction framework EUTelescope}
 The software EUTelescope was developed and
-primarily used since 2007. It uses the Modular Analysis and Reconstruction for the Linear Collider (MARLIN) framework, which is part of the
+primarily used since 2007. It uses the Modular Analysis and Reconstruction for the Linear Collider (MARLIN) framework \cite{marlin}, which is part of the
 International Collider Software package (ILCSoft). Each step in the reconstruction depends on MARLIN processors, which read in data, modify and output new data to be
 taken by the next processors. The individual steps in the reconstruction will call on certain processors specified for its task resulting in a
 modular structure.
@@ -165,7 +165,8 @@ reconstruction software. Its main advantage is the minimal amount of external de
 The structure of Corryvreckan is based on the modular concept of the simulation software Allpix$^2$,
 making the software flexible and ensures it meets the requirements for track reconstruction in
 complex environments. Global parameters and modules used for the track reconstruction are specified in the configuration file, which starts the event loop upon
-executing. Data and the geometry file, describing the telescope setup, are both imported into the configuration file as well. A reference sensor has to be specified in the geometry folder
+executing. Data and the geometry file, describing the telescope setup, are both imported into the configuration file as well.
+A reference sensor has to be specified in the geometry folder
 for which the rest of the telescope is aligned with.
 
 During event processing, information taken and produced by the modules are temporarily stored on the clipboard, serving as the infrastructure for temporary
@@ -175,7 +176,8 @@ The necessary steps in the track reconstruction chain of the software are simila
 
 To load the recorded or simulated data into Corryvreckan a certain eventloader module is used depending on the data format. The order of eventloader modules
 is important as the first module loaded will define the event on the clipboard either through trigger numbers or a time window. Measurements stored with EUDAQ are loaded with the
-EventloaderEUDAQ module, which requires the EUDAQ library as an external dependency. Alternatively to the eventloader modules, data in root format can also be imported
+EventloaderEUDAQ module, which requires the EUDAQ library as an external dependency. Alternatively to the eventloader modules, data in the format of the
+object-oriented framework ROOT \cite{root} can also be imported
 with the FileReader module, which is mainly used for simulated data or data written out with the FileWriter module.
 
 The clustering process can be either done with the Clustering4D or the ClusteringSpatial module, with the former being the standard clustering module taking hit timestamps
@@ -227,7 +229,7 @@ the different modules used for general track reconstruction. The entire Corryvre
 Before using Corryvreckan to reconstruct particle paths for proton computed tomography, it is necessary to ensure that it works properly
 and is able to deliver equally valid results as the EUTelescope framework.
 The chosen data sample is a DESY beam test from June 2020. Besides the six Mimosa26 sensors it contains two RD53A readout chips
-as DUTs in between the triplets and an FE-I4 readout chip as a time reference behind the telescope. The RD53A readout chips are
+as DUTs in between the triplets and a reference module with an FE-I4 read out chip behind the telescope. The RD53A readout chips are
 manufactured in a $\SI{65}{\nano\meter}$ CMOS technology with a matrix of (400 $\times$ 192) pixels of
 \mbox{(50 $\times$ 50) \textmu m$^2$} size. Electrons with an energy of $\SI{5}{\GeV}$ were used to irradiate the sensors.
 To compare the two software, the results of each
@@ -295,14 +297,39 @@ the centre-of-gravity algorithm used for calculating the cluster centre. While t
 only be as accurate as the spatial resolution of the pixels, weighting the amount of deposited charge in each pixel increases the
 spatial resolution of the particle hit position for clusters with more than one pixel. Since the number of clusters with more than
 one pixel is non-negligible, shown in figure \ref{fig:cluster_size}, the standard deviation of the residuals is expected to be
-smaller than the spatial resolution of the sensor, further indicating a valid track reconstruction for both frameworks. It should be noted that the calculated means and
+smaller than the spatial resolution of the sensor, further indicating a valid track reconstruction for both frameworks.
+It should be noted that the calculated means and
 standard deviations including their errors are the pure mathematical result of the bin entries of the histograms and do not reflect the actual
-spatial resolution of the sensors. The bin width of $\SI{1}{\micro\meter}$
+spatial resolution of the sensors. %The bin width of $\SI{1}{\micro\meter}$
+
+Another important quantity for reconstructed tracks is the $\chi^2$ value, which is defined in equation \ref{eqn:chi}. The $\chi^2$ value is dependent on the
+residuals on all six planes of the telescope. In order to compare and interpret the $\chi^2$ distributions, each $\chi^2$ value is divided by the number
+of degrees of freedom (ndof), which is the ratio of (...). In figure \ref{fig:ndof}, the $\chi^2$ distributions of the reconstructed tracks are shown. \\
+Both $\chi^2$ distributions have their maximum around 1.5, further indicating a similar quality of reconstructed tracks.
+
+\begin{figure}
+  %\centering
+  \hspace{-0.4cm}
+  \begin{subfigure}{0.51\textwidth}
+      %\centering
+      \includegraphics[height=0.82\textwidth]{plots/june_chi2_corry.pdf}
+  \end{subfigure}
+  \begin{subfigure}{0.51\textwidth}
+      %\centering
+      \hspace{-0.19cm}
+      \includegraphics[height=0.82\textwidth]{plots/june_chi2_EU.pdf}
+  \end{subfigure}
+  \caption{Distributions of the $\chi^2$ value divided by the number of degrees of freedom. Tracks reconstructed with EUTelescope and Corryvreckan
+   have eight and seven degrees of freedom, respectively}
+  \label{fig:ndof}
+\end{figure}
+
+
 
 \section{DUT residuals}
 After the final track reconstruction with the telescope, the hit information on the DUT planes is compared to the
 reconstructed tracks. Again, three iterations of alignment are performed for the DUT planes. In figure \ref{fig:residual_dut}, the residuals in the
-x- and y-direction are shown for the FE-I4 sensor.
+x- and y-direction are shown for the reference.
 
 \begin{figure}[H]
   %\centering
@@ -322,12 +349,12 @@ x- and y-direction are shown for the FE-I4 sensor.
       \includegraphics[height=0.82\textwidth]{plots/june_residualY_dut2_corry.pdf}
   \end{subfigure}
   \begin{subfigure}{0.51\textwidth}
-    \hspace{-0.6cm}
+    \hspace{-0.4cm}
       %\centering
       \hspace{-0.19cm}
       \includegraphics[height=0.82\textwidth]{plots/june_residualY_dut2_EU.pdf}
   \end{subfigure}
-  \caption{Horizontal residuals of the FEI4 sensor in the upper row and the vertical residuals in the lower row. The plots on the left
+  \caption{Horizontal residuals of the reference module in the upper row and the vertical residuals in the lower row. The plots on the left
   were created with Corryvreckan and the plots on the right with EUTelescope.}
   \label{fig:residual_dut}
 \end{figure}
@@ -335,8 +362,8 @@ x- and y-direction are shown for the FE-I4 sensor.
 For both directions the residuals calculated by Corryvreckan and EUTelescope are similar. All mean values are below $\SI{1}{\micro\meter}$
 indicating a successful alignment. The spatial resolution of the sensor in the horizontal and vertical direction is:
 \begin{align*}
-  &\sigma_{\text{FEI4},\text{x}} = \SI{50}{\micro\meter}/\sqrt{12} \approx \SI{14.434}{\micro\meter} \\
-  &\sigma_{\text{FEI4},\text{y}} = \SI{250}{\micro\meter}/\sqrt{12} \approx \SI{72.169}{\micro\meter}
+  &\sigma_{\text{FE-I4},\text{x}} = \SI{50}{\micro\meter}/\sqrt{12} \approx \SI{14.434}{\micro\meter} \\
+  &\sigma_{\text{FE-I4},\text{y}} = \SI{250}{\micro\meter}/\sqrt{12} \approx \SI{72.169}{\micro\meter}
 \end{align*}
 
 Both software determined similar standard deviations,

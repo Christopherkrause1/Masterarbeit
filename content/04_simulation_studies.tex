@@ -13,7 +13,7 @@ IBL planar sensor, placed directly in the middle of the telescope, serves as a D
 For proton computed tomography it is necessary that the protons can traverse the entire telescope including the patient
 to measure their remaining energy. For that reason, the energy of the proton beam has to be significantly higher than during
 the proton therapy. Current proton synchrotrons used in proton therapy centres have an upper energy limit of $(200 - 250)\;$MeV.
-Therefore, a $\SI{200}{\mega\eV}$ proton beam is used in this analysis.
+Therefore, proton energies around $\SI{200}{\mega\eV}$ are used in this analysis.
 
 \begin{figure}
   \centering
@@ -89,13 +89,13 @@ Collected charges are then translated into digitised signals proportional to the
 from the readout electronics can be simulated and a signal threshold can be defined. The output signal is given in units of the electron charge per default, but
 can also be given in bits by simulating a charge to digital (QDC) converter. Optionally, a gain factor and gain smearing can be set.
 
-Simulated events and the produced plots of the different modules are stored in a root file. With the ROOTObjectWriter module further information like propagated charge,
+Simulated events and the produced plots of the different modules are stored in a ROOT file. With the ROOTObjectWriter module further information like propagated charge,
 deposited charge, Monte Carlo (MC) particle information, and pixel hit information is stored in an additional ROOT file. Allpix$^2$ also enables the storing of
 data in formats compatible with the EUTelescope and Corryvreckan software with the LCIOWriter module and the CorryvreckanWriter module respectively. Both modules possess parameters, which
 determine what information of the Allpix$^2$ simulation is written into the ROOT files.
 
 \section{Simulated setup}
-Unlike conditions present in beam test experiments, protons in pct have a significant lower energy than the $\SI{5}{\giga\eV}$
+Unlike conditions present in beam test experiments, protons in pCT have a significant lower energy than the $\SI{5}{\giga\eV}$
 electron beam produced by DESY II and a higher particle density, creating different and more complex particle tracks for
 Corryvreckan to reconstruct. Since the performance of Corryvreckan in regards to these properties will be investigated, uncertainties
 of the sensor position and orientation, as well as the uncertainties of the beam energy and direction are set to zero. The simulated
@@ -109,7 +109,7 @@ module is chosen with a room temperature of $\SI{293}{\kelvin}$ and 300 charges 
 A Gaussian profile with a default standard deviation of $110$ elementary charges (e) as noise in the electronics is applied in the simulation.
 Only pixels with a charge threshold of \mbox{$600$\, e} will trigger a hit.
 
-Simulated data is written out with the CorryvreckanWriter module into a root file having the format to be read
+Simulated data is written out with the CorryvreckanWriter module into a ROOT file having the format to be read
 in by Corryvreckan with the FileReader module.
 
 \section{Proton reconstruction}\label{sec:proton_reconstruction}
@@ -172,6 +172,10 @@ simulation.
 
 \begin{table}
   \centering
+  \caption{The number of tracks reconstructed per event for a
+  $\SI{750}{\micro\meter}$ and $\SI{150}{\micro\meter}$ cut on the
+  matching radius. One proton is simulated in an event, further tracks arise from clusters
+  produced by secondary particles.}
   \begin{tabular}{c | c c}
     \toprule
     Tracks per event &  $\SI{750}{\micro\meter}$ cut & $\SI{150}{\micro\meter}$ cut\\
@@ -184,10 +188,6 @@ simulation.
     5 & 1      & 0    \\
     $\geq$6 & 0 & 0 \\
   \end{tabular}
-  \caption{The number of tracks reconstructed per event for a
-  $\SI{750}{\micro\meter}$ and $\SI{150}{\micro\meter}$ cut on the
-  matching radius. One proton is simulated in an event, further tracks arise from clusters
-  produced by secondary particles.}
   \label{tab:cluster_per_track}
 \end{table}
 
@@ -227,7 +227,7 @@ The five-peak structure starts to smear for $\SI{20}{\giga\eV}$ protons since th
 For $\SI{5}{\GeV}$ protons, the structure is mostly vanished implying a significant number of non-linear tracks. Both simulations show that most
 protons tracks can still be reconstructed.
 
-Since the proton energy used in pct is approximately $\SI{200}{\mega\eV}$, further simulations with even lower energies are created, while all other parameters stay constant.
+Since the proton energy used in pCT is approximately $\SI{200}{\mega\eV}$, further simulations with even lower energies are created, while all other parameters stay constant.
 The horizontal residuals for proton energies below $\SI{1}{\giga\eV}$ are depicted in figure \ref{fig:low}.
 
 \begin{figure}[H]
@@ -266,11 +266,11 @@ out of the telescope, which therefore do not deposit energy in each sensor. Sinc
 noticeably, especially between $\SI{250}{\mega\eV}$ and $\SI{150}{\mega\eV}$. The first tracks that are lost for lower energies
 are the ones with a high absolute value of the residual, as they are more likely to leave the telescope before traversing all sensors. \\
 While the reconstruction of low energy protons and their complex path is possible, the number of reconstructable tracks decreases with lower energies.
-Since it is still necessary to have a sufficient amount of tracks for a pct image, one method to counter this problem is a longer irradiation time.
+Since it is still necessary to have a sufficient amount of tracks for a pCT image, one method to counter this problem is a longer irradiation time.
 This comes at the cost of a higher radiation dose for the patient. Therefore, the patient cannot be irradiated indefinitely and finding a balance between the statistics and the
 radiation dose is necessary.
 An additional problem arises due to the increasing number of multiple Coulomb scattering inside the patient, which inevitably decreases the spatial resolution of the image.
-However, the used energy region still allows for a successful track reconstruction of protons for pct.
+However, the used energy region still allows for a successful track reconstruction of protons for pCT.
 
 
 \chapter{Reconstruction of high track density proton beams}\label{sec:density}
@@ -338,6 +338,7 @@ The ratio of reconstructed tracks to the total number of tracks for each configu
 
 \begin{table}
   \centering
+  \caption{Ratio of true reconstructed tracks to the total number of reconstructed tracks for different proton energies and protons per event.}
   \begin{tabular}{c | c c c c c c c}
     \toprule
      p/event &  $\SI{50}{\mega\eV}$ & $\SI{100}{\mega\eV}$ & $\SI{200}{\mega\eV}$ & $\SI{1}{\giga\eV}$ & $\SI{5}{\giga\eV}$ & $\SI{20}{\giga\eV}$ & $\SI{180}{\giga\eV}$ \\
@@ -348,7 +349,6 @@ The ratio of reconstructed tracks to the total number of tracks for each configu
      25  & 0.5 & 0.1823 & 0.1723 & 0.1740 & 0.1441 & 0.1409 & 0.1410  \\
      50  & 0.2727 & 0.0840 & 0.0755 & 0.0788 & 0.0681 & 0.0669 & 0.0674  \\
   \end{tabular}
-  \caption{Ratio of true reconstructed tracks to the total number of reconstructed tracks for different proton energies and protons per event.}
   \label{tab:study}
 \end{table}
 
@@ -391,6 +391,8 @@ Further approaches are therefore necessary, which are investigated in the follow
 
 \begin{table}
   \centering
+  \caption{Reconstructed tracks for two different spatial cuts (15.1, 12.2) for 10, 25 and 50 protons per event. The ratio refers to the true
+  number of reconstructed tracks divided by the total number of tracks.}
   %\hspace{-1.5cm}
   \begin{tabular}{c | c c c}
     \toprule
@@ -404,8 +406,6 @@ Further approaches are therefore necessary, which are investigated in the follow
     true reconstructed tracks (12.2) &  2421 &2513  & 2686 \\
     ratio & 0.448 & 0.211 & 0.095
   \end{tabular}
-  \caption{Reconstructed tracks for two different spatial cuts (15.1, 12.2) for 10, 25 and 50 protons per event. The ratio refers to the true
-  number of reconstructed tracks divided by the total number of tracks.}
   \label{tab:true_tracks}
 \end{table}
 
@@ -422,6 +422,11 @@ true and false tracks in Allpix$^2$ was already described.
 
 \begin{table}
   \centering
+  \caption{Reconstructed tracks of 50000 protons with 10 protons per event for different opening angle
+  distributions. The first simulation has no opening angle and the initial protons
+  trajectory is perpendicular to the sensor surface.
+  %For the other simulations, the opening angle refers to the standard deviation of the Gaussian distribution of the opening angle.
+  The ratio describes the number of true reconstructed tracks to the total number of reconstructed tracks.}
   \begin{tabular}{c | c c c}
     \toprule
      &  $\SI{0}{\milli\radian}$ & $\SI{2}{\milli\radian}$ & $\SI{3}{\milli\radian}$\\
@@ -430,11 +435,6 @@ true and false tracks in Allpix$^2$ was already described.
     true reconstructed tracks & 4709 & 3162 & 2267 \\
     ratio & 0.406 & 0.492 & 0.574
   \end{tabular}
-  \caption{Reconstructed tracks of 50000 protons with 10 protons per event for different opening angle
-  distributions. The first simulation has no opening angle and the initial protons
-  trajectory is perpendicular to the sensor surface.
-  %For the other simulations, the opening angle refers to the standard deviation of the Gaussian distribution of the opening angle.
-  The ratio describes the number of true reconstructed tracks to the total number of reconstructed tracks.}
   \label{tab:angle}
 \end{table}
 
@@ -575,6 +575,7 @@ Figure \ref{fig:feature_grid} shows the ROC curves of the individual feature as 
 
 \begin{table}
   \centering
+  \caption{Possible parameters used in a grid search to determine an adequate combination of cuts on the parameters.}
   \begin{tabular}{c c c}
     \toprule
     $\chi^2$ /ndof & $\phi_{x,3}$ [rad] & $\phi_{x,4}$ [rad]\\
@@ -586,7 +587,6 @@ Figure \ref{fig:feature_grid} shows the ROC curves of the individual feature as 
     0.7 & 0.007 & 0.007 \\
     0.8 & 0.008 & 0.008
   \end{tabular}
-  \caption{Possible parameters used in a grid search to determine an adequate combination of cuts on the parameters.}
   \label{tab:params}
 \end{table}
 

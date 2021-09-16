@@ -1,55 +1,76 @@
 \chapter{Summary and Outlook}
 The performance of Corryvreckan was analysed and compared to EUTelescope in the scope of this thesis. Furthermore, the reconstruction of low-energy proton
-tracks with the use of Corryvreckan was investigated.\\
-With the track reconstruction of beam test data, Corryvreckan proved to produce equally valid results in comparison to the EUTelescope framework. No differences
-arise in their data conversion and clustering process. A different structure of the tracking and alignment process of the frameworks causes a distinction in the residuals
-of the telescope plane. The residual means of the telescope planes are below $\SI{1}{\micro\meter}$ for both software, indicating successful telescope alignments.
-With standard deviations of $4.450(4)$\,\textmu m\, for Corryvreckan and $3.972(3)$\,\textmu m\, for EUTelescope, shown for the second sensor exemplary, the
+tracks with the use of Corryvreckan was investigated regarding its usefullness for proton computed tomography.
+
+With the track reconstruction of data from a previous testbeam campaign, Corryvreckan proved to
+produce equally valid results in comparison to the EUTelescope framework. No differences
+arise in their data conversion and clustering process.
+A different structure of the tracking and alignment process of the frameworks causes a difference in the residuals
+of the telescope planes. The means of the residual distributions of the telescope planes
+are below $\SI{1}{\micro\meter}$ for both software, indicating successful telescope alignments.
+With standard deviations of $4.450(4)$\,\textmu m\, for Corryvreckan and $3.972(3)$\,\textmu m\, for EUTelescope, given for the second sensor exemplarily, the
 reconstructed spatial resolutions proved to be well within
 the expected value of $\sigma_{\text{M26}} = \SI{18.4}{\micro\meter}/\sqrt{12} \approx \SI{5.311}{\micro\meter}$ for Mimosa26 sensors. The noticeably smaller values
 arise due to the used centre-of-gravity algorithm for the calculation of cluster centres. \\
-Similar results are also seen for the DUT residuals, shown for the FEI4 sensor in this thesis, as only a third of the RD53a sensor volume was depleted during the beam test measurement.
+Similar results are also seen for the DUT residuals, shown for the reference module in this thesis.
+%, as only a third of the RD53a
+%sensor volume was depleted during the beam test measurement.
 A mean below $\SI{1}{\micro\meter}$ of the residual distribution was achieved for both frameworks with standard deviations of $21.22(4)$\,\textmu m\, and $22.17(4)$\,\textmu m\, in the horizontal direction and
 $72.3(2)$\,\textmu m\, and $72.7(2)$\,\textmu m\, in the vertical direction for Corryvreckan and EUTelescope respectively.
 %With expected spatial resolutions of
 %$\sigma_{\text{FEI4},\text{x}} \approx \SI{14.434}{\micro\meter}$ and $\sigma_{\text{FEI4},\text{y}} \approx \SI{72.169}{\micro\meter}$ for cluster centres calculated by
 %arithmetic mean, both frameworks determined a similar values  \\
 Thus, the results of the reconstruction chain up to the
-association of clusters from the DUT planes are similar for the two software. Due to the minimization of external dependencies and the more user-friendly structure of
-Corryvreckan in comparison to EUTelescope, the former is suitable to supersede the EUTelescope framework for track reconstruction in beam test experiments. \\
-Some uses of Corryvreckan, especially alternative modules, were not in the focus of this thesis,
+association of clusters from the DUT planes are similar for the two software. Due to the minimisation of external dependencies and the more user-friendly structure of
+Corryvreckan in comparison to the discontinued EUTelescope software, the former is suitable to supersede EUTelescope for track reconstruction of data in beam tests. \\
+Some applications of Corryvreckan, especially alternative modules, were not in the focus of this thesis,
 as they were not necessary for further analysis of proton track reconstruction. This includes the determination of the
-efficiency of sensors with the AnalysisEfficiency module. Since EUTelescope is not designed to calculate sensor efficiencies, the TBMon2 software was used in the past in addition
+efficiency of sensors with the AnalysisEfficiency module. Since EUTelescope is not designed to calculate sensor efficiencies,
+the TBMon2 software was used in the past in addition
 to EUTelescope. This opens up the possibility for Corryvreckan to also replace the TBMon2 software, making the track reconstruction and analysis process more efficient.
 
-The reconstruction of simulated protons of different energy with Corryvreckan produced the expected results. Due to no misalignments of sensors in the telescope and no simulated uncertainties
-of the energy of the protons, the residuals for high energy protons form sharp peaks. Since, the used IBL sensors have a different spatial resolution, a five-peak structure
-forms, which starts to blur into one residual peak for energies below $\SI{1}{\giga\eV}$, due to stronger scattering of the protons. For even lower energies,
+%The reconstruction of simulated protons of different energies with Corryvreckan produced the expected results.
+Investigating Corryvreckans usability for the reconstruction of low energy protons is reasonable due to its support from the testbeam community and
+its flexibel application in complex environments. \\
+Due to no misalignments of sensors in the telescope and no simulated uncertainties
+of the energy of the protons, the residuals for high energy protons form sharp peaks. Since the used IBL sensors have a different
+horizontal and vertical spatial resolution and the middle sensor of each triplet is rotated by 90°, a five-peak structure
+forms, which starts to blur into one peak for energies below $\SI{1}{\giga\eV}$, due to stronger scattering of the protons. For even lower energies,
 around $\SI{200}{\mega\eV}$, the number of reconstructed tracks decreases significantly, as fewer protons deposit energy in all six planes. Since these energies are
 used for proton therapy, and a sufficient number of reconstructed protons are necessary to create a proton computed tomography image, the patient
-will need to be irradiated for longer times to compensate for the small number of reconstructed tracks. However, only a small amount of energy is deposited by protons, while traversing
-the human body, making longer radiation steps for pct possible without significantly damaging healthy tissue. \\
+will need to be irradiated for longer times to compensate for the small number of reconstructed tracks. For example, creating a pCT image for a head
+like object requires approximately $10^9$ reconstructed proton tracks \cite{number_protons}. \\
+%However, only a small amount of energy is deposited by protons, while traversing
+%the human body, making longer radiation steps for pct possible without significantly damaging healthy tissue. \\
 A greater problem arises from the high track density of the proton beams causing large track multiplicities and thus a large number of tracks with false combinations of
-clusters. Falsely reconstructed tracks will lower the resolution of the pct image and therefore have to be reduced to a minimum. Using stronger spatial cuts and higher
-opening angles for the proton beam increased the ratio of true and false tracks, while the number of true tracks decreases significantly. Due to the loss of
-true tracks for increasingly stricter spatial cuts and larger opening angles, the use of these parameters to improve the ratio is limited for the use of pct. \\
-Cuts on track features proved to be useful for the $\chi^2$ value and the horizontal kink angles of the third and fourth plane. The optimal combination of cuts, determined
-with a grid search, results in a ratio of 0.477.
+clusters. Falsely reconstructed tracks will lower the resolution of the pCT image and therefore have to be reduced to a minimum. Using stronger spatial cuts
+in the reconstruction algorithm and larger
+opening angles for the proton beam increased the ratio of true and false tracks, while the number of true tracks decreased significantly. Due to the loss of
+true tracks for stricter spatial cuts and larger opening angles, the use of these parameters to improve the ratio is limited for the use of pCT. \\
+Cuts on track features proved to be useful for the $\chi^2$ value and the horizontal kink angles of the third and fourth plane.
+The optimal combination of cuts, determined
+with a grid search, results in a ratio of 0.477 of true tracks to the total number of tracks.
+This ratio is the highest achieved by using feature cuts, however further improvements are possible
+with the help of machine learning.
 
-With the utilisation of a boosted decision tree used for the classification of tracks, the true and false positive rates achieved with the machine learner are better
-than any of the previous methods, including the grid search. The resulting AUC of the test data set is 0.756, with the same data set having AUC's of
+With the usage of boosted decision trees for the classification of tracks, the true and false positive rates achieved with the machine learner outperform any of the previous methods, including the grid search.
+The resulting area under the ROC curve of the test data set is 0.756, with the same data set having AUC's of
 0.615, 0.617 and 0.587 for the cut on the $\chi^2$, $\phi_{x,3}$ and $\phi_{x,4}$ respectively. Further improvement is achieved by the rejection of all but one track
-fitted through each cluster on the first and last sensor. With this method, the area under the precision-recall curve increased from $0.604$ to $0.633$ and is especially
-impactful for high recall scores. \\
-However, a significant amount of false tracks are still classified to be true
-with a high probability, which means that the input features do not enable an optimal classification.
+fitted through each cluster on the first and last sensor.
+With this method, the area under the precision-recall curve increased from $0.604$ to $0.633$ and is especially
+effective for high recall scores. \\
+However, a significant amount of false tracks is still classified as true
+with a high probability, which means that the input features do not allow for an optimal classification.
 Thus, the most crucial step to optimise the classification of the machine learner is to determine further input features.
 
-Another option for a better pct image resolution is to improve the reconstruction process of Corryvreckan with more advanced track finding algorithms.
+Further improvement for future investigations
+is to alter the reconstruction process of Corryvreckan with more advanced track finding algorithms.
 The Tracking4D module uses a straight line as the initial track for
-the track finding process. The newer TrackingMultiplet module fits two straight lines, one through each triplet, and connects them at a specified position with an arbitrary kink.
-A full track forms by connecting the upstream and downstream tracks with the lowest distance and within specifed cuts, allowing for further rejection of false combinations
-of clusters. \\
-Furthermore, instead of using boosted decision tree, artificial neural networks \cite{ann} offer a couple of advantages,
+the track finding process. The newer TrackingMultiplet module is a work in progress and fits two straight lines,
+one through each triplet, and connects them at a specified position with an arbitrary kink.
+A full track is formed by connecting the upstream and downstream tracks with the lowest distance and within specifed cuts,
+allowing for further rejection of false combinations of clusters. \\
+Furthermore, instead of using boosted decision trees, artificial neural networks \cite{ann} offer a couple of advantages,
 including the ability to detect more complex non-linear relationships between the input variables and the output. Therefore, a neural network potentially classifies
-more precisely in comparison to boosted decision trees.
+more precisely in comparison to boosted decision trees. \\
+With these methods the resolution of pCT images might be improvable even further in order to treat patients as safe and efficient as possible.
