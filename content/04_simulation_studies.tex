@@ -3,7 +3,7 @@ With the demonstration of the validity of Corryvreckan as a track reconstruction
 in proton computed tomography scans can be investigated. The foreseen telescope used to reconstruct the proton paths consists of six IBL planar sensors
 grouped into two triplets. Due to the fact that the spatial resolution of the sensors is five times better in the horizontal direction, the middle sensor
 of each triplet is rotated by 90°. This way the lower track reconstruction precision in the vertical direction is partially compensated for.
-The setup for proton computed tomography is shown schematically in figure \ref{fig:phantom}. \\
+The setup for proton computed tomography is shown schematically in Figure \ref{fig:phantom}. \\
 Since the tracking performance of Corryvreckan will be investigated, no
 phantom will be present in the setup as it would
 increase the number of multiple scatterings and significantly decrease the number of protons passing the telescope. Instead, another
@@ -101,7 +101,7 @@ Corryvreckan to reconstruct. Since the performance of Corryvreckan in regards to
 of the sensor position and orientation, as well as the uncertainties of the beam energy and direction are set to zero. The simulated
 beam has a Gaussian profile with a standard deviation of $\SI{3}{\milli\meter}$ and is orientated orthogonal to the sensor
 surfaces. All information about the geometry of the telescope is specified in section \ref{sec:setup} with
-figure \ref{fig:phantom} depicting the exact positions of the sensors and the beam source. The simulated world material is air.\\ %The IBL planar sensor used as a DUT,
+Figure \ref{fig:phantom} depicting the exact positions of the sensors and the beam source. The simulated world material is air.\\ %The IBL planar sensor used as a DUT,
 %instead of a phantom, is positioned at $\SI{10}{\centi\meter}$ along the z-axis. \\
 A linear electric field with a bias voltage of $\SI{-100}{\volt}$ and a depletion depth of $\SI{200}{\micro\meter}$,
 thus depleting the entire sensor volume, is specified. For the propagation of charge carriers, the more precise GenericPropagation
@@ -122,7 +122,7 @@ in straight lines.
 No fluctuation in the proton energy is simulated and only one particle traverses
 the telescope per event. All simulations in this chapter have a random seed of zero to make the results more comparable by preventing
 statistical differences. Generated protons from two simulations will have the same starting position and travel direction for equal random seeds.
-The residual in the x- and y-direction are shown in figure \ref{fig:100GeV}.
+The residual in the x- and y-direction are shown in Figure \ref{fig:100GeV}.
 
 \begin{figure}
   \hspace{-0.6cm}
@@ -144,7 +144,7 @@ The residual in the x- and y-direction are shown in figure \ref{fig:100GeV}.
 Especially notable is the five-peak structure of the residual in the horizontal direction, which is caused by the different
 spatial resolution of subsequent planes. With the horizontal pixel pitch of the non-rotated sensors being
 five times larger than the other two, the granularity increases by the ratio of the different pitches, in this case,
-$\SI{250}{\micro\meter}/\SI{50}{\micro\meter} = 5$. This effect is shown schematically in figure \ref{fig:peaks}.
+$\SI{250}{\micro\meter}/\SI{50}{\micro\meter} = 5$. This effect is shown schematically in Figure \ref{fig:peaks}.
 
 \begin{figure}
   \centering
@@ -160,7 +160,7 @@ five peaks broaden to a Gaussian profile.
 For the vertical residual of the third plane, only one peak is visible due to the lower spatial resolution, while the rotated planes
 in this direction exhibit a five-peak structure. T
 
-The number of reconstructed tracks per event is shown in table \ref{tab:cluster_per_track} for two different spatial cuts and indicates how often the proton is
+The number of reconstructed tracks per event is shown in Table \ref{tab:cluster_per_track} for two different spatial cuts and indicates how often the proton is
 reconstructed correctly. Since only one proton is simulated in an event, further reconstructed tracks arise from secondary
 particles produced by the proton in an interaction. While a track fit requires a hit on all six planes, a single hit can be used by
 Corryvreckan for multiple track fits, if the spatial cuts allow it. Here the spatial cuts refer to a matching radius of $\SI{750}{\micro\meter}$.
@@ -203,7 +203,7 @@ for reconstructing high-energy protons due to their straight path through the te
 \section{Reconstruction of low energy protons}\label{sec:energy}
 Lowering the energy of the protons in the simulation will increase their scattering angle when interacting with the air or the sensor
 planes, resulting in more complex proton paths.
-The horizontal residuals for the third plane for 50000 protons with an energy of $\SI{20}{\giga\eV}$ and $\SI{5}{\GeV}$ are shown in figure \ref{fig:20GeV}.
+The horizontal residuals for the third plane for 50000 protons with an energy of $\SI{20}{\giga\eV}$ and $\SI{5}{\GeV}$ are shown in Figure \ref{fig:20GeV}.
 
 \begin{figure}
   \hspace{-0.4cm}
@@ -228,7 +228,7 @@ For $\SI{5}{\GeV}$ protons, the structure is mostly vanished implying a signific
 protons tracks can still be reconstructed.
 
 Since the proton energy used in pCT is approximately $\SI{200}{\mega\eV}$, further simulations with even lower energies are created, while all other parameters stay constant.
-The horizontal residuals for proton energies below $\SI{1}{\giga\eV}$ are depicted in figure \ref{fig:low}.
+The horizontal residuals for proton energies below $\SI{1}{\giga\eV}$ are depicted in Figure \ref{fig:low}.
 
 \begin{figure}[H]
   \hspace{-0.4cm}
@@ -279,7 +279,7 @@ per time frame. To analyse how Corrvreckan reconstructs a high track density bea
 simulation is increased, while the proton energy is kept constant at $\SI{200}{\mega\eV}$. Other parameters are identical to previous simulations.
 
 \section{Track multiplicities}
-The track multiplicity, meaning the number of reconstructed tracks per event, for 25 and 50 particles simulated in an event is shown in figure \ref{fig:multiplicity}. To take the different spatial resolutions of the sensors in the x- and y-direction into account, a relative
+The track multiplicity, meaning the number of reconstructed tracks per event, for 25 and 50 particles simulated in an event is shown in Figure \ref{fig:multiplicity}. To take the different spatial resolutions of the sensors in the x- and y-direction into account, a relative
 spatial cut of 15.1 is applied in the reconstruction. Unlike absolute spatial cuts, relative cuts are used to define a
 matching radius by multiplying the spatial resolution
 of each sensor by the specified factor, creating an ellipse in the process.
@@ -333,7 +333,7 @@ from the Tracking4D module.
 The proton energies to be analysed are $\SI{50}{\mega\eV}$, $\SI{100}{\mega\eV}$, $\SI{200}{\mega\eV}$,
 $\SI{1}{\giga\eV}$, $\SI{5}{\giga\eV}$, $\SI{20}{\giga\eV}$, and $\SI{180}{\giga\eV}$. For each value of these parameters a simulation with track densities
 of 2, 5, 10, 25, and 50 protons per event and a total amount of 50000 protons is created. \\
-The ratio of reconstructed tracks to the total number of tracks for each configuration is shown in table \ref{tab:study}. Here, the relative spatial cut applied is 15.1.
+The ratio of reconstructed tracks to the total number of tracks for each configuration is shown in Table \ref{tab:study}. Here, the relative spatial cut applied is 15.1.
 
 
 \begin{table}
@@ -375,7 +375,7 @@ are reconstructed. Particles simulated with Allpix$^2$ can be precisely tracked 
 position of the protons on all planes can be accessed. To find correct reconstructed tracks, the MC tracks of Allpix$^2$ can be
 compared with the coordinates of the cluster centres belonging to a track created by Corryvreckan. \\
 
-The number of correct reconstructed tracks for the relative spatial cuts of 15.1 and 12.2 are given in table
+The number of correct reconstructed tracks for the relative spatial cuts of 15.1 and 12.2 are given in Table
 \ref{tab:true_tracks} for 50000 generated protons with 10,
 25, and 50 protons simulated per event. The specific values of the cuts are chosen to not be too strict to limit the statistics, while still rejecting a significant number
 of tracks.\\
@@ -417,7 +417,7 @@ the beam divergence parameter describes the standard deviation of the Gaussian d
 Three simulations of 50000 protons with 10 protons per event and three different opening angles distributions, with a standard deviation of $\SI{0}{\milli\radian}$
 $\SI{2}{\milli\radian}$, and $\SI{3}{\milli\radian}$, are created respectively.
 The number of true reconstructed tracks and the ratio
-of true reconstructed tracks to the total number of tracks is specified in table \ref{tab:angle}. In section \ref{sec:cuts} the method of identifying
+of true reconstructed tracks to the total number of tracks is specified in Table \ref{tab:angle}. In section \ref{sec:cuts} the method of identifying
 true and false tracks in Allpix$^2$ was already described.
 
 \begin{table}
@@ -526,7 +526,7 @@ is not suitable for the identification of true tracks.
 
 The last two major track features stored by Corryvreckan are the number of deposited charges of particles in each sensor and the $\chi^2$ value of the track,
 which is defined in equation \ref{eqn:chi}.
-Both features are shown in figure \ref{fig:charge_chi} with the charge deposition referring to the last plane exemplarily. \\
+Both features are shown in Figure \ref{fig:charge_chi} with the charge deposition referring to the last plane exemplarily. \\
 Similar to the distribution of the cluster centres, no cut on the charge deposition is suitable to effectively sort out false tracks without losing a significant
 amount of true tracks. This is the case for the charge deposition of all sensor planes. \\
 The $\chi^2$ values of true and false tracks show a noticeable difference. While both distributions have a large number of tracks
@@ -557,7 +557,7 @@ Of the investigated track features, only the horizontal kink angles of the third
 features to differentiate between true and false tracks. To determine a suitable
 cut for all three features to maximise the ratio of true tracks to the total number of tracks, several combinations of parameter configurations are investigated, called a
 grid search.
-The possible parameter values are shown in table \ref{tab:params}. \\
+The possible parameter values are shown in Table \ref{tab:params}. \\
 A ratio of $6501/13632 = 0.477$ is achieved by cutting on smaller values
 than $\chi^2 = 0.5$, $\phi_{x,3} = 0.003$ and $\phi_{x,4}=0.004$.
 Stronger cuts can create even better ratios, however the number of true tracks will decreases significantly. \\

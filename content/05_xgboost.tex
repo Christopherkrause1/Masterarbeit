@@ -44,7 +44,7 @@ therefore the prediction of numerous trees is summed together. This method can b
 \end{align}
 Where $K$ is the number of trees, $l(y_i, \hat{y}_i)$ is the loss function that measures the difference between the predictions and the
 target variable, $\mathcal{F}$ the set of all possible CARTs, and $f$ a decision function of the respective CART. A decision tree ensemble is shown exemplarily in
-figure \ref{fig:random_forest}.
+Figure \ref{fig:random_forest}.
 
 \begin{figure}
   \centering
@@ -110,7 +110,7 @@ In this case, the validation score refers to the area under the ROC curve, which
 The learner performs a logistic regression and outputs a probability for classifying a track as true or false.
 A single tree is created in each iteration, called boosting round, to minimise the loss function.
 
-To determine, whether all features are independent from each other, their correlations are calculated, which is shown in figure \ref{fig:corr}. Here the correlation
+To determine, whether all features are independent from each other, their correlations are calculated, which is shown in Figure \ref{fig:corr}. Here the correlation
 refers to the Pearson correlation coefficient \cite{pearson} describing the ratio of the covariance of two variables and the product of their standard deviations. \\
 Most features show only small positive correlations with each other. The most noticeable exceptions are the cluster positions, which correlate particularly high within each
 triplet. All charge deposition features and the $\chi^2$ value show almost no correlation with any other features, though this does not necessarily mean that they are
@@ -120,7 +120,7 @@ are not expected to contribute significantly to classification, but also do not 
 However, problems may arise by taking too many features into account, as only limited training data is available to compensate for inefficient splits on features.
 To prevent too many splits on less useful features,
 the cluster positions on the six sensors in the horizontal and vertical direction are not given as input to the machine learner,
-due to their high correlation with each other and their overall small number of splits, shown in figure \ref{fig:importance_global} in the appendix.
+due to their high correlation with each other and their overall small number of splits, shown in Figure \ref{fig:importance_global} in the appendix.
 Thus, the remaining 15 features include the $\chi^2$, the kink angles, and the charge depositions.
 \begin{figure}
   %\centering
@@ -148,7 +148,7 @@ For these parameters, larger values represent a slower learning algorithm.
 
 A grid search from the python \cite{python} library Scikit-learn \cite{scikit} is used to determine an optimal
 value for each of the parameters mentioned above. The values given as input into the grid search
-are shown in table \ref{tab:grid}.
+are shown in Table \ref{tab:grid}.
 
   \begin{table}
     \centering
@@ -172,7 +172,7 @@ parameter combination five runs are performed. The area under the ROC curve serv
 The mean of the five AUC values represents the score, which is compared in the grid search. Thus, cross-validation helps to compensate for variability in the simulated
 data to derive an accurate estimate of the predictive power of the model. \\
 The maximal AUC of $0.706(1)$ is achieved with a maximum tree depth of 4, $\eta=0.7$, $\gamma=5$ and $\theta=25$. By setting $\gamma=5$, the result of the grid search of the remaining
-parameters can be visualized and is shown in figure \ref{fig:grid}. \\
+parameters can be visualized and is shown in Figure \ref{fig:grid}. \\
 Varying the values of the hyperparameters only causes small changes in the mean test AUC, especially the learning rate has a negligible influence on the AUC. Taking the
 standard deviations into account shows that the variation of the hyperparameters does not have a significant impact on the performance of the learner.
 %makes it impossible to determine whether the best combination of hyperparameters has the highest AUC. However, due to the
@@ -191,7 +191,7 @@ The above-mentioned hyperparameter values are chosen for training and testing th
 
 \section{Machine learning results}
 To compare the performance of the learner on the training and test datasets, the normalised distributions of the output probabilities of tracks being true are investigated.
-These are shown in figure \ref{fig:output} alongside the corresponding differences.
+These are shown in Figure \ref{fig:output} alongside the corresponding differences.
 
 \begin{figure}
   \hspace{-0.45cm}
@@ -220,7 +220,7 @@ with the given input, a lot of false combinations of clusters still show similar
 Also noteworthy is, that a negligible number of tracks has a probability of 0.9 and higher.
 
 The impact of the individual features to classify the reconstructed tracks can be quantified with the number of times each feature was split.
-In figure \ref{fig:importance}, the feature importance scores of the input features are shown. \\
+In Figure \ref{fig:importance}, the feature importance scores of the input features are shown. \\
 All three features, namely the $\chi^2$ value and the horizontal kink angles  $\phi_{x,3}$ and $\phi_{x,4}$,
 proved to be useful for classifying tracks with cuts, have a high feature score, highlighting their importance for separating true and false tracks.
 Other features with a high number of splits, like the vertical kink angle of the second sensor,
@@ -234,7 +234,7 @@ can still be useful for the learner in combination with other features even thou
 
 To evaluate the predictive power of the learner, a ROC curve can be constructed for several thresholds of classifying tracks as true and false based on the
 boosted decision tree (BDT) output.
-The ROC curves for the test and training data set are shown in figure \ref{fig:auc_comparison} alongside
+The ROC curves for the test and training data set are shown in Figure \ref{fig:auc_comparison} alongside
 the ROC curves of the feature cuts from section \ref{sec:feature}.
 With the AUC of each ROC curve, the performances of the classifying methods can be compared. \\%Table \ref{tab:AUC} lists each of the AUCs.
 Only small differences between the ROC curve of the training and test dataset indicate that no significant overfitting occurs.
@@ -265,7 +265,7 @@ comparable points on the ROC curve of the test data. This means that for the sam
 %\end{table}
 Further optimisation of the machine learning results is possible, considering that each cluster can at most be associated to one true track.
 Only keeping the track of clusters with the highest probability of being true enables further rejection of
-false tracks. The ROC curve of the test data with the rejection of tracks is shown in figure \ref{fig:rejection}. \\
+false tracks. The ROC curve of the test data with the rejection of tracks is shown in Figure \ref{fig:rejection}. \\
 With the rejection of tracks, the AUC on the test data set decreases to $0.702$. This is due to the rejection of many true negative tracks, which in turn increases
 the false positive rate. Since the goal is to improve the quality of the pCT image, the false positive rate is not an ideal quantity, as true negative tracks
 are not taken into account for pCT anyway.
@@ -312,5 +312,8 @@ indicating a better performance with the rejection method. In comparison to the 
 of the test data set with the rejection of tracks increases noticeably for recall scores larger than 0.1.
 %This is also reflected in the AUC values of the curves, with the precision curve of the rejection method having the highest AUC.
 Furthermore, a higher precision score of the test data set in comparison to the individual feature cuts for all recall scores highlights the advantages of the machine
-learning approach. The precision is especially stable for the test dataset with the rejection method for recall scores larger than $0.1$, which means that high recall scores
-are achievable without decreasing the precision score significantly. However, this also means that no working point can be chosen that has an exceptionally high precision score.
+learning approach. The precision is especially stable for the test dataset with the rejection method for recall scores larger than $0.1$,
+which means that high recall scores
+are achievable without decreasing the precision score significantly.
+However, this also means that no working point can be chosen that has an exceptionally high precision score. Useful choices for working points might be around
+a recall score of $0.8$ with a precision score of approximately $0.636$ due to a noticeable decrease of precision for higher recall scores.

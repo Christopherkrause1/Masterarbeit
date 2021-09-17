@@ -72,7 +72,7 @@ Radiation therapies \cite{med} are medical treatments using ionising radiation m
 cancer cells to damage their DNA causing cellular death. These treatments focus on cancer that is localised to one area inside the body. \\
 The type of particle used in radiation therapy is crucial to the overall treatment due to their different interactions with the human body.
 Photons are the most common particles being used for radiation therapy \cite{pbt}.
-A newer alternative is proton therapy, having several advantages over conventional x-ray therapy, due to their different properties, which are explained in the following section.
+A newer alternative is proton therapy, having several advantages over conventional x-ray therapy, due to its different properties, which are explained in the following section.
 
 
 \section{Proton therapy}
@@ -80,7 +80,7 @@ Proton therapy is external beam radiotherapy using a proton beam for irradiation
 advance ensures the continual rise of hospitals offering proton therapy. \\
 The proton therapy centres either use cyclotrons or synchrotrons to accelerate the protons. For cyclotrons, protons are extracted from hydrogen atoms and accelerated with
 a constant magnetic field outwards from the centre of the cyclotron until they reach a velocity of approximately 2/3 of the speed of light. Afterwards, the protons
-are focused into the beam line by a magnet system. Synchrotrons use a variable, high frequency magnetic fields to focus protons on a circular path on which they are accelerated. While they
+are focused into the beamline by a magnet system. Synchrotrons use a variable, high-frequency magnetic fields to focus protons on a circular path on which they are accelerated. While they
 are not as compact as cyclotrons, they are able to produce protons of varying energies from $\SI{50}{\MeV}$ to $\SI{250}{\MeV}$ \cite{cyclo}. \\
 Unlike photons, which tend to deposit most of their energy in the first few millimetres within the surface due to Compton scattering,
 protons undergo multiple Coulomb scattering inside matter.
@@ -88,13 +88,13 @@ The energy loss $-\text{d}E$ of protons per distance $\text{d}x$ in this energy 
 \begin{align}
   - \frac{dE}{dx} = \frac{4\pi}{m_e c^2}\left(\frac{e^2}{4\pi\epsilon_0}\right)^2\frac{nz^2}{\beta^2} \left[ \frac{1}{2} \ln{\left(\frac{2 m_e c^2 \beta^2}{I(1-\beta^2)}\right)} - \beta^2 \right]
 \end{align}
-Here, c is the speed of light,  $I$ is the mean excitation potential, $n$ is the electron density, $\epsilon_0$ is the vacum permittivity, $e$ the electron charge,
-$m_e$ the electron mass and $\beta = v/c$.
+Here, c is the speed of light,  $I$ is the mean excitation potential, $n$ is the electron density, $\epsilon_0$ is the vacuum permittivity, $e$ the electron charge,
+$m_e$ the electron mass, and $\beta = v/c$.
 This means that the energy loss is inversely proportional to the square of their velocity, which causes them to deposit most of their energy on the last millimeters of their path.
-This behaviour is called the Bragg peak and is shown in figure \ref{fig:bragg}.
+This behaviour is called the Bragg peak and is shown in Figure \ref{fig:bragg}.
 Regulating the energy of the protons allows for precise control of the Bragg peak depth inside
 the human body. Thus, having multiple proton energies in the proton beam by using absorbers between
-the accelerator and the patient enables a uniform energy deposition inside the target volume, causing a spread out Bragg peak (SOBP).
+the accelerator and the patient enables a uniform energy deposition inside the target volume, causing a spread-out Bragg peak (SOBP).
 
 \begin{figure}
   \centering
@@ -104,7 +104,7 @@ the accelerator and the patient enables a uniform energy deposition inside the t
   \label{fig:bragg}
 \end{figure}
 Due to this property, protons enable the irradiation of tumors with greater precision than with
-x-rays, as surrounding healthy tissue is less damaged, especially behind the tumor. Figure \ref{fig:risk} shows the irradiated areas during treatment of a brain cancer
+x-rays, as surrounding healthy tissue is less damaged, especially behind the tumor. Figure \ref{fig:risk} shows the irradiated areas during treatment of brain cancer
 for conventional radiation and
 proton therapy to emphasise their differences.
 
@@ -123,7 +123,7 @@ tomography (CT) scan is performed using a particle beam to create an image of th
 are used primarily. \\
 To create an image, the patient lies within a gantry, which generates x-ray beams to irradiate the specific volume. The gantry also
 includes a row of detectors measuring the photons after traversing the human body. Due to the fact that each tissue absorbs
-x-rays differently, a projection of the irradiated volume can be created. By rotating the x-ray tube and the detecotrs, projections are created from many different angles around the patient.
+x-rays differently, a projection of the irradiated volume can be created. By rotating the x-ray tube and the detectors, projections are created from many different angles around the patient.
 Unlike in radiography, where two-dimensional projections are produced, CT scan measurements are one-dimensional absorption profiles. The sum of the profiles contains
 the entire information of the inside structure, but cannot be interpreted directly. Projections and the original three-dimensional structure are connected through
 the inverse radon transformation. An implementation of that algorithm is the filtered back projection \cite{back_projection}:
@@ -132,7 +132,7 @@ the inverse radon transformation. An implementation of that algorithm is the fil
 \end{align}
 where $f(x,y)$ is the original image, $p_{\phi}(z)$ the projection in the direction of the angle $\phi$ and $g(z)$ a high-pass filter. However, the inverse
 radon transformation is an ill-posed problem, which demands an irregular filter kernel $g(z)$. To solve this problem in praxis, a fast convolution algorithm is used for the
-filtered back projection. This means that the projection is multiplied with the high-pass filter in Fourier space, where each frequency component is weighted proportional to their
+filtered back projection. This means that the projection is multiplied with the high-pass filter in Fourier space, where each frequency component is weighted proportional to its
 absolute value. In the end, each one-dimensional projection is stretched into two dimensions and rotated around the angle $-\phi$. The sum over all projections will yield the
 final image.
 
@@ -140,8 +140,8 @@ final image.
 \section{Proton computed tomography}
 Creating irradiation plans for proton therapy with x-ray computed tomography images causes large uncertainties due to the different stopping powers of the particles.
 To compensate for the differences, a range uncertainty margin is applied to the prescribed range, which increases with greater travel distance through the body. This
-method is shown in figure \ref{fig:paganetti}. These uncertainty margins caused by the conversion of x-rays to protons for the radiation plan can be be prevented by creating a proton computed tomography (pCT) image.
-Since the position of the protons energy deposition has to be determined as precisely as possible to minimise damage inflicted to healthy tissue, a computed tomography scan using protons
+method is shown in Figure \ref{fig:paganetti}. These uncertainty margins caused by the conversion of x-rays to protons for the radiation plan can be prevented by creating a proton computed tomography (pCT) image.
+Since the position of the protons energy deposition has to be determined as precisely as possible to minimise the damage inflicted to healthy tissue, a computed tomography scan using protons
 is a promising alternative to conventional ct.
 
 \begin{figure}
@@ -159,8 +159,8 @@ The solid-line describes the safety margin for complex geometries without Monte 
 Creating an image with proton CT is similar to conventional. A proton beam deposits energy in the patient and the
 protons remaining energy is then measured with a calorimeter system behind the patient to gain information about the composition of the tissue. A projection can be created,
 if the tracks of the protons are reconstructed. However, due to multiple Coulomb scatterings of the protons inside the patient, the spatial resolution will decrease in comparison
-to conventional ct. In order to take the mutliple Coulomb scattering into account, a most likely path formalism is necessary to model the path of the proton inside the patient \cite{mlp}. \\
-Numerous projections are created by varying the angle of the proton beam with respect to the target. The entire setup is schematically shown in figure \ref{fig:proton_ct}.
+to conventional ct. In order to take the multiple Coulomb scattering into account, a most likely path formalism is necessary to model the path of the proton inside the patient \cite{mlp}. \\
+Numerous projections are created by varying the angle of the proton beam with respect to the target. The entire setup is schematically shown in Figure \ref{fig:proton_ct}.
 
 \begin{figure}
   \centering
@@ -172,4 +172,4 @@ Numerous projections are created by varying the angle of the proton beam with re
 
 The different projections can then be reconstructed to a complete image of the irradiated volume as explained in section \ref{sec:ct}.
 This thesis focuses on the track reconstruction of the low energy protons used in proton computed tomography and whether they can be reconstructed accurately.
-In the following chapter, the track reconstruction of particles is adressed in more detail.
+In the following chapter, the track reconstruction of particles is addressed in more detail.

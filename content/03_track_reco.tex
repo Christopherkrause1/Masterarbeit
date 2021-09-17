@@ -12,12 +12,12 @@ DESY is a national research centre located in Hamburg.
 It produces an electron beam with energies up to
 $\SI{7}{\GeV}$, which collides with a carbon fiber target creating bremsstrahlung in the process. The photons are extracted and collide with a secondary target
 converting them to electron-positron pairs. A dipole magnet behind the target creates a homogenous magnetic field to select the desired energy and particle type. This process
-is shown schematically in figure \ref{fig:testbeam}.
+is shown schematically in Figure \ref{fig:testbeam}.
 
 \begin{figure}
   \centering
   \includegraphics[height=0.4\textwidth]{images/desy_modified.jpg}
-  \caption{Depiction of the beam generation in beam test experiments going through the beam line TB21 \cite{testbeam}.}
+  \caption{Depiction of the beam generation in beam test experiments going through the beamline TB21 \cite{testbeam}.}
   \label{fig:testbeam}
 \end{figure}
 
@@ -63,7 +63,7 @@ avoid annealing and other unwanted effects due to heat and also to prevent the i
 
 
 The generic data acquisition framework EUDAQ \cite{eudaq} records the data produced in beam test experiments. It centrally handles the data flow and synchronises data streams to enable
-the integration of different independent devices under test. A schematic setup of a beam telescope with EUDAQ is shown in figure \ref{fig:eudaq_bild}.
+the integration of different independent devices under test. A schematic setup of a beam telescope with EUDAQ is shown in Figure \ref{fig:eudaq_bild}.
 
 \begin{figure}
   \centering
@@ -92,7 +92,7 @@ General parameters and parameters in individual reconstruction steps are specifi
 geometry file, the applied reconstruction steps, and the definition of the cuts. \\
 The steering files define the processors used in each reconstruction step and in which order they are executed.
 A complete track reconstruction with EUTelescope contains the converter, the clustering, the hitmaker, the alignment and the track fitting in this respective order.
-The overall track reconstruction of EUTelescope is shown in figure \ref{fig:track_reco} with the most important steps explained in the following.
+The overall track reconstruction of EUTelescope is shown in Figure \ref{fig:track_reco} with the most important steps explained in the following.
 
 \begin{figure}[H]
   %\centering
@@ -239,7 +239,7 @@ reconstruction step are analysed. \\
 After converting the hit information to their respective formats, the clustering is the first step performed by Corryvreckan and EUTelescope
 to be investigated.
 %It should be noted that no cut on the firing frequency is applied in any of the software in order to properly investigate their similarity, as the cut on the frequency in both frameworks is not defined similarly.
-In \mbox{figure \ref{fig:cluster_size}} the cluster sizes determined by Corryvreckan and EUTelescope are shown for the second plane exemplarily.
+In \mbox{Figure \ref{fig:cluster_size}} the cluster sizes determined by Corryvreckan and EUTelescope are shown for the second plane exemplarily.
 For both software, the charge-weighted centre-of-gravity algorithm is used. The configuration files of Corryvreckan and EUTelescope are attached in the appendix.
 
 \begin{figure}
@@ -259,7 +259,7 @@ For both software, the charge-weighted centre-of-gravity algorithm is used. The 
 \end{figure}
 
 The number of identified clusters is identical and the distribution looks similar implying an identical clustering process
-and no differences due to the data conversion step. A closer look at the individual bin entries, shown in table \ref{tab:cluster_sizes} in the appendix,
+and no differences due to the data conversion step. A closer look at the individual bin entries, shown in Table \ref{tab:cluster_sizes} in the appendix,
 confirms that the distributions are identical.
 
 \section{Track reconstruction}
@@ -303,9 +303,12 @@ standard deviations including their errors are the pure mathematical result of t
 spatial resolution of the sensors. %The bin width of $\SI{1}{\micro\meter}$
 
 Another important quantity for reconstructed tracks is the $\chi^2$ value, which is defined in equation \ref{eqn:chi}. The $\chi^2$ value is dependent on the
-residuals on all six planes of the telescope. In order to compare and interpret the $\chi^2$ distributions, each $\chi^2$ value is divided by the number
-of degrees of freedom (ndof), which is the ratio of (...). In figure \ref{fig:ndof}, the $\chi^2$ distributions of the reconstructed tracks are shown. \\
-Both $\chi^2$ distributions have their maximum around 1.5, further indicating a similar quality of reconstructed tracks.
+residuals on all six planes of the telescope. In order to compare the $\chi^2$ distributions, each $\chi^2$ value is divided by the number
+of degrees of freedom (ndof), which is defined as the difference of the number of fitted data points and
+the number of parameters used for the fit. In figure \ref{fig:ndof}, the $\chi^2$ distributions of the reconstructed tracks are shown. \\
+The $\chi^2$ distributions calculated by Corryvreckan and EUTelescope have their maximum at
+a $\chi^2$ value of $1.45$ and $1.75$ respectively. Furthermore, the higher maximum and the faster falling tail of the $\chi^2$ distribution from
+Corryvreckan indicates that a noticeable amount of tracks is fitted more accurately with the Corryvreckan framework.
 
 \begin{figure}
   %\centering
@@ -319,8 +322,8 @@ Both $\chi^2$ distributions have their maximum around 1.5, further indicating a 
       \hspace{-0.19cm}
       \includegraphics[height=0.82\textwidth]{plots/june_chi2_EU.pdf}
   \end{subfigure}
-  \caption{Distributions of the $\chi^2$ value divided by the number of degrees of freedom. Tracks reconstructed with EUTelescope and Corryvreckan
-   have eight and seven degrees of freedom, respectively}
+  \caption{Distributions of the $\chi^2$ value divided by the number of degrees of freedom. Tracks reconstructed with Corryvreckan and EUTelescope
+   have seven and eight degrees of freedom, respectively.}
   \label{fig:ndof}
 \end{figure}
 
@@ -328,7 +331,7 @@ Both $\chi^2$ distributions have their maximum around 1.5, further indicating a 
 
 \section{DUT residuals}
 After the final track reconstruction with the telescope, the hit information on the DUT planes is compared to the
-reconstructed tracks. Again, three iterations of alignment are performed for the DUT planes. In figure \ref{fig:residual_dut}, the residuals in the
+reconstructed tracks. Again, three iterations of alignment are performed for the DUT planes. In Figure \ref{fig:residual_dut}, the residuals in the
 x- and y-direction are shown for the reference.
 
 \begin{figure}[H]
