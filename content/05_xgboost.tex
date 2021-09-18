@@ -1,7 +1,7 @@
 \chapter{Machine learning approach for true track tagging}
 Applying cuts to track features in order to differentiate between true and false reconstructed tracks improved their ratio. A more effective
 approach in classifying a track as true or false might be achieved with a machine learning algorithm for classification. Unlike one-dimensional cuts, a machine learning
-algorithm can be implemented to benefit from correlations between the input features for more accurate identification of true tracks. The library used for
+algorithm can be implemented to benefit from correlations between the input features for a more accurate identification of true tracks. The library used for
 machine learning is XGBoost \cite{xgboost}. It is used for supervised learning problems \cite{supervised} which is explained in the following section.
 
 %\section{Introduction to XGBoost}
@@ -13,7 +13,7 @@ are linear combinations of the weighted input features:
 \begin{align}
   \hat{y}_i = \sum_j \Theta_j x_{ij}
 \end{align}
-The coefficients $\Theta_j$ are a-priori undetermined parameters that need to be learned from the training data.
+The coefficients $\Theta_j$ are a priori undetermined parameters that need to be learned from the training data.
 Therefore, the task of training is in determining the optimal parameters
 for the target variable $y_i$ based on the input $x_i$. In order to train a model, an objective function, which measures how well
 the model fits the training data, needs to be defined and optimised.
@@ -28,12 +28,12 @@ The training loss function is commonly defined as the mean squared error or logi
   &L(\Theta) = \sum_i [y_i \ln{(1 + \text{e}^{-\hat{y}_i})} + (1 - y_i) \ln{(1 + \text{e}^{-\hat{y}_i})}]
 \end{align}
 Logistic regression refers to the statistical model that uses logistic functions to model binary dependent variables. \\
-The regularization term limits the complexity of a model in order to prevent overfitting. Overfitting occurs, when the model fits to the training data too well that it adjusts
+The regularization term limits the complexity of a model in order to prevent overfitting. Overfitting occurs when the model fits the training data too well that it adjusts
 to random fluctuations with no causal relation. Predictions of new unseen data then become worse, as the learner is not able to generalise well.
 
 \section{Decision tree ensemble}
 Decision trees are tree-structured diagrams, which classify a target variable based on a series of decisions. They consist of internal nodes, which denote
-a test on an attribute, branches, which represent the outcome of the tests and leaf nodes, which are the nodes of a decision tree that do not split the data any further. \\
+a test on an attribute, branches, which represent the outcome of the tests, and leaf nodes, which are the nodes of a decision tree that do not split the data any further. \\
 The model used by the XGBoost library is the ensemble of decision trees, which consists of a set of classification and regression trees (CART) \cite{cart}.
 A CART assigns a prediction score to each of the leaves.
 The prediction of a single tree is usually not sufficiently accurate,
@@ -72,7 +72,7 @@ The tree added in each step is supposed to optimise the objective and can be wri
   g_i &= \partial_{\hat{y}_i^{(t-1)}} l(y_i, \hat{y}_i^{(t-1)}) \\
   h_i &= \partial^2_{\hat{y}_i^{(t-1)}} l(y_i, \hat{y}_i^{(t-1)})
 \end{align}
-By using the second order taylor expansion of the loss function instead of only the first one, a more precise approximation of the loss function is determined in comparison
+By using the second-order Taylor expansion of the loss function instead of only the first one, a more precise approximation of the loss function is determined in comparison
 to regular gradient boosting algorithms \cite{newton_boosting}.
 Furthermore, the value of the objective function only depends on $g_i$ and $h_i$, giving XGBoost the advantage of using custom loss functions including logistic regression.
 However, the regularisation term still needs to be defined. One definition that works well in practice and is thus used by XGBoost is:
@@ -110,7 +110,7 @@ In this case, the validation score refers to the area under the ROC curve, which
 The learner performs a logistic regression and outputs a probability for classifying a track as true or false.
 A single tree is created in each iteration, called boosting round, to minimise the loss function.
 
-To determine, whether all features are independent from each other, their correlations are calculated, which is shown in Figure \ref{fig:corr}. Here the correlation
+To determine, whether all features are independent of each other, their correlations are calculated, which is shown in Figure \ref{fig:corr}. Here the correlation
 refers to the Pearson correlation coefficient \cite{pearson} describing the ratio of the covariance of two variables and the product of their standard deviations. \\
 Most features show only small positive correlations with each other. The most noticeable exceptions are the cluster positions, which correlate particularly high within each
 triplet. All charge deposition features and the $\chi^2$ value show almost no correlation with any other features, though this does not necessarily mean that they are
@@ -152,6 +152,8 @@ are shown in Table \ref{tab:grid}.
 
   \begin{table}
     \centering
+    \caption{Parameter values of the grid search. The tree depth refers to the maximum depth of a tree, $\eta$ refers to the learning rate,
+    $\gamma$ is a threshold for the allowed minimum loss reduction in a partition step, and $\theta$ is the minimum sum of instance weight needed in a child.}
     \begin{tabular}{c c c c}
       \toprule
       tree depth & $\eta$ & $\gamma$ & $\theta$ \\
@@ -161,8 +163,6 @@ are shown in Table \ref{tab:grid}.
       5 & 0.3  & 2 & 50  \\
       6 & 0.7  & 5   &  \\
     \end{tabular}
-    \caption{Parameter values of the grid search. The tree depth refers to the maximum depth of a tree, $\eta$ refers to the learning rate,
-    $\gamma$ is a threshold for the allowed minimum loss reduction in a partition step, and $\theta$ is the minimum sum of instance weight needed in a child.}
     \label{tab:grid}
   \end{table}
 To compare each different combination of the hyperparameter values quantitatively and obtain an estimation of the uncertainty, a 5-fold cross-validation is performed. This means that
@@ -182,8 +182,8 @@ The above-mentioned hyperparameter values are chosen for training and testing th
 \begin{figure}[H]
   \centering
   \includegraphics[height=0.6\textwidth]{plots/grid_search_weights.pdf}
-  \caption{The mean test AUC for the different hyperparameter configurations with the errorbars indicating the standard deviation of the mean. The
-  smaller bars (red, green, pink, yellow) refer to $\eta$, the larger bars (turquois, orange, purple) to $\theta$ and the point marked in red to the best model.}
+  \caption{The mean test AUC for the different hyperparameter configurations with the error bars indicating the standard deviation of the mean. The
+  smaller bars (red, green, pink, yellow) refer to $\eta$, the larger bars (turquoise, orange, purple) to $\theta$ and the point marked in red to the best model.}
   \label{fig:grid}
 \end{figure}
 
@@ -212,7 +212,7 @@ These are shown in Figure \ref{fig:output} alongside the corresponding differenc
 
 The distributions of the training and test data predictions only show small differences, indicating that no significant overtraining occurs during the training process.
 %For both true and false tracks, the greatest deviations are found at their most probable value, between 0.8 and 0.9.
-Both true and false tracks have a maximum around 0.8 as their most probable value, though the peak for the true tracks is higher due to the larger number
+Both true and false tracks have a maximum of around 0.8 as their most probable value, though the peak for the true tracks is higher due to the larger number
 of false tracks assigned to small probabilities of being true tracks. While the number of true tracks increases with the assigned probabilities up to
 approximately 0.8, the false tracks have a second maximum for small probabilities, which is as high as their maximum around 0.8.
 This means that
@@ -263,7 +263,7 @@ comparable points on the ROC curve of the test data. This means that for the sam
 %  \caption{Area Under the Curve for the feature cuts and the train and test data of the machine learner.}
 %  \label{tab:AUC}
 %\end{table}
-Further optimisation of the machine learning results is possible, considering that each cluster can at most be associated to one true track.
+Further optimisation of the machine learning results is possible, considering that each cluster can at most be associated with one true track.
 Only keeping the track of clusters with the highest probability of being true enables further rejection of
 false tracks. The ROC curve of the test data with the rejection of tracks is shown in Figure \ref{fig:rejection}. \\
 With the rejection of tracks, the AUC on the test data set decreases to $0.702$. This is due to the rejection of many true negative tracks, which in turn increases

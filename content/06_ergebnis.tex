@@ -1,6 +1,6 @@
 \chapter{Summary and Outlook}
 The performance of Corryvreckan was analysed and compared to EUTelescope in the scope of this thesis. Furthermore, the reconstruction of low energy proton
-tracks with the use of Corryvreckan was investigated regarding its usefullness for proton computed tomography.
+tracks with the use of Corryvreckan was investigated regarding its usefulness for proton computed tomography.
 
 With the track reconstruction of data from a previous testbeam campaign, Corryvreckan proved to
 produce equally valid results in comparison to the EUTelescope framework. No differences
@@ -31,15 +31,14 @@ to EUTelescope. This opens up the possibility for Corryvreckan to also replace t
 
 %The reconstruction of simulated protons of different energies with Corryvreckan produced the expected results.
 Investigating Corryvreckans usability for the reconstruction of low energy protons is reasonable due to its support from the testbeam community and
-its flexibel application in complex environments. \\
+its flexible application in complex environments. \\
 Due to no misalignments of sensors in the telescope and no simulated uncertainties
 of the energy of the protons, the residuals for high energy protons form sharp peaks. Since the used IBL sensors have a different
 horizontal and vertical spatial resolution and the middle sensor of each triplet is rotated by 90°, a five-peak structure
 forms, which starts to blur into one peak for energies below $\SI{1}{\giga\eV}$, due to stronger scattering of the protons. For even lower energies,
 around $\SI{200}{\mega\eV}$, the number of reconstructed tracks decreases significantly, as fewer protons deposit energy in all six planes. Since these energies are
 used for proton therapy, and a sufficient number of reconstructed protons are necessary to create a proton computed tomography image, the patient
-will need to be irradiated for longer times to compensate for the small number of reconstructed tracks. For example, creating a pCT image for a head
-like object requires approximately $10^9$ reconstructed proton tracks \cite{number_protons}. \\
+will need to be irradiated for longer times to compensate for the small number of reconstructed tracks. For example, creating a pCT image for a head-like object requires approximately $10^9$ reconstructed proton tracks \cite{number_protons}. \\
 %However, only a small amount of energy is deposited by protons, while traversing
 %the human body, making longer radiation steps for pct possible without significantly damaging healthy tissue. \\
 A greater problem arises from the high track density of the proton beams causing large track multiplicities and thus a large number of tracks with false combinations of
@@ -55,12 +54,12 @@ with the help of machine learning.
 
 With the usage of boosted decision trees for the classification of tracks, the true and false positive rates achieved with the machine learner outperform any of the previous methods, including the grid search.
 The resulting area under the ROC curve of the test data set is 0.756, with the same data set having AUC's of
-0.615, 0.617 and 0.587 for the cut on the $\chi^2$, $\phi_{x,3}$ and $\phi_{x,4}$ respectively. Further improvement is achieved by the rejection of all but one track
+0.615, 0.617, and 0.587 for the cut on the $\chi^2$, $\phi_{x,3}$, and $\phi_{x,4}$ respectively. Further improvement is achieved by the rejection of all but one track
 fitted through each cluster on the first and last sensor.
 With this method, the area under the precision-recall curve increased from $0.604$ to $0.633$ and is especially
 effective for high recall scores. \\
 However, a significant amount of false tracks is still classified as true
-with a high probability, which means that the input features do not allow for an optimal classification.
+with a high probability, which means that the input features do not allow for optimal classification.
 Thus, the most crucial step to optimise the classification of the machine learner is to determine further input features.
 
 Further improvement for future investigations
@@ -68,9 +67,9 @@ is to alter the reconstruction process of Corryvreckan with more advanced track 
 The Tracking4D module uses a straight line as the initial track for
 the track finding process. The newer TrackingMultiplet module is a work in progress and fits two straight lines,
 one through each triplet, and connects them at a specified position with an arbitrary kink.
-A full track is formed by connecting the upstream and downstream tracks with the lowest distance and within specifed cuts,
+A full track is formed by connecting the upstream and downstream tracks with the lowest distance and within specified cuts,
 allowing for further rejection of false combinations of clusters. \\
 Furthermore, instead of using boosted decision trees, artificial neural networks \cite{ann} offer a couple of advantages,
 including the ability to detect more complex non-linear relationships between the input variables and the output. Therefore, a neural network potentially classifies
 more precisely in comparison to boosted decision trees. \\
-With these methods the resolution of pCT images might be improvable even further in order to treat patients as safe and efficient as possible.
+With these methods, the resolution of pCT images might be improvable even further in order to treat patients as safely and efficiently as possible.
