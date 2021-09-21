@@ -3,7 +3,7 @@ Studying the properties of sensors is crucial for the optimal performance of par
 %The new pixel modules used for the ATLAS ITk upgrade have to be thoroughly
 %tested in terms of efficiency and radiation hardness to fulfill the necessary requirements for their installment.
 In order to evaluate the performance of the sensor, they are irradiated in beam test experiments similar to the conditions in the LHC.
-These beam test measurements are performed in test beam facilities, with one being located at Deutsches Elektronen Synchrotron (DESY).
+These beam test measurements are performed in testbeam facilities, with one being located at Deutsches Elektronen Synchrotron (DESY).
 %Sensors that are planned to be installed in the ATLAS ITk are tested at DESY during the LS2.
 
 DESY is a national research centre located in Hamburg.
@@ -24,7 +24,7 @@ is shown schematically in Figure \ref{fig:testbeam}.
 The permanently installed EUDET-type Pixel Beam telescopes DATURA and DURANTA are located in the beamlines TB21 and TB22 and enable the tracking of the particles
 produced by DESY II. Both telescopes consist of six Mimosa26 monolithic active pixel sensors \cite{mimosa26} with %a pixel pitch of $\SI{18.4}{\micro\meter} \times \SI{18.4}{\micro\meter}$.
 three sensors each incorporated into one arm of the telescope and the device under test (DUT) being placed in between. Sensors in front of and behind
-the DUT are called upstream and downstream sensors respectively.\\
+the DUT are called upstream and downstream sensors, respectively.\\
 The Mimosa26 sensors are fabricated in a standard $\SI{0.35}{\micro\meter}$ CMOS process with a fast binary readout.
 %size of $\SI{13.7}{\milli\meter} \times \SI{21.5}{\milli\meter}$.
 Signals are measured with a time resolution of $\SI{230}{\micro\second}$ with each measurement in a readout cycle belonging to the same event.
@@ -33,7 +33,7 @@ and a thickness of $\SI{50}{\micro\meter}$.
 
 For time references during the measurements, a reference module with an FE-I4 readout chip \cite{fei4} is placed behind the telescope with a
 time resolution of $\SI{25}{\nano\second}$. The sensor contains 336 rows and 80 columns of pixels with a
-$\SI{250}{\micro\meter} \times \SI{50}{\micro\meter}$ pixel pitch. Figure \ref{fig:telescope} shows the telescope setup of DATURA. \\
+$\SI{250}{\micro\meter} \times \SI{50}{\micro\meter}$ pixel pitch. \mbox{Figure \ref{fig:telescope}} shows the telescope setup of DATURA. \\
 A polystyrene box filled with dry ice can be used to cool the DUT's to
 avoid annealing and other unwanted effects due to heat and also to prevent the interaction of light with the sensors.
 
@@ -153,7 +153,7 @@ hit or another point of interest on the trajectory. Figure \ref{fig:gbl} depicts
   \centering
   \includegraphics[height=0.5\textwidth]{images/gbl.png}
   \caption{Track reconstruction with the fitGBL processor. Scattering points are connected with a straight line. Two GBL points are placed between the sensors
-  to account for the particle traversing an extended volume of material in between the sensors \cite{gbl}. }
+  to account for the particle traversing an extended volume of material in between the \mbox{sensors \cite{gbl}}.}
   \label{fig:gbl}
 \end{figure}
 
@@ -213,9 +213,7 @@ After successful alignment, the DUTAssociation module uses the cluster informati
 and relative spatial and time cuts can be specified. It can also be chosen whether the nearest pixel of the cluster or the cluster centre is compared with the track.
 With the associated tracks, the DUTs are aligned in the AlignmentDUTResidual module with the same adjustable parameters as the AlignmentTrackChi2 module.
 The AnalysisDUT module then creates the residual plots of the DUT with an optimal cut on the $\chi^2$ value. Sensor efficiencies of the DUTs are determined with the
-AnalysisEfficiency module by comparing cluster positions with the interpolated tracks.
-
-
+AnalysisEfficiency module by comparing cluster positions with the interpolated tracks. \\
 Figure \ref{fig:corry_track_reco} depicts
 the different modules used for general track reconstruction. The entire Corryvreckan framework is documented in detail for further information \cite{corry_manual}.
 
@@ -308,8 +306,8 @@ residuals on all six planes of the telescope. In order to compare the $\chi^2$ d
 of degrees of freedom (ndof), which is defined as the difference of the number of fitted data points and
 the number of parameters used for the fit. In figure \ref{fig:ndof}, the $\chi^2$ distributions of the reconstructed tracks are shown. \\
 The $\chi^2$ distributions calculated by Corryvreckan and EUTelescope have their maximum at
-a $\chi^2$ value of $1.45$ and $1.75$ respectively. Furthermore, the higher maximum and the faster falling tail of the $\chi^2$ distribution from
-Corryvreckan indicates that a noticeable amount of tracks is fitted more accurately with the Corryvreckan framework.
+a $\chi^2$ value of $1.45$ and $1.75$, respectively. Furthermore, the smaller $\chi^2$ mean value calculated by
+Corryvreckan indicates that a significant amount of tracks is fitted more accurately with the Corryvreckan framework.
 
 \begin{figure}
   %\centering
@@ -334,6 +332,13 @@ Corryvreckan indicates that a noticeable amount of tracks is fitted more accurat
 After the final track reconstruction with the telescope, the hit information on the DUT planes is compared to the
 reconstructed tracks. Again, three iterations of alignment are performed for the DUT planes. In Figure \ref{fig:residual_dut}, the residuals in the
 x- and y-direction are shown for the reference module.
+
+For both directions the residuals calculated by Corryvreckan and EUTelescope are similar. All mean values are below $\SI{1}{\micro\meter}$
+indicating a successful alignment. The spatial resolution of the sensor in the horizontal and vertical direction is:
+\begin{align*}
+  &\sigma_{\text{FE-I4},\text{x}} = \SI{50}{\micro\meter}/\sqrt{12} \approx \SI{14.434}{\micro\meter} \\
+  &\sigma_{\text{FE-I4},\text{y}} = \SI{250}{\micro\meter}/\sqrt{12} \approx \SI{72.169}{\micro\meter}
+\end{align*}
 
 \begin{figure}[H]
   %\centering
@@ -362,13 +367,6 @@ x- and y-direction are shown for the reference module.
   were created with Corryvreckan and the plots on the right with EUTelescope.}
   \label{fig:residual_dut}
 \end{figure}
-
-For both directions the residuals calculated by Corryvreckan and EUTelescope are similar. All mean values are below $\SI{1}{\micro\meter}$
-indicating a successful alignment. The spatial resolution of the sensor in the horizontal and vertical direction is:
-\begin{align*}
-  &\sigma_{\text{FE-I4},\text{x}} = \SI{50}{\micro\meter}/\sqrt{12} \approx \SI{14.434}{\micro\meter} \\
-  &\sigma_{\text{FE-I4},\text{y}} = \SI{250}{\micro\meter}/\sqrt{12} \approx \SI{72.169}{\micro\meter}
-\end{align*}
 
 Both software determined similar standard deviations,
 with the ones for the residuals in the vertical direction being close to

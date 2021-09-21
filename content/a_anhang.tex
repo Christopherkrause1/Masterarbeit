@@ -2,6 +2,7 @@
 %\section{Bin entries of cluster size plots}
   \begin{table}
     \centering
+    \caption{Bin entries of the cluster size plots of Corryvreckan and EUTelescope for the first plane shown in figure \ref{fig:cluster_size}.}
     \begin{tabular}{c | c c}
       \toprule
       Bin & Corryvreckan & EUTelescope \\
@@ -31,13 +32,12 @@
       41-50  & 986247  & 986247        \\
       51-59  & 207     & 207            \\
     \end{tabular}
-    \caption{Bin entries of the cluster size plots of Corryvreckan and EUTelescope for the first plane shown in figure \ref{fig:cluster_size}.}
     \label{tab:cluster_sizes}
   \end{table}
 
 \clearpage
 
-\begin{lstlisting}[caption={Configuration file of Corryvreckan for the testbeam anaylsis of June 2020 Batch 3}]
+\begin{lstlisting}[caption={Configuration file of Corryvreckan for the testbeam analysis of June 2020 Batch 3.}]
 [Corryvreckan]
 detectors_file = output/updated_real_geometry.conf
 detectors_file_updated = output/updated_real_geometry.conf
@@ -77,7 +77,7 @@ chi2ndof_cut = 5
 \end{lstlisting}
 
 \clearpage
-\begin{lstlisting}[caption={Detector file of Corryvreckan for the testbeam anaylsis of June 2020 Batch 3}]
+\begin{lstlisting}[caption={Detector file of Corryvreckan for the testbeam analysis of June 2020 Batch 3.}]
 [plane0]
 material_budget = 0.00075
 number_of_pixels = 1152, 576
@@ -186,7 +186,7 @@ type = "fei4"
 
 \clearpage
 
-\begin{lstlisting}[caption={Configuration file of EUTelescope for the testbeam anaylsis of June 2020 Batch 3}]
+\begin{lstlisting}[caption={Configuration file of EUTelescope for the testbeam analysis of June 2020 Batch 3.}]
 [DEFAULT]
 # The path to this config file
 BasePath                = /path_to_config_file
@@ -420,7 +420,7 @@ OutputPlanes    = 110 112 21
 
 \clearpage
 
-\begin{lstlisting}[caption={Allpix$^2$ simulation for 50000 protons with an energy of $\SI{100}{\giga\eV}$}]
+\begin{lstlisting}[caption={Allpix$^2$ simulation for 50000 protons with an energy of $\SI{100}{\giga\eV}$}.]
 [Allpix]
 log_level = "WARNING"
 log_format = "DEFAULT"
@@ -466,7 +466,7 @@ type = "ibl_planar"
 
 \clearpage
 
-\begin{lstlisting}[caption={Allpix$^2$ geometry file for all simulations}]
+\begin{lstlisting}[caption={Allpix$^2$ geometry file for all simulations.}]
 [telescope0]
 type = "ibl_planar"
 position = 0 0 -44cm

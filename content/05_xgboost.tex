@@ -1,14 +1,16 @@
 \chapter{Machine learning approach for true track tagging}
 Applying cuts to track features in order to differentiate between true and false reconstructed tracks improved their ratio. A more effective
-approach in classifying a track as true or false might be achieved with a machine learning algorithm for classification. Unlike one-dimensional cuts, a machine learning
-algorithm can be implemented to benefit from correlations between the input features for a more accurate identification of true tracks. The library used for
-machine learning is XGBoost \cite{xgboost}. It is used for supervised learning problems \cite{supervised} which is explained in the following section.
+approach in classifying a track as true or false might be achieved with a machine learning algorithm for classification.
+Unlike one-dimensional cuts, a machine learning
+algorithm can be implemented to benefit from correlations between the input features for a more accurate identification of true tracks. The utilised
+machine learning library is XGBoost \cite{xgboost}. It is used for supervised learning problems \cite{supervised} which are explained in the following section.
 
 %\section{Introduction to XGBoost}
 \section{Supervised learning}
 %XGBoost is a gradient boosting machine learning algorithm \cite{gradient}, which primarily uses decision trees as a predictive model for classification and regression analysis.
 Supervised learning is used to predict a target variable $y_i$ based on the training data $x_i$ containing multiple features. The model
-in supervised learning describes the mathematical structure, which determines the prediction from its input data. A linear model is a common example, where the predictions
+in supervised learning describes the mathematical structure, which determines the prediction from its input data.
+A linear model is a common example, where the predictions
 are linear combinations of the weighted input features:
 \begin{align}
   \hat{y}_i = \sum_j \Theta_j x_{ij}
@@ -60,7 +62,8 @@ Unlike in random forest algorithms \cite{random}, in which a multitude of decisi
 it is also possible to build one tree at a time and
 combine them iteratively. This method is the gradient boosting machine learning algorithm \cite{gradient}, which is used by XGBoost. \\
 Optimising the objective functions for
-boosted trees is achieved by additive training. This means that previous trees are fixed and only one new tree per step $t$ is added. This can be written
+boosted decision trees (BDT) is achieved by additive training. This means that previous trees are fixed and only one new tree per step $t$ is added.
+This can be written
 down as follows:
 \begin{align}
   \hat{y}_i^{(t)} = \sum_{k=1}^t f_k(x_i) = \hat{y}_i^{(t-1)} + f_t(x_i)
@@ -86,7 +89,7 @@ With this definition, the objective function for a single tree can be compressed
 \begin{equation} \label{eqn:obj}
   \text{obj} = -\frac{1}{2}\sum_{j=1}^T \frac{G_j^2}{H_j + \lambda} + \gamma T
 \end{equation}
-Here, $G_j$ and $H_j$ are the sums over all $g_i$ and $h_i$ respectively. Equation \ref{eqn:obj} is a measure of how good a tree structure is. Its structure score
+Here, $G_j$ and $H_j$ are the sums over all $g_i$ and $h_i$, respectively. Equation \ref{eqn:obj} is a measure of how good a tree structure is. Its structure score
 is determined by the statistics $g_i$ and $h_i$ in the leaves, with a smaller score indicating a better tree structure.
 Since it is not feasible to enumerate all possible trees to find the best one, only one level at a time is optimised.
 For each split of a leaf into a new left leaf L and right leaf R, the gained structure score is defined as:
@@ -106,11 +109,11 @@ The learner is tested on a previously unseen dataset, similar to the one in \ref
 To determine the optimal number of boosting rounds, early stopping is utilised on a validation set, consisting of 100000 generated protons. This means, that
 the model will train until the validation score stops improving for ten consecutive boosting rounds to rule out statistical fluctuations.
 The number of boosted rounds is then determined by the highest validation score.
-In this case, the validation score refers to the area under the ROC curve, which was explained in section \ref{sec:feature}. \\
+In this case, the validation score refers to the area under the ROC curve, which was explained in \mbox{section \ref{sec:feature}}. \\
 The learner performs a logistic regression and outputs a probability for classifying a track as true or false.
 A single tree is created in each iteration, called boosting round, to minimise the loss function.
 
-To determine, whether all features are independent of each other, their correlations are calculated, which is shown in Figure \ref{fig:corr}. Here the correlation
+To determine, whether all features are independent of each other, their correlations are calculated, which is shown in Figure \ref{fig:corr}. Here, the correlation
 refers to the Pearson correlation coefficient \cite{pearson} describing the ratio of the covariance of two variables and the product of their standard deviations. \\
 Most features show only small positive correlations with each other. The most noticeable exceptions are the cluster positions, which correlate particularly high within each
 triplet. All charge deposition features and the $\chi^2$ value show almost no correlation with any other features, though this does not necessarily mean that they are
@@ -135,7 +138,7 @@ Thus, the remaining 15 features include the $\chi^2$, the kink angles, and the c
 %are not expected to contribute significantly to classification, but also do not disrupt the learning process, as trees do not split as often on variables with little impact.
 %Thus, no problems will arise by taking all features into account, as long as the training data is sufficiently large to be able to compensate for inefficient splits on trees.
 The parameters, which are predetermined and can not be inferred from the training of the learner, are called hyperparameters. These parameters are used
-to control the machine learner and need to be tuned to improve the performance of the classifier.
+to control the learning process and need to be tuned to improve the performance of the classifier.
 Taking many hyperparameters and hyperparameter values into account comes at the
 cost of a large computation time. For this reason, four parameters are chosen to be optimised. These are firstly the maximum depth of each tree, which influences the
 complexity of the model and the likeliness of overfitting. With the learning rate $\eta$, overfitting can be alleviated as it shrinks the feature weights
@@ -233,7 +236,7 @@ can still be useful for the learner in combination with other features even thou
 \end{figure}
 
 To evaluate the predictive power of the learner, a ROC curve can be constructed for several thresholds of classifying tracks as true and false based on the
-boosted decision tree (BDT) output.
+boosted decision tree output.
 The ROC curves for the test and training data set are shown in Figure \ref{fig:auc_comparison} alongside
 the ROC curves of the feature cuts from section \ref{sec:feature}.
 With the AUC of each ROC curve, the performances of the classifying methods can be compared. \\%Table \ref{tab:AUC} lists each of the AUCs.
