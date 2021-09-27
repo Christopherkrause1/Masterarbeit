@@ -148,7 +148,7 @@ Creating irradiation plans for proton therapy with x-ray computed tomography ima
 To compensate for the differences, a range uncertainty margin is applied to the prescribed range, which increases with greater travel distance through the body. This
 method is shown in Figure \ref{fig:paganetti}. These uncertainty margins caused by the conversion of x-rays to protons for the radiation plan can be prevented by creating a proton computed tomography (pCT) image.
 Since the position of the protons energy deposition has to be determined as precisely as possible to minimise the damage inflicted to healthy tissue, a computed tomography scan using protons
-is a promising alternative to conventional CT.
+is a promising alternative to \mbox{conventional CT}.
 
 \begin{figure}
   \centering
@@ -162,10 +162,10 @@ The solid-line describes the safety margin for complex geometries without Monte 
   \label{fig:paganetti}
 \end{figure}
 
-Creating an image with proton CT is similar to conventional. A proton beam deposits energy in the patient and the
+Creating an image with proton CT is similar to conventional CTs. A proton beam deposits energy in the patient and the
 protons remaining energy is then measured with a calorimeter system behind the patient to gain information about the composition of the tissue. A projection can be created,
 if the tracks of the protons are reconstructed. However, due to multiple Coulomb scatterings of the protons inside the patient, the spatial resolution will decrease in comparison
-to conventional ct. In order to take the multiple Coulomb scattering into account, a most likely path formalism is necessary to model the path of the proton inside the patient \cite{mlp}. \\
+to conventional ct. In order to take the multiple Coulomb scattering into account, a most likely path formalism is necessary to model the path of the proton inside the patient \cite{mlp}.
 Numerous projections are created by varying the angle of the proton beam with respect to the target. The entire setup is schematically shown in Figure \ref{fig:proton_ct}.
 
 \begin{figure}
