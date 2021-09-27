@@ -131,7 +131,8 @@ includes a row of detectors measuring the photons after traversing the human bod
 x-rays differently, a projection of the irradiated volume can be created. By rotating the x-ray tube and the detectors, projections are created from many different angles around the patient.
 Unlike in radiography, where two-dimensional projections are produced, CT scan measurements are one-dimensional absorption profiles. The sum of the profiles contains
 the entire information of the inside structure, but cannot be interpreted directly. Projections and the original three-dimensional structure are connected through
-the inverse radon transformation. An implementation of that algorithm is the filtered back projection \cite{back_projection}:
+the inverse radon transformation. \\
+An implementation of that algorithm is the filtered back \mbox{projection \cite{back_projection}:}
 \begin{align}
   f(x,y) = \int_0^{\pi} \left(\int_{-\infty}^{\infty} p_{\phi}(z') \cdot g(z - z') \mathrm{d}z'\right) \mathrm{d}\phi
 \end{align}
@@ -147,7 +148,7 @@ Creating irradiation plans for proton therapy with x-ray computed tomography ima
 To compensate for the differences, a range uncertainty margin is applied to the prescribed range, which increases with greater travel distance through the body. This
 method is shown in Figure \ref{fig:paganetti}. These uncertainty margins caused by the conversion of x-rays to protons for the radiation plan can be prevented by creating a proton computed tomography (pCT) image.
 Since the position of the protons energy deposition has to be determined as precisely as possible to minimise the damage inflicted to healthy tissue, a computed tomography scan using protons
-is a promising alternative to conventional ct.
+is a promising alternative to conventional CT.
 
 \begin{figure}
   \centering

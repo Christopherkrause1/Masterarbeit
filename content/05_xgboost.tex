@@ -58,7 +58,7 @@ Figure \ref{fig:random_forest}.
 \section{Boosted trees}
 %The model used for boosted trees and a random forest is both the tree ensembles with the only difference being the training method.
 %Random forests and boosted decision trees are both tree ensembles that differ only in their training method.
-Unlike in random forest algorithms \cite{random}, in which a multitude of decision trees are created independently and combined at the end,
+Unlike random forest algorithms \cite{random}, in which a multitude of decision trees are created independently and combined at the end,
 it is also possible to build one tree at a time and
 combine them iteratively. This method is the gradient boosting machine learning algorithm \cite{gradient}, which is used by XGBoost. \\
 Optimising the objective functions for
@@ -105,7 +105,8 @@ consist of 400000 events with ten generated $\SI{200}{\mega\eV}$ protons each
 traversing the telescope described in section \ref{sec:setup}. The protons
 are reconstructed with Corryvreckan, with the true tracks being identified with the MC truth from Allpix$^2$. A total number of 92546 tracks
 are reconstructed, with 36340 being true tracks.
-The learner is tested on a previously unseen dataset, similar to the one in \ref{sec:feature} and consists of 100000 protons with ten protons per event.
+The learner is tested on a previously unseen dataset, simulated with the same configuration used in
+\ref{sec:feature} and consists of 100000 protons with ten protons per event.
 To determine the optimal number of boosting rounds, early stopping is utilised on a validation set, consisting of 100000 generated protons. This means, that
 the model will train until the validation score stops improving for ten consecutive boosting rounds to rule out statistical fluctuations.
 The number of boosted rounds is then determined by the highest validation score.

@@ -90,6 +90,7 @@
 
 \usepackage{graphicx}
 \usepackage{grffile}
+\usepackage{pdfpages}
 % allow figures to be placed in the running text by default:
 \usepackage{scrhack}
 \usepackage{float}
@@ -177,5 +178,6 @@
 \cleardoublepage
 \input{content/danksagung.tex}
 \cleardoublepage
-\input{content/eid_versicherung.tex}
+\includepdf[pages=-]{content/eidesstatt.pdf}
+%\input{content/eid_versicherung.tex}
 \end{document}

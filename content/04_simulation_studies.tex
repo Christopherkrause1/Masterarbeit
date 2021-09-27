@@ -1,6 +1,7 @@
 \chapter{Simulation studies for proton computed tomography} \label{sec:setup}
 With the demonstration of the validity of Corryvreckan as a track reconstruction framework, its performance for conditions present
-in proton computed tomography scans can be investigated. The foreseen telescope used to reconstruct the proton paths consists of six IBL planar sensors
+in proton computed tomography scans can be investigated. The foreseen telescope used to reconstruct the proton paths consists of six
+IBL planar sensors \cite{ibl_planar}
 grouped into two triplets. Due to the fact that the spatial resolution of the sensors is five times better in the horizontal direction, the middle sensor
 of each triplet is rotated by 90°. This way the lower track reconstruction precision in the vertical direction is partially compensated for.
 The setup for proton computed tomography is shown schematically in Figure \ref{fig:phantom}. \\
@@ -114,7 +115,7 @@ in by Corryvreckan with the FileReader module.
 
 \section{Proton reconstruction}\label{sec:proton_reconstruction}
 Before the reconstruction of low energy protons is performed with Corryvreckan, it is crucial to understand how well the
-track reconstruction works with high-energy protons and the employed telescope since Corryvreckan was designed for high-energy beam test experiments.
+track reconstruction works with high energy protons and the employed telescope since Corryvreckan was designed for high-energy beam test experiments.
 Because of that, a simulation containing 50000 protons
 with an energy of $\SI{100}{\giga\eV}$ is created. The corresponding Allpix$^2$ configuration and geometry files are attached in the appendix.
 Particles in this energy region only have small scattering angles, effectively travelling
@@ -194,7 +195,7 @@ simulation.
 The number of events with no reconstructed tracks increases with a smaller matching radius, as slightly non-straight paths can lead
 more likely to clusters being outside of the matching radius. On the other hand, fewer tracks from secondary particles are reconstructed
 for the same reason. Small cuts still lead to proper results
-for reconstructing high-energy protons due to their straight path through the telescope.
+for reconstructing high energy protons due to their straight path through the telescope.
 %, for lower energy protons the initial $\SI{750}{\micro\meter}$ is
 %used to ensure a successful association of clusters.
 
@@ -278,7 +279,7 @@ Unlike in the DESY testbeam facility, proton beams in proton ct tend to have a s
 per time frame. To analyse how Corrvreckan reconstructs a high track density beam, the number of particles per event in the Allpix$^2$
 simulation is increased, while the proton energy is kept constant at $\SI{200}{\mega\eV}$. Other parameters are identical to previous simulations.
 
-\section{Track multiplicities} \label{sec:multiplicites}
+\section{Track multiplicities} \label{sec:multiplicities}
 The track multiplicity, meaning the number of reconstructed tracks per event, for 25 and 50 particles simulated in an event is shown in Figure \ref{fig:multiplicity}. To take the different spatial resolutions of the sensors in the x- and y-direction into account, a relative
 spatial cut of 15.1 is applied in the reconstruction. Unlike absolute spatial cuts, relative cuts are used to define a
 matching radius by multiplying the spatial resolution

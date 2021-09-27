@@ -227,7 +227,7 @@ the different modules used for general track reconstruction. The entire Corryvre
 \chapter{Comparison of EUTelescope and Corryvreckan}\label{make}
 Before using Corryvreckan to reconstruct particle paths for proton computed tomography, it is necessary to ensure that it works properly
 and is able to deliver equally valid results as the EUTelescope framework.
-The chosen data sample is a DESY beam test from June 2020. Besides the six Mimosa26 sensors it contains two RD53A readout chips
+The chosen data sample originates from a beam test performed at DESY in June 2020. Besides the six Mimosa26 sensors it contains two RD53A readout chips
 as DUTs in between the triplets and a reference module with an FE-I4 readout chip behind the telescope. The RD53A readout chips are
 manufactured in a $\SI{65}{\nano\meter}$ CMOS technology with a matrix of (400 $\times$ 192) pixels of
 \mbox{(50 $\times$ 50) \textmu m$^2$} size. Electrons with an energy of $\SI{5}{\GeV}$ were used to irradiate the sensors.
@@ -370,7 +370,8 @@ indicating a successful alignment. The spatial resolution of the sensor in the h
 
 Both software determined similar standard deviations,
 with the ones for the residuals in the vertical direction being close to
-the corresponding spatial resolution of the sensor and the ones for the horizontal residuals being larger. The residuals are consistent with other track reconstruction
-analyses at DESY \cite{resolution}.\\
+the corresponding spatial resolution of the sensor and the ones for the horizontal residuals being larger. Similar deviations of the measured residual
+in the direction of the short pixel pitch of the reference module also arise in other track reconstruction
+analyses from beam tests at DESY \cite{resolution} and CERN \cite{natasha}.\\
 Results produced by the Corryvreckan framework showed noticeable similarities to the EUTelescope calculations. While the track
 fitting process is not identical, the quality of the reconstructed tracks determined by Corryvreckan is on par with EUTelescope.
